@@ -114,8 +114,12 @@ const run = async (width, height, tag) => {
   }
   // Top 10 with written summaries, its drill-down, and the direction switch on every tab
   await page.click('[data-tab="top"]');
-  await page.waitForSelector('.tc .facts span:not(.muted)', { timeout: 20000 });
-  if (!(await page.$('.brief li')) || !(await page.$('.tc .ai'))) errors.push(`[${tag}] Top 10 is missing the AI briefing or notes`);
+  await page.waitForSelector('.tc .story', { timeout: 20000 });
+  await page.waitForFunction(() => !document.body.innerText.includes('Checking package weights'), null, { timeout: 20000 });
+  if (!(await page.$('.brief li')) || !(await page.$('.tc .by'))) errors.push(`[${tag}] Top 10 is missing the AI briefing or notes`);
+  // Plain language only: no symbols, arrows, separators or invoice codes in the Top 10 text
+  const odd = await page.evaluate(() => [...document.querySelectorAll('.tc .hd, .tc .story, .tc .stat, .brief li')].map((e) => e.innerText).filter((t) => /[·×→|+—]|[A-Z]{5,}_|\$-?\d+(\.\d)?K\b/.test(t)));
+  if (odd.length) errors.push(`[${tag}] Top 10 text has symbols or codes: ${odd[0].slice(0, 120)}`);
   await shot('top');
   await page.click('[data-top="u:0"]');
   await page.waitForSelector('#drawer.on .mtrs', { timeout: 15000 });
