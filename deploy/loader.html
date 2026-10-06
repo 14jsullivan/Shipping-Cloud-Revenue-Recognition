@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revenue Integrity · Shipping Cloud</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Crect width=%2216%22 height=%2216%22 rx=%223%22 fill=%22%23141414%22/%3E%3Ccircle cx=%228%22 cy=%228%22 r=%223%22 fill=%22%23FF4405%22/%3E%3C/svg%3E">
+<style>body{margin:0;background:#F7F6F4;color:#5A5955;font:14px/20px Inter,system-ui,sans-serif}.l{max-width:520px;margin:120px auto;padding:0 16px;text-align:center}</style>
+</head>
+<body>
+<div class="l" id="l">Loading Revenue Integrity…</div>
+<script type="module">
+/* Loader. The app is one self-contained file (index.html in the GitHub repo), stored at app/index.html
+   in the shipping-rev-rec Fridge store. Pushing the repo to this site's Fridge git remote replaces this loader. */
+const show = (t) => { document.getElementById('l').textContent = t; };
+try {
+  const { createFridge } = await import('/api/sdk');
+  const fridge = createFridge();
+  let html = null;
+  try { html = await fridge.stores.open('shipping-rev-rec').files.text('app/index.html'); }
+  catch { html = await fridge.files.shared('shipping-rev-rec').text('app/index.html'); }
+  if (!html || !html.includes('<html')) throw new Error('app file missing');
+  document.open(); document.write(html); document.close();
+} catch (e) { show("Couldn't load the app: " + (e?.message || e)); }
+</script>
+</body>
+</html>

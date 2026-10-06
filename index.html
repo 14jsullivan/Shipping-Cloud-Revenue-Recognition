@@ -1,0 +1,1173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revenue Integrity · Shipping Cloud</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Crect width=%2216%22 height=%2216%22 rx=%223%22 fill=%22%23141414%22/%3E%3Ccircle cx=%228%22 cy=%228%22 r=%223%22 fill=%22%23FF4405%22/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap">
+<style>
+:root{
+  --bg:#F7F6F4;--surface:#FFFFFF;--ink:#2A2A28;--ink2:#5A5955;--muted:#9B9A96;--line:#E4E3DF;--line2:#F0EFED;--black:#141414;
+  --under:#FF4405;--over:#088AB2;--under-ink:#C23300;--over-ink:#066A89;--good:#16A34A;
+  --serif:'Instrument Serif',Georgia,'Times New Roman',serif;
+  --sans:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:400 14px/20px var(--sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+input,textarea{font:inherit;color:inherit}
+.chrome{position:sticky;top:0;z-index:20}
+.top{background:var(--black);color:#fff}
+.wrap{max-width:1360px;margin:0 auto;padding:0 48px}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px}
+.brand{display:flex;align-items:center;gap:16px;min-width:0}
+.brand svg{height:22px;width:auto;display:block;color:#fff;flex:none}
+.brand .sep{width:1px;height:24px;background:rgba(255,255,255,.16);flex:none}
+.brand .app{font:400 26px/28px var(--serif);letter-spacing:-.01em;white-space:nowrap}
+.brand .scope{font:600 11px/16px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.fresh{display:flex;align-items:center;gap:8px;font-size:12px;line-height:16px;color:var(--muted);text-align:right}
+.fresh b{color:#fff;font-weight:500}
+.icon-btn{width:32px;height:32px;border-radius:6px;border:1px solid rgba(255,255,255,.16);color:#fff;display:grid;place-items:center;flex:none}
+.icon-btn:hover{background:rgba(255,255,255,.08)}
+.icon-btn.spin svg{animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.prog{height:2px;background:var(--black)}
+.prog i{display:block;height:2px;width:0;background:var(--under);transition:width .4s}
+.tabs{background:var(--surface);border-bottom:1px solid var(--line)}
+.tabs .wrap{display:flex;gap:32px}
+.tabs button{padding:16px 0 14px;border-bottom:2px solid transparent;font-weight:500;color:var(--ink2)}
+.tabs button.on{color:var(--ink);border-bottom-color:var(--under)}
+.bar{background:var(--bg);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding-top:12px;padding-bottom:12px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;background:var(--surface);padding:2px;gap:2px}
+.seg button{padding:4px 12px;border-radius:6px;font-size:12px;line-height:20px;font-weight:500;color:var(--ink2)}
+.seg button.on{background:var(--ink);color:#fff}
+.vsep{width:1px;height:24px;background:var(--line);margin:0 8px}
+.dd{padding:4px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font-size:12px;line-height:20px;font-weight:500;color:var(--ink2);display:inline-flex;gap:8px;align-items:center}
+.dd:hover{border-color:var(--muted)}
+.dd.on{border-color:var(--ink);color:var(--ink)}
+.dd b{background:var(--ink);color:#fff;border-radius:8px;padding:0 6px;font-size:11px;line-height:16px}
+.dd .car{font-size:9px;color:var(--muted)}
+.note{font-size:12px;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;width:100%}
+.chips:empty{display:none}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:2px 4px 2px 12px;border-radius:16px;background:var(--surface);border:1px solid var(--line);font-size:12px;line-height:20px}
+.chip em{font-style:normal;color:var(--muted)}
+.chip button{width:20px;height:20px;border-radius:10px;color:var(--muted)}
+.chip button:hover{background:var(--line2);color:var(--ink)}
+.linkbtn{font-size:12px;color:var(--ink2);text-decoration:underline;text-underline-offset:3px}
+main.wrap{padding-top:24px;padding-bottom:64px}
+.grid{display:grid;gap:16px}
+.kpis{grid-template-columns:repeat(4,minmax(0,1fr))}
+.k3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.two{grid-template-columns:minmax(0,2fr) minmax(0,1fr)}
+.half{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.own{grid-template-columns:minmax(0,1fr) minmax(0,1.3fr)}
+.mt{margin-top:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:24px;min-width:0}
+.card-h{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+.card h2{font:400 24px/32px var(--serif);margin:0;letter-spacing:-.005em}
+.card h3{font:600 11px/16px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);margin:0 0 8px}
+.sub{font-size:12px;line-height:16px;color:var(--muted);margin-top:4px}
+.kpi .lbl{font:600 11px/16px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);display:flex;align-items:center;gap:8px}
+.kpi .val{font:400 44px/48px var(--serif);letter-spacing:-.01em;margin-top:8px;white-space:nowrap}
+.kpi .meta{font-size:12px;line-height:16px;color:var(--muted);margin-top:8px}
+.kpi .delta{font-size:12px;font-weight:600}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none}
+.dot.u{background:var(--under)}.dot.o{background:var(--over)}.dot.k{background:var(--ink)}.dot.g{background:var(--muted)}
+.legend{display:flex;gap:16px;align-items:center;font-size:12px;color:var(--ink2)}
+.legend button,.legend span{display:inline-flex;gap:8px;align-items:center}
+.legend .off{opacity:.35}
+.tabs2{display:flex;flex-wrap:wrap;gap:4px}
+.tabs2 button{padding:4px 12px;border-radius:16px;font-size:12px;line-height:20px;font-weight:500;color:var(--ink2);border:1px solid transparent}
+.tabs2 button.on{border-color:var(--ink);color:var(--ink)}
+.slot{width:100%;position:relative}
+svg.chart{display:block;overflow:visible}
+svg.chart text{font:11px var(--sans);fill:var(--muted)}
+svg.chart .grid{stroke:var(--line2);stroke-width:1}
+svg.chart .zero{stroke:var(--line);stroke-width:1}
+svg.chart .hit{fill:transparent;cursor:pointer}
+svg.chart .hit:hover{fill:rgba(13,13,13,.04)}
+svg.chart .nohit{cursor:default}
+.drows .hd{display:grid;grid-template-columns:minmax(140px,30%) 1fr 72px;gap:16px;padding:0 8px 8px;font:600 11px/16px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.drows .hd .mid{display:grid;grid-template-columns:1fr 1fr}
+.drows .hd .mid span:first-child{text-align:right;padding-right:8px}
+.drows .hd .mid span:last-child{padding-left:8px}
+.drow{display:grid;grid-template-columns:minmax(140px,30%) 1fr 72px;align-items:center;gap:16px;padding:8px;border-top:1px solid var(--line2);cursor:pointer;border-radius:4px}
+.drow:hover{background:var(--line2)}
+.drow.sel{background:var(--line2);box-shadow:inset 2px 0 0 var(--ink)}
+.drow.on .nm{font-weight:700}
+.drow .nm{font-weight:500;font-size:13px;line-height:18px;min-width:0}
+.drow .nm span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.drow .nm small{display:block;font-weight:400;color:var(--muted);font-size:11px;line-height:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dbar{display:grid;grid-template-columns:1fr 1fr;align-items:center;height:24px}
+.dbar .l{display:flex;flex-direction:row-reverse;align-items:center;gap:8px;height:100%;border-right:1px solid var(--line)}
+.dbar .r{display:flex;align-items:center;gap:8px;height:100%}
+.dbar i{display:block;height:12px;flex:none}
+.dbar .l i{background:var(--under);border-radius:4px 0 0 4px}
+.dbar .r i{background:var(--over);border-radius:0 4px 4px 0}
+.dbar span{font-size:12px;color:var(--ink2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.dbar.one{grid-template-columns:1fr}
+.dbar.one .l{flex-direction:row;border-right:0;border-left:1px solid var(--line)}
+.dbar.one .l i{border-radius:0 4px 4px 0}
+.drows.one .drow,.drows.one .hd{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) 56px}
+.drows.one .hd .mid{grid-template-columns:1fr}
+.drow .cnt{text-align:right;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.more{margin-top:8px;padding:8px;font-size:12px;font-weight:500;color:var(--ink2)}
+.more:hover{color:var(--ink)}
+table.t{width:100%;border-collapse:collapse;font-size:13px;line-height:18px}
+.t th{font:600 11px/16px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:left;padding:8px;border-bottom:2px solid var(--line);white-space:nowrap}
+.t td{padding:8px;border-bottom:1px solid var(--line2);vertical-align:top}
+.t .n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.t tr.click{cursor:pointer}
+.t tr.click:hover td{background:var(--line2)}
+.t small{display:block;color:var(--muted);font-size:11px;line-height:16px}
+.t code{font:500 12px/16px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--ink)}
+.pill{display:inline-block;padding:2px 8px;border-radius:4px;font-size:12px;line-height:16px;font-weight:600;white-space:nowrap}
+.pill.u{background:rgba(255,68,5,.1);color:var(--under-ink)}
+.pill.o{background:rgba(8,138,178,.1);color:var(--over-ink)}
+.pill.g{background:rgba(155,154,150,.14);color:var(--ink2)}
+.pill.ok{background:rgba(22,163,74,.1);color:var(--good)}
+.pill.k{background:var(--ink);color:#fff}
+.scroll{overflow:auto;max-height:560px}
+.empty{padding:32px 0;text-align:center;color:var(--muted);font-size:13px}
+.loading{padding:24px 0;color:var(--muted);font-size:13px}
+.skel{height:120px;border-radius:8px;background:linear-gradient(90deg,var(--line2),#fff,var(--line2));background-size:200% 100%;animation:sh 1.4s infinite}
+@keyframes sh{to{background-position:-200% 0}}
+.hero-msg{max-width:640px;margin:64px auto;text-align:center}
+.hero-msg h1{font:400 40px/48px var(--serif);margin:0 0 16px}
+.hero-msg p{color:var(--ink2);margin:0 0 24px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:8px;background:var(--ink);color:#fff;font-size:13px;font-weight:600}
+.btn.ghost{background:var(--surface);color:var(--ink);border:1px solid var(--line)}
+.btn:disabled{opacity:.5;cursor:default}
+.banner{background:rgba(255,68,5,.08);border:1px solid rgba(255,68,5,.24);color:var(--under-ink);border-radius:8px;padding:8px 16px;font-size:13px;margin-bottom:16px;display:flex;justify-content:space-between;gap:16px;align-items:center}
+#scrim{position:fixed;inset:0;background:rgba(13,13,13,.32);opacity:0;pointer-events:none;transition:opacity .2s;z-index:40}
+#scrim.on{opacity:1;pointer-events:auto}
+#drawer{position:fixed;top:0;right:0;bottom:0;width:min(800px,100vw);background:var(--bg);transform:translateX(105%);transition:transform .25s ease;z-index:41;overflow:auto;box-shadow:-8px 0 32px rgba(0,0,0,.16)}
+#drawer.on{transform:none}
+.dw-h{background:var(--black);color:#fff;padding:24px 32px;position:sticky;top:0;z-index:2}
+.dw-h .eyebrow{font:600 11px/16px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.dw-h h1{font:400 32px/40px var(--serif);margin:4px 48px 8px 0}
+.dw-h .x{position:absolute;right:24px;top:24px}
+.owners{display:flex;flex-wrap:wrap;gap:8px}
+.owners span{font-size:12px;line-height:20px;padding:2px 12px;border-radius:16px;background:rgba(255,255,255,.08);color:#fff}
+.owners span em{font-style:normal;color:var(--muted);margin-right:4px}
+.dw-b{padding:24px 32px 48px;display:grid;gap:16px}
+.dw-b .card{padding:16px 24px}
+.dw-b .kpi .val{font-size:32px;line-height:40px}
+.fix{display:grid;grid-template-columns:auto 1fr 1fr auto;gap:8px;align-items:center}
+.fix input,.fix textarea{border:1px solid var(--line);border-radius:6px;padding:6px 8px;font-size:13px;background:#fff;width:100%}
+.fix textarea{grid-column:1/-1;min-height:56px;resize:vertical}
+.fix .meta{grid-column:1/-1;font-size:12px;color:var(--muted)}
+.hint{font-size:12px;line-height:16px;color:var(--ink2);margin-top:2px}
+#pop{position:fixed;display:none;z-index:50;background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 32px rgba(0,0,0,.12);width:340px;max-height:440px;flex-direction:column}
+#pop.on{display:flex}
+#pop input{margin:8px;padding:8px 12px;border:1px solid var(--line);border-radius:6px;outline:none}
+#pop input:focus{border-color:var(--ink)}
+#pop .opts{overflow:auto;flex:1}
+#pop .opt{display:grid;grid-template-columns:16px minmax(0,1fr) auto;gap:8px;align-items:center;padding:6px 12px;font-size:13px;line-height:18px;cursor:pointer}
+#pop .opt:hover{background:var(--line2)}
+#pop .opt .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#pop .opt .v{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+#pop .cb{width:16px;height:16px;border:1.5px solid var(--muted);border-radius:4px}
+#pop .cb.on{background:var(--ink);border-color:var(--ink);box-shadow:inset 0 0 0 3px #fff}
+#pop .pf{display:flex;justify-content:space-between;padding:8px 12px;border-top:1px solid var(--line2)}
+#tip{position:fixed;pointer-events:none;background:var(--black);color:#fff;font-size:12px;line-height:16px;padding:8px 12px;border-radius:6px;opacity:0;transition:opacity .08s;z-index:60;max-width:300px}
+#tip.on{opacity:1}
+#tip .tt{font-weight:600;margin-bottom:4px}
+#tip .r{display:flex;justify-content:space-between;gap:16px;align-items:center}
+#tip .r span{display:inline-flex;gap:8px;align-items:center;color:#C8C7C2}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--black);color:#fff;padding:8px 16px;border-radius:8px;font-size:13px;opacity:0;transition:all .2s;z-index:70;pointer-events:none}
+#toast.on{opacity:1;transform:translateX(-50%)}
+@media (max-width:1100px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.two,.own,.half{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:720px){.wrap{padding:0 16px}.brand .scope,.brand .sep{display:none}.kpis,.k3{grid-template-columns:minmax(0,1fr)}.kpi .val{font-size:36px;line-height:40px}.tabs .wrap{gap:24px}.dw-h,.dw-b{padding-left:16px;padding-right:16px}.drow,.drows .hd,.drows.one .drow,.drows.one .hd{grid-template-columns:minmax(0,40%) minmax(0,1fr);gap:8px}.drow .cnt,.drows .hd>span:last-child{display:none}#fresh{display:none}.brand .app{font-size:22px}.card{padding:16px}.t{font-size:12px}}
+</style>
+</head>
+<body>
+<div class="chrome">
+  <header class="top"><div class="wrap">
+    <div class="brand">
+      <svg viewBox="8 8 124 28" fill="currentColor" role="img" aria-label="Redo"><path d="M130.5 22.1C130.5 24.2 130.1 29 125.3 32.2C124.1 33 122.9 33.6 121.5 34C120.1 34.4 118 34.8 114.7 34.8C109.7 34.8 106.6 33.7 104.7 32.6C104.1 32.2 102.9 31.4 101.8 30C99.2 27 99.1 23.9 99.1 22.4C99.1 16.4 102.3 13.4 104.3 12.1C106.3 10.8 109.1 9.6 114.4 9.5C115.5 9.5 116.5 9.5 117.6 9.6C123.8 10.1 126.7 12.6 128.4 14.9C129.1 16.1 130.5 18.5 130.5 22.1ZM121.8 22.2C121.8 19.1 120.6 17.2 119.7 16.5C119.4 16.1 118.5 15.5 117.4 15.1C116.8 14.9 116.2 14.8 114.9 14.8C113.8 14.8 112.9 14.9 111.9 15.3C109.1 16.5 107.8 19.3 107.8 22.2C107.8 22.6 107.9 23.8 108.3 25.1C109 27 110.3 28.4 111.9 29.2C112.7 29.6 113.8 30 115.2 30C116.4 30 117.3 29.8 118.1 29.4C120.9 28.2 121.8 25.4 121.8 22.2Z M96.7 27.4C96.7 27.4 96.7 27.4 96.7 27.4C96.7 27.4 94.3 30.2 93.9 30.7C93.1 31.5 91.7 32.3 91.2 32.6C90.1 33.2 88.7 33.5 87.5 33.8C86.6 34 84.2 34 84.2 34H69.3V10.4H82.7C83.6 10.4 84.5 10.4 85.5 10.5C91 10.9 93.4 13.2 94.8 15.3C96.8 18.2 96.8 21.2 96.8 22.5ZM88.6 22.3C88.6 21.5 88.5 18.9 86.4 17.3C84.6 15.9 82.1 16 81.6 16H77.5V28.6H81.8C82.3 28.6 82.8 28.6 83.3 28.5C86.2 28.2 87.2 26.9 87.8 25.7C88.5 24.2 88.6 22.9 88.6 22.3Z M65.3 34H40.1V10.4H65V15.7H48.5V19.5H63.7V24.9H48.5V28.6H65.3V34Z M36.6 34H27.3L22.5 25.4H18V34H9.5V10.4H26.9C30 10.4 33.1 10.6 35 13.6C35.4 14.3 36.2 15.7 36.2 17.9C36.2 19 35.9 22.1 33 23.8C32.4 24.1 32 24.3 30.8 24.6L36.6 34ZM27.8 17.9C27.8 17.7 27.7 17.2 27.4 16.7C26.8 15.9 25.9 15.7 25 15.7H18V20.1H24.3C25.9 20.1 26.8 19.9 27.3 19.2C27.7 18.7 27.8 18.2 27.8 17.9Z"/></svg>
+      <span class="sep"></span>
+      <span class="app">Revenue Integrity</span>
+      <span class="scope">Shipping Cloud · Labels</span>
+    </div>
+    <div class="fresh"><span id="fresh">Connecting…</span><button id="refresh" class="icon-btn" title="Refresh from Snowflake" aria-label="Refresh"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M13.5 8a5.5 5.5 0 1 1-1.6-3.9"/><path d="M13.5 2.5v3h-3"/></svg></button></div>
+  </div><div class="prog"><i id="prog"></i></div></header>
+  <nav class="tabs"><div class="wrap">
+    <button data-tab="issues" class="on">Issues</button>
+    <button data-tab="owners">Owners</button>
+    <button data-tab="recon">Reconcile</button>
+    <button data-tab="progress">Progress</button>
+  </div></nav>
+  <section class="bar"><div class="wrap" id="bar"></div></section>
+</div>
+<main class="wrap" id="view"></main>
+<div id="scrim"></div>
+<aside id="drawer" aria-hidden="true"></aside>
+<div id="pop"></div>
+<div id="tip"></div>
+<div id="toast"></div>
+<script type="module">
+/* Revenue Integrity: catches, diagnoses and tracks fixes for Shipping Cloud label revenue issues.
+   Live data comes from Snowflake through the Fridge runtime SDK. Fridge rejects SQL that contains
+   comments or semicolons, so all SQL below is single-statement and comment-free. */
+
+const STORE_KEY = 'shipping-rev-rec';
+const DATA_VERSION = 1;
+const CACHE_PATH = 'cache/data-v1.json';
+const LS_KEY = 'rri:data:v1';
+const STALE_MS = 4 * 3600e3;
+const EPOCH = '2025-01-01';
+const EPOCH_MS = Date.UTC(2025, 0, 1);
+const CHUNKS = 4;
+const T = {
+  DIAG: 'KITCHEN.REVENUE.OMS_LABEL_BILLING_DIAGNOSTICS_CURRENT',
+  SHIP: 'KITCHEN.REVENUE.OUTBOUND_LABELS_REVENUE_BY_SHIPMENT_CURRENT',
+  ADJ: 'KITCHEN.REVENUE.OUTBOUND_LABEL_REVENUE_ADJUSTMENTS',
+  TRBH: 'KITCHEN.REVENUE.TOTAL_REVENUE_BY_HOUR',
+  MR: ['KITCHEN.FINANCE.MONTHLY_REPORT_V2', 'KITCHEN.PANTRY.INGR_MONTHLY_REPORT_V2'],
+  TEAMS: 'KITCHEN.REV_OPS.TEAMS',
+  HSC: 'KITCHEN.REV_OPS.HUBSPOT_COMPANIES',
+  HSD: 'KITCHEN.REV_OPS.HUBSPOT_DEALS',
+};
+
+// Issue types. Codes match the CASE expression in SQL_TYPE (8, positive "other", folds into 4).
+const TYPES = [
+  { code: 2, dir: -1, name: 'Carrier billed above quote', why: 'Carrier invoice came in above our quote; the gap was not passed on.', fix: 'Re-bill the surcharge to the merchant or dispute it with the carrier.' },
+  { code: 3, dir: -1, name: 'Merchant under-billed', why: 'Merchant was charged less than expected (refund or partial charge).', fix: 'Collect the shortfall and check the refund.' },
+  { code: 9, dir: -1, name: 'Carrier billed extra label', why: 'Carrier billed a label we never quoted (extra piece or voided label).', fix: 'Dispute with the carrier or bill the merchant for the extra piece.' },
+  { code: 1, dir: -1, name: 'Merchant not billed', why: 'Label was bought but the merchant was never charged.', fix: 'Charge the merchant for the label.' },
+  { code: 5, dir: 1, name: 'Carrier billed below quote', why: 'Carrier invoice came in below our quote.', fix: 'Confirm the carrier credit; tune quotes if it repeats.' },
+  { code: 6, dir: 1, name: 'Merchant over-billed', why: 'Merchant was charged more than expected, often twice.', fix: 'Refund the duplicate charge.' },
+  { code: 4, dir: 0, name: 'Other', why: 'Small rounding or revenue-share differences.', fix: 'Review only if material.' },
+];
+const TYPE_BY = Object.fromEntries(TYPES.map((t) => [t.code, t]));
+const CARRIERS = { USPS: 'USPS', UspsShip: 'USPS', DhlEcs: 'DHL eCommerce', FirstMile: 'FirstMile', UPSSurePost: 'UPS SurePost', UPS: 'UPS', FedEx: 'FedEx', FedExSmartPost: 'FedEx SmartPost', AmazonShipping: 'Amazon', CanadaPost: 'Canada Post', UniUni: 'UniUni', APC: 'APC', OnTracV3: 'OnTrac', Multiple: 'Multiple carriers', Unknown: 'Unknown' };
+const DIMS = [
+  { key: 'carrier', label: 'Carrier' }, { key: 'merchant', label: 'Merchant' }, { key: 'origin', label: 'Origin' },
+  { key: 'dest', label: 'Destination' }, { key: 'type', label: 'Issue type' }, { key: 'pa', label: 'PA' }, { key: 'se', label: 'SE' },
+];
+const DIM_LABEL = Object.fromEntries(DIMS.map((d) => [d.key, d.label]));
+const AGES = ['0–30 days', '31–90 days', '3–6 months', '6–12 months', 'Over a year'];
+const STATUS = { open: 'Open', working: 'In progress', fixed: 'Fixed' };
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+/* ---------------- state ---------------- */
+const S = {
+  tab: 'issues', grain: 'month', range: { preset: 'all' }, show: { u: true, o: true },
+  f: { carrier: new Set(), merchant: new Set(), origin: new Set(), dest: new Set(), type: new Set(), pa: new Set(), se: new Set() },
+  bdim: 'type', bAll: false, ownerKind: 'pa', ownerSel: {}, data: null, raw: null, source: null,
+  loading: false, error: null, actions: new Map(), snapshots: [], drawer: null, pop: null,
+};
+try { const p = JSON.parse(localStorage.getItem('rri:prefs') || '{}'); if (p.tab) S.tab = p.tab; if (p.grain) S.grain = p.grain; if (p.preset) S.range = { preset: p.preset }; } catch {}
+const savePrefs = () => { try { localStorage.setItem('rri:prefs', JSON.stringify({ tab: S.tab, grain: S.grain, preset: S.range.from == null ? S.range.preset : 'all' })); } catch {} };
+
+/* ---------------- helpers ---------------- */
+const $ = (s, el = document) => el.querySelector(s);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const msg = (e) => String(e?.message || e || 'Unknown error').slice(0, 300);
+function money(v, sign = false) {
+  const a = Math.abs(v || 0);
+  let s = a >= 1e6 ? (a / 1e6).toFixed(a >= 1e7 ? 1 : 2) + 'M' : a >= 1e4 ? (a / 1e3).toFixed(0) + 'K' : a >= 1e3 ? (a / 1e3).toFixed(1) + 'K' : a >= 100 ? a.toFixed(0) : a.toFixed(2);
+  s = '$' + s;
+  return sign ? (v < -0.004 ? '−' : v > 0.004 ? '+' : '') + s : s;
+}
+const exact = (v) => (v < 0 ? '−' : '') + '$' + Math.abs(v || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+function axisMoney(v) {
+  if (Math.abs(v) < 1e-9) return '$0';
+  const a = Math.abs(v);
+  const s = a >= 1e6 ? +(a / 1e6).toFixed(1) + 'M' : a >= 1e3 ? +(a / 1e3).toFixed(1) + 'K' : +a.toFixed(0) + '';
+  return (v < 0 ? '−$' : '$') + s;
+}
+const cnt = (n) => Math.round(n || 0).toLocaleString('en-US');
+const pct = (x) => (x == null || !isFinite(x) ? '—' : (x > 0 ? '+' : x < 0 ? '−' : '') + Math.abs(x * 100).toFixed(1) + '%');
+const parseMaybe = (x) => { if (x == null) return null; if (typeof x === 'string') { try { return JSON.parse(x); } catch { return null; } } return x; };
+const regionNames = (() => { try { return new Intl.DisplayNames(['en'], { type: 'region' }); } catch { return null; } })();
+const country = (c) => { if (!c || c.length !== 2) return c; try { return regionNames?.of(c) || c; } catch { return c; } };
+const dayDate = (i) => new Date(EPOCH_MS + i * 864e5);
+const dIdx = (y, m, d) => Math.round((Date.UTC(y, m, d) - EPOCH_MS) / 864e5);
+const iso = (i) => dayDate(i).toISOString().slice(0, 10);
+const denverToday = () => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Denver', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+const todayIdx = () => { const [y, m, d] = denverToday().split('-').map(Number); return dIdx(y, m - 1, d); };
+const PKC = {};
+function pk(day, g) {
+  if (g === 'day') return day;
+  let a = PKC[g];
+  if (!a) a = PKC[g] = new Map();
+  let k = a.get(day);
+  if (k == null) { const dt = dayDate(day), y = dt.getUTCFullYear(), m = dt.getUTCMonth(); k = g === 'month' ? y * 12 + m : g === 'quarter' ? y * 4 + Math.floor(m / 3) : y; a.set(day, k); }
+  return k;
+}
+function pStart(k, g) { return g === 'day' ? k : g === 'month' ? dIdx(Math.floor(k / 12), k % 12, 1) : g === 'quarter' ? dIdx(Math.floor(k / 4), (k % 4) * 3, 1) : dIdx(k, 0, 1); }
+const pEnd = (k, g) => (g === 'day' ? k : pStart(k + 1, g) - 1);
+function pLabel(k, g, long) {
+  if (g === 'day') { const d = dayDate(k); return MONTHS[d.getUTCMonth()] + ' ' + d.getUTCDate() + (long ? ', ' + d.getUTCFullYear() : ''); }
+  if (g === 'month') { const y = Math.floor(k / 12); return MONTHS[k % 12] + (long ? ' ' + y : " '" + String(y).slice(2)); }
+  if (g === 'quarter') { const y = Math.floor(k / 4); return 'Q' + ((k % 4) + 1) + (long ? ' ' + y : " '" + String(y).slice(2)); }
+  return String(k);
+}
+const FINER = { year: 'quarter', quarter: 'month', month: 'day', day: 'day' };
+function periods(from, to, g) { const out = []; for (let k = pk(from, g), e = pk(to, g); k <= e; k++) out.push(k); return out; }
+function rangeDays() {
+  const r = S.range, max = todayIdx();
+  if (r.from != null) return [r.from, r.to];
+  switch (r.preset) {
+    case '30d': return [max - 29, max];
+    case '90d': return [max - 89, max];
+    case 'ytd': return [dIdx(dayDate(max).getUTCFullYear(), 0, 1), max];
+    case '12m': return [max - 364, max];
+    default: return [Math.min(S.data?.minDay ?? 0, max), max];
+  }
+}
+function rangeLabel() {
+  const r = S.range;
+  if (r.label) return r.label;
+  const [a, b] = rangeDays();
+  return pLabel(a, 'day', true) + ' – ' + pLabel(b, 'day', true);
+}
+function fmtAsOf(s) {
+  if (!s) return null;
+  const d = new Date(String(s).replace(' ', 'T').replace(/(\.\d{3})\d*/, '$1') + (/[zZ+]/.test(String(s).slice(-6)) ? '' : 'Z'));
+  if (isNaN(d)) return String(s);
+  return d.toLocaleString('en-US', { timeZone: 'America/Denver', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) + ' MT';
+}
+function ago(ms) { const m = Math.round((Date.now() - ms) / 6e4); return m < 1 ? 'just now' : m < 60 ? m + ' min ago' : m < 1440 ? Math.round(m / 60) + 'h ago' : Math.round(m / 1440) + 'd ago'; }
+function toast(t) { const el = $('#toast'); el.textContent = t; el.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove('on'), 2600); }
+function dict() { const map = new Map(), names = []; return { names, get(n) { let i = map.get(n); if (i == null) { i = names.length; map.set(n, i); names.push(n); } return i; } }; }
+const safeId = (s) => /^[A-Za-z0-9_]+$/.test(String(s)) ? String(s) : null;
+const safeLit = (s) => /^[A-Za-z0-9 _.]+$/.test(String(s)) ? "'" + s + "'" : null;
+
+/* ---------------- Fridge SDK ---------------- */
+let fridge = null, me = null;
+async function initSdk() {
+  const mod = await import('/api/sdk');
+  fridge = mod.createFridge();
+  try { const r = await fridge.identity.me(); me = r?.user ?? r ?? null; } catch {}
+}
+function normRows(res) {
+  if (!res) return [];
+  const lower = (o) => { const r = {}; for (const k in o) r[k.toLowerCase()] = o[k]; return r; };
+  if (Array.isArray(res)) return res.map((r) => (Array.isArray(r) ? r : lower(r)));
+  const meta = res.resultSetMetaData || res.result_set?.resultSetMetaData;
+  const data = res.rows ?? res.data ?? res.result_set?.data;
+  if (Array.isArray(data) && data.length && Array.isArray(data[0]) && meta?.rowType) {
+    const cols = meta.rowType.map((c) => String(c.name).toLowerCase());
+    return data.map((a) => Object.fromEntries(cols.map((c, i) => [c, a[i]])));
+  }
+  if (Array.isArray(data)) return data.map((r) => (r && typeof r === 'object' && !Array.isArray(r) ? lower(r) : r));
+  return [];
+}
+async function sf(sql, attempts = 2) {
+  if (/--|\/\*|;/.test(sql)) throw new Error('SQL must be a single statement without comments');
+  for (let i = 1; ; i++) {
+    try { return normRows(await fridge.snowflake.query(sql, { limit: 500, timeoutMs: 180000 })); }
+    catch (e) {
+      if (i >= attempts || !/time|network|fetch|50[234]|ECONN|abort|queue/i.test(msg(e))) throw e;
+      await new Promise((r) => setTimeout(r, 1500 * i));
+    }
+  }
+}
+function storeHandles() {
+  const hs = [];
+  try { if (fridge?.stores?.open) hs.push(fridge.stores.open(STORE_KEY)); } catch {}
+  try { if (fridge?.stores?.default) hs.push(fridge.stores.default); } catch {}
+  return hs;
+}
+async function withStore(fn) {
+  let err = new Error('No data store available');
+  for (const h of storeHandles()) { try { return await fn(h); } catch (e) { err = e; } }
+  throw err;
+}
+function normDocs(res) {
+  const arr = Array.isArray(res) ? res : res?.items ?? res?.documents ?? res?.rows ?? res?.data ?? [];
+  return arr.map((it) => (it && typeof it === 'object' && it.value && typeof it.value === 'object'
+    ? { key: it.key ?? it.documentKey ?? it.id, value: it.value }
+    : { key: it?.key ?? it?._key ?? it?.id, value: it }));
+}
+async function colList(name) {
+  return withStore(async (h) => {
+    const c = h.db.collection(name), out = [];
+    if (typeof c.page === 'function') {
+      for (let off = 0; off < 5000; off += 100) { const r = normDocs(await c.page({ limit: 100, offset: off })); out.push(...r); if (r.length < 100) break; }
+    } else out.push(...normDocs(await c.list()));
+    return out;
+  });
+}
+async function colSet(name, key, value) {
+  return withStore(async (h) => { const c = h.db.collection(name); return typeof c.set === 'function' ? c.set(key, value) : c.create(value, key); });
+}
+const fileJson = (path) => withStore((h) => h.files.json(path));
+const fileUpload = (path, body) => withStore((h) => h.files.upload(path, body, { contentType: 'application/json' }));
+
+/* ---------------- SQL ---------------- */
+const dimExpr = (col) => `case coalesce(array_size(try_parse_json(${col})), 0) when 0 then 'Unknown' when 1 then coalesce(try_parse_json(${col})[0]::string, 'Unknown') else 'Multiple' end`;
+const M_DELTA = 'coalesce(net_billed_to_merchant_usd, 0) - coalesce(expected_merchant_charge_usd, 0)';
+const X_DELTA = `coalesce(spread_change_from_expected_usd, 0) - (${M_DELTA})`;
+const SQL_S = (dref) => `select merchant_id, fulfillment_group_id, sum(${M_DELTA}) m_delta, sum(${X_DELTA}) x_delta, sum(iff(coalesce(expected_carrier_cost_usd, 0) = 0, ${X_DELTA}, 0)) x_unq, sum(coalesce(merchant_charge_transaction_count, 0)) charges_n, sum(coalesce(expected_merchant_charge_usd, 0)) ec from ${T.SHIP} where (merchant_id, fulfillment_group_id) in (select merchant_id, fulfillment_group_id from ${dref}) group by 1, 2`;
+const SQL_TYPE = `case when s.merchant_id is null then iff(d.v < 0, 4, 8) when d.v < 0 then case when s.charges_n = 0 and s.ec > 0 then 1 when s.x_delta < -0.01 and s.x_delta <= s.m_delta then iff(s.x_unq <= s.x_delta / 2, 9, 2) when s.m_delta < -0.01 then 3 else 4 end else case when s.x_delta > 0.01 and s.x_delta > s.m_delta then 5 when s.m_delta > 0.01 then 6 else 8 end end`;
+
+function sqlCube(k) {
+  return `with d as (select merchant_id, fulfillment_group_id, issue_date, carriers, origin_countries, destination_countries, diagnostic_variance_usd v from ${T.DIAG} where diagnostic_status = 'issue' and issue_date is not null and mod(datediff('day', '${EPOCH}'::date, issue_date), ${CHUNKS}) = ${k}),
+s as (${SQL_S('d')}),
+c as (select d.issue_date, d.merchant_id, d.v, ${SQL_TYPE} t, ${dimExpr('d.carriers')} car, ${dimExpr('d.origin_countries')} org, ${dimExpr('d.destination_countries')} dst from d left join s on s.merchant_id = d.merchant_id and s.fulfillment_group_id = d.fulfillment_group_id),
+g as (select issue_date, merchant_id, t, car, org, dst, sum(v) v, count(*) n from c group by all),
+r as (select g.*, datediff('day', '${EPOCH}'::date, issue_date) dd, dense_rank() over (order by merchant_id) mi, dense_rank() over (order by car) ci, dense_rank() over (order by org) oi, dense_rank() over (order by dst) di from g)
+select array_agg(distinct merchant_id) within group (order by merchant_id) dict_m, array_agg(distinct car) within group (order by car) dict_c, array_agg(distinct org) within group (order by org) dict_o, array_agg(distinct dst) within group (order by dst) dict_d, listagg(dd || ',' || mi || ',' || t || ',' || ci || ',' || oi || ',' || di || ',' || round(v * 100)::int || ',' || n, '|') packed, count(*) nrows from r`;
+}
+function sqlOwners() {
+  return `with m as (select merchant_id, max(merchant_name) name, sum(iff(diagnostic_status = 'within_grace', current_variance_usd, 0)) pend, sum(iff(diagnostic_status = 'needs_review', current_variance_usd, 0)) rvw, count_if(diagnostic_status = 'within_grace') pend_n, count_if(diagnostic_status = 'needs_review') rvw_n, max(evidence_as_of_at) asof from ${T.DIAG} group by 1),
+pa as (select t.team_id, max(c.oms_product_analyst_full_name) pa, max(c.oms_owner_full_name) ae from ${T.TEAMS} t join ${T.HSC} c on c.company_id = t.hubspot_company_id group by 1),
+hs as (select deal_redo_id, deal_sales_engineer_full_name se, deal_owner_full_name ae from ${T.HSD} where is_closed_won_in_sales_pipeline and product_cloud = 'Shipping' and deal_redo_id is not null qualify row_number() over (partition by deal_redo_id order by iff(product_name = 'oms', 0, 1), deal_close_date desc) = 1),
+md as (select merchant_id, max_by(product_analyst, revenue_event_at) pa2, max_by(assigned_sales_engineer, revenue_event_at) se2 from ${T.ADJ} where revenue_event_at >= dateadd('day', -120, current_date) group by 1)
+select to_json(array_agg(array_construct(m.merchant_id, m.name, coalesce(pa.pa, md.pa2, ''), coalesce(md.se2, hs.se, ''), coalesce(pa.ae, hs.ae, ''), round(m.pend, 2), round(m.rvw, 2), m.pend_n, m.rvw_n))) owners, to_char(max(m.asof), 'YYYY-MM-DD HH24:MI:SS') asof from m left join pa on pa.team_id = m.merchant_id left join hs on hs.deal_redo_id = m.merchant_id left join md on md.merchant_id = m.merchant_id`;
+}
+function sqlRecDaily() {
+  return `with mr as (select date_period::date dt, sum(revenue) mr from ${T.TRBH} where product = 'OMS' and monetization_type = 'OMS Label Spread' and date_period >= '${EPOCH}' group by 1),
+lb as (select label_purchased_at::date dt, sum(current_spread_usd) cur, sum(expected_spread_usd) xp, count(*) labels from ${T.SHIP} where not is_oms_internal_team and label_purchased_at >= '${EPOCH}' group by 1),
+j as (select coalesce(mr.dt, lb.dt) dt, coalesce(mr.mr, 0) mr, coalesce(lb.cur, 0) cur, coalesce(lb.xp, 0) xp, coalesce(lb.labels, 0) labels from mr full outer join lb on lb.dt = mr.dt)
+select listagg(datediff('day', '${EPOCH}'::date, dt) || ',' || round(mr, 2) || ',' || round(cur, 2) || ',' || round(xp, 2) || ',' || labels, '|') within group (order by dt) packed from j`;
+}
+const sqlRecMonthly = (tbl) => `select to_char("Date", 'YYYY-MM') m, sum("OMS Label Spread Revenue") mr from ${tbl} where "Date" >= '${EPOCH}' group by 1 order by 1`;
+function sqlShipments(mid, from, to) {
+  return `with d as (select merchant_id, fulfillment_group_id, issue_date, diagnostic_variance_usd v, label_count from ${T.DIAG} where diagnostic_status = 'issue' and merchant_id = '${mid}' and issue_date between '${iso(from)}' and '${iso(to)}' qualify row_number() over (order by abs(diagnostic_variance_usd) desc) <= 60),
+s as (select merchant_id, fulfillment_group_id, min(tracking_code) trk, count(distinct tracking_code) trks, min(carrier) car, min(label_purchased_at) bought, sum(coalesce(expected_merchant_charge_usd, 0)) ec, sum(coalesce(net_billed_to_merchant_usd, 0)) billed, sum(coalesce(expected_carrier_cost_usd, 0)) ecc, sum(coalesce(spread_change_from_expected_usd, 0)) chg, sum(coalesce(merchant_charge_transaction_count, 0)) charges_n, sum(iff(coalesce(expected_carrier_cost_usd, 0) = 0, ${X_DELTA}, 0)) x_unq from ${T.SHIP} where merchant_id = '${mid}' and fulfillment_group_id in (select fulfillment_group_id from d) group by 1, 2)
+select d.fulfillment_group_id fg, to_char(d.issue_date, 'YYYY-MM-DD') issued, d.v, d.label_count, s.trk, s.trks, s.car, to_char(s.bought, 'YYYY-MM-DD') bought, s.ec, s.billed, s.ecc, s.chg, s.charges_n, s.x_unq, iff(s.merchant_id is null, 0, 1) joined from d left join s on s.merchant_id = d.merchant_id and s.fulfillment_group_id = d.fulfillment_group_id order by abs(d.v) desc`;
+}
+const REASON = `case when ds ilike '%address correction%' then 'Address correction' when ds ilike '%return to sender%' or ds ilike '%return-to-sender%' then 'Returned to sender' when ds ilike '%handling%' then 'Additional handling' when ds ilike '%oversize%' or ds ilike '%large package%' or ds ilike '%non-standard%' or ds ilike '%nonstandard%' then 'Oversize package' when ds ilike '%package type%' then 'Package type change' when ds ilike '%unused_label%' or ds ilike '%refunded%' then 'Refunded label was used' when ds ilike '%unmanifested%' or ds ilike '%not previously billed%' or ds ilike '%missing pld%' then 'Late or unmanifested billing' when ds ilike '%correction%' or ds ilike '%postagedelta%' or ds ilike '%weight%' or ds ilike '%dimension%' or ds ilike '%census%' then 'Weight or size correction' when ds ilike '%zone%' then 'Zone change' when ds ilike '%residential%' then 'Residential surcharge' when ds ilike '%delivery area%' or ds ilike '%remote%' or ds ilike '%extended area%' then 'Remote delivery area' when ds ilike '%brokerage%' or ds ilike '%duty%' or ds ilike '%vat%' or ds ilike '%customs%' or ds ilike '%gst%' or ds ilike '%hst%' then 'Duties and customs' when ds ilike '%pickup%' then 'Pickup fees' when ds ilike '%duplicate%' then 'Duplicate carrier charge' when ds = '' or ds ilike '%base%' or ds ilike '%freight%' or ds ilike '%transportation%' or ds ilike '%fuel%' or ds ilike '%shipment total%' or ds ilike '%postage%' then 'Base rate above quote' else 'Other carrier charges' end`;
+const sqlReasons = (where) => `with fg as (select merchant_id, fulfillment_group_id from ${T.DIAG} where diagnostic_status = 'issue' and diagnostic_variance_usd < 0${where}),
+a as (select coalesce(invoice_charge_descriptions, '') ds, revenue_usd from ${T.ADJ} where revenue_event_type = 'invoice_cost_true_up' and revenue_usd < 0 and (merchant_id, fulfillment_group_id) in (select merchant_id, fulfillment_group_id from fg))
+select ${REASON} reason, count(*) n, sum(revenue_usd) v from a group by 1 order by v limit 12`;
+
+/* ---------------- data load ---------------- */
+function setProgress(done, total) {
+  const el = $('#prog');
+  if (done == null) { el.style.width = '100%'; setTimeout(() => { el.style.transition = 'none'; el.style.width = '0'; requestAnimationFrame(() => (el.style.transition = '')); }, 400); return; }
+  el.style.width = Math.max(4, (done / total) * 100) + '%';
+  S.progressText = `Refreshing ${done} of ${total}`;
+  renderFresh();
+}
+async function loadLive() {
+  let done = 0; const total = CHUNKS + 3;
+  setProgress(0, total);
+  const tick = (x) => { setProgress(++done, total); return x; };
+  const cube = Promise.all([...Array(CHUNKS)].map((_, k) => sf(sqlCube(k)).then((r) => tick(r[0]))));
+  const owners = sf(sqlOwners()).then((r) => tick(r[0]));
+  const daily = sf(sqlRecDaily()).then((r) => tick(r[0])).catch((e) => tick({ error: msg(e) }));
+  const monthly = (async () => {
+    let last;
+    for (const tbl of T.MR) { try { return tick({ rows: await sf(sqlRecMonthly(tbl)), source: tbl }); } catch (e) { last = e; } }
+    return tick({ error: msg(last) });
+  })();
+  const [c, o, d, m] = await Promise.all([cube, owners, daily, monthly]);
+  return { v: DATA_VERSION, fetchedAt: Date.now(), cube: c, owners: o, recDaily: d, recMonthly: m };
+}
+function buildData(raw) {
+  const M = { idx: new Map(), id: [], name: [], pa: [], se: [], ae: [], pend: [], rvw: [], pendN: [], rvwN: [] };
+  const paD = dict(), seD = dict(), carD = dict(), orgD = dict(), dstD = dict();
+  const carRaw = new Map();
+  const addM = (id, name, pa, se, ae, pend, rvw, pn, rn) => {
+    let i = M.idx.get(id);
+    if (i != null) return i;
+    i = M.id.length; M.idx.set(id, i); M.id.push(id); M.name.push(name || id);
+    M.pa.push(paD.get(String(pa || '').trim() || 'Unassigned')); M.se.push(seD.get(String(se || '').trim() || 'Unassigned'));
+    M.ae.push(String(ae || '').trim()); M.pend.push(+pend || 0); M.rvw.push(+rvw || 0); M.pendN.push(+pn || 0); M.rvwN.push(+rn || 0);
+    return i;
+  };
+  for (const r of parseMaybe(raw.owners?.owners) || []) addM(r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7], r[8]);
+  const day = [], m = [], t = [], c = [], o = [], d = [], v = [], n = [];
+  let minDay = Infinity, maxDay = -Infinity;
+  for (const ch of raw.cube || []) {
+    if (!ch || !ch.packed) continue;
+    const mm = (parseMaybe(ch.dict_m) || []).map((id) => addM(id));
+    const cc = (parseMaybe(ch.dict_c) || []).map((x) => { const nm = CARRIERS[x] || x; const i = carD.get(nm); if (!carRaw.has(i)) carRaw.set(i, new Set()); carRaw.get(i).add(x); return i; });
+    const oo = (parseMaybe(ch.dict_o) || []).map((x) => orgD.get(x));
+    const ds = (parseMaybe(ch.dict_d) || []).map((x) => dstD.get(x));
+    for (const rec of String(ch.packed).split('|')) {
+      const p = rec.split(',');
+      if (p.length < 8) continue;
+      const dy = +p[0];
+      let ty = +p[2]; if (ty === 8) ty = 4;
+      day.push(dy); m.push(mm[p[1] - 1]); t.push(ty); c.push(cc[p[3] - 1]); o.push(oo[p[4] - 1]); d.push(ds[p[5] - 1]); v.push(p[6] / 100); n.push(+p[7]);
+      if (dy < minDay) minDay = dy;
+      if (dy > maxDay) maxDay = dy;
+    }
+  }
+  const rec = { daily: new Map(), monthly: null, dailyError: raw.recDaily?.error, monthlyError: raw.recMonthly?.error, source: raw.recMonthly?.source };
+  if (raw.recDaily?.packed) for (const r of String(raw.recDaily.packed).split('|')) { const [dd, mr, cur, xp, labels] = r.split(',').map(Number); rec.daily.set(dd, { mr, cur, xp, labels }); }
+  if (raw.recMonthly?.rows) rec.monthly = new Map(raw.recMonthly.rows.map((r) => [r.m, +r.mr || 0]));
+  return {
+    n: day.length, day: Int32Array.from(day), m: Int32Array.from(m), t: Int8Array.from(t), c: Int32Array.from(c), o: Int32Array.from(o), d: Int32Array.from(d), v: Float64Array.from(v), cnt: Int32Array.from(n),
+    M, pa: paD.names, se: seD.names, carriers: carD.names, carRaw, origins: orgD.names, dests: dstD.names,
+    minDay: isFinite(minDay) ? minDay : 0, maxDay: isFinite(maxDay) ? maxDay : todayIdx(), asof: raw.owners?.asof, fetchedAt: raw.fetchedAt, rec,
+  };
+}
+function setRaw(raw, source) {
+  S.raw = raw; S.source = source; S.data = buildData(raw); S.error = null;
+  for (const k of Object.keys(PKC)) delete PKC[k];
+  render();
+  if (S.drawer) renderDrawer();
+}
+function readLocal() { try { const r = JSON.parse(localStorage.getItem(LS_KEY) || 'null'); return r?.v === DATA_VERSION ? r : null; } catch { return null; } }
+async function readRemote() { try { const r = await fileJson(CACHE_PATH); return r?.v === DATA_VERSION ? r : null; } catch { return null; } }
+async function saveCaches(raw) {
+  const body = JSON.stringify(raw);
+  try { localStorage.setItem(LS_KEY, body); } catch {}
+  try { await fileUpload(CACHE_PATH, body); } catch (e) { console.warn('cache upload failed', e); }
+}
+async function refresh() {
+  if (S.loading || !fridge) return;
+  S.loading = true; renderFresh();
+  try {
+    const raw = await loadLive();
+    setRaw(raw, 'live');
+    saveCaches(raw);
+    saveSnapshot();
+  } catch (e) {
+    S.error = msg(e); console.error(e);
+    if (!S.data) renderView(); else toast('Refresh failed: ' + S.error);
+  } finally {
+    S.loading = false; S.progressText = null; setProgress(null); renderFresh();
+  }
+}
+async function loadSide() {
+  try { const docs = await colList('actions'); S.actions = new Map(docs.filter((x) => x.key).map((x) => [x.key, x.value])); } catch (e) { console.warn('actions', e); }
+  try { S.snapshots = (await colList('snapshots')).map((x) => x.value).filter((x) => x && x.date).sort((a, b) => (a.date < b.date ? -1 : 1)); } catch (e) { console.warn('snapshots', e); }
+  if (S.data && (S.tab === 'progress' || S.tab === 'owners')) renderView();
+}
+async function saveSnapshot() {
+  const D = S.data; if (!D) return;
+  const all = agg({ by: 'type', noFilters: true, allTime: true });
+  const byType = {};
+  for (const [k, g] of all.groups) byType[k] = Math.round((g.u + g.o) * 100) / 100;
+  const snap = {
+    date: denverToday(), asof: D.asof || null, u: round2(all.tot.u), o: round2(all.tot.o), un: all.tot.un, on: all.tot.on,
+    mu: all.tot.mu.size, mo: all.tot.mo.size, pend: round2(D.M.pend.reduce((a, b) => a + b, 0)), rvw: round2(D.M.rvw.reduce((a, b) => a + b, 0)),
+    byType, savedAt: new Date().toISOString(), savedBy: me?.email || me?.name || null,
+  };
+  try {
+    await colSet('snapshots', snap.date, snap);
+    S.snapshots = S.snapshots.filter((s) => s.date !== snap.date).concat(snap).sort((a, b) => (a.date < b.date ? -1 : 1));
+    if (S.tab === 'progress') renderView();
+  } catch (e) { console.warn('snapshot', e); }
+}
+const round2 = (x) => Math.round(x * 100) / 100;
+
+/* ---------------- aggregation ---------------- */
+function keyOf(by, i, D) {
+  switch (by) {
+    case 'type': return D.t[i];
+    case 'carrier': return D.c[i];
+    case 'merchant': return D.m[i];
+    case 'origin': return D.o[i];
+    case 'dest': return D.d[i];
+    case 'pa': return D.M.pa[D.m[i]];
+    case 'se': return D.M.se[D.m[i]];
+    case 'age': { const a = todayIdx() - D.day[i]; return a <= 30 ? 0 : a <= 90 ? 1 : a <= 182 ? 2 : a <= 365 ? 3 : 4; }
+    default: return 0;
+  }
+}
+function agg({ grain = null, by = null, excl = null, noFilters = false, allTime = false, only = null, range = null } = {}) {
+  const D = S.data, f = S.f;
+  const [from, to] = allTime ? [-1e9, 1e9] : range || rangeDays();
+  const use = (k) => (!noFilters && k !== excl && f[k].size ? f[k] : null);
+  const fc = use('carrier'), fm = use('merchant'), fo = use('origin'), fd = use('dest'), ft = use('type'), fpa = use('pa'), fse = use('se');
+  const tot = { u: 0, o: 0, un: 0, on: 0, mu: new Set(), mo: new Set() };
+  const series = grain ? new Map() : null, groups = by ? new Map() : null;
+  for (let i = 0; i < D.n; i++) {
+    const day = D.day[i];
+    if (day < from || day > to) continue;
+    const m = D.m[i];
+    if (only != null && m !== only) continue;
+    if (fc && !fc.has(D.c[i])) continue;
+    if (fm && !fm.has(m)) continue;
+    if (fo && !fo.has(D.o[i])) continue;
+    if (fd && !fd.has(D.d[i])) continue;
+    if (ft && !ft.has(D.t[i])) continue;
+    if (fpa && !fpa.has(D.M.pa[m])) continue;
+    if (fse && !fse.has(D.M.se[m])) continue;
+    const v = D.v[i], n = D.cnt[i], neg = v < 0;
+    if (neg) { tot.u += v; tot.un += n; tot.mu.add(m); } else { tot.o += v; tot.on += n; tot.mo.add(m); }
+    if (series) {
+      const k = pk(day, grain);
+      let s = series.get(k);
+      if (!s) series.set(k, (s = { u: 0, o: 0, un: 0, on: 0 }));
+      if (neg) { s.u += v; s.un += n; } else { s.o += v; s.on += n; }
+    }
+    if (groups) {
+      const k = keyOf(by, i, D);
+      let g = groups.get(k);
+      if (!g) groups.set(k, (g = { u: 0, o: 0, un: 0, on: 0, ms: new Set() }));
+      if (neg) { g.u += v; g.un += n; } else { g.o += v; g.on += n; }
+      g.ms.add(m);
+    }
+  }
+  return { tot, series, groups };
+}
+function dimName(dim, k) {
+  const D = S.data;
+  switch (dim) {
+    case 'type': return TYPE_BY[k]?.name || 'Other';
+    case 'carrier': return D.carriers[k];
+    case 'merchant': return D.M.name[k];
+    case 'origin': return country(D.origins[k]);
+    case 'dest': return country(D.dests[k]);
+    case 'pa': return D.pa[k];
+    case 'se': return D.se[k];
+    case 'age': return AGES[k];
+  }
+  return String(k);
+}
+function anyFilter() { return Object.values(S.f).some((s) => s.size); }
+function merchantScope() {
+  const D = S.data, f = S.f;
+  if (!f.merchant.size && !f.pa.size && !f.se.size) return null;
+  const out = [];
+  for (let m = 0; m < D.M.id.length; m++) {
+    if (f.merchant.size && !f.merchant.has(m)) continue;
+    if (f.pa.size && !f.pa.has(D.M.pa[m])) continue;
+    if (f.se.size && !f.se.has(D.M.se[m])) continue;
+    out.push(m);
+  }
+  return out;
+}
+const curU = (m) => agg({ only: m, noFilters: true, allTime: true }).tot.u;
+
+/* ---------------- charts ---------------- */
+const SLOTS = new Map();
+let TIPS = {}, DRILL = {}, seq = 0;
+const slot = (id, h, build) => { SLOTS.set(id, build); return `<div class="slot" data-slot="${id}" style="height:${h}px"></div>`; };
+function drawSlots(root = document) {
+  root.querySelectorAll('[data-slot]').forEach((el) => {
+    const b = SLOTS.get(el.dataset.slot);
+    if (b) el.innerHTML = b(Math.max(240, el.clientWidth), el.clientHeight);
+  });
+}
+function niceTicks(lo, hi, count = 4) {
+  if (hi - lo < 1e-9) hi = lo + 1;
+  const raw = (hi - lo) / count, mag = 10 ** Math.floor(Math.log10(raw)), e = raw / mag;
+  const step = (e >= 7.5 ? 10 : e >= 3.5 ? 5 : e >= 1.5 ? 2 : 1) * mag;
+  const out = [];
+  for (let v = Math.floor(lo / step) * step; v <= hi + step * 0.5; v += step) out.push(Math.abs(v) < step / 1e6 ? 0 : Math.round(v / step) * step);
+  return out;
+}
+function barPath(x, y0, y1, w, r) {
+  const hgt = Math.abs(y1 - y0);
+  if (hgt < 0.5) return '';
+  r = Math.min(r, w / 2, hgt);
+  return y1 < y0
+    ? `M${x},${y0}V${y1 + r}Q${x},${y1} ${x + r},${y1}H${x + w - r}Q${x + w},${y1} ${x + w},${y1 + r}V${y0}Z`
+    : `M${x},${y0}V${y1 - r}Q${x},${y1} ${x + r},${y1}H${x + w - r}Q${x + w},${y1} ${x + w},${y1 - r}V${y0}Z`;
+}
+const shortDate = (s) => { const [y, m, d] = String(s).split('-').map(Number); return m ? MONTHS[m - 1] + ' ' + d : String(s); };
+const tipRow = (dot, name, val) => `<div class="r"><span>${dot ? `<i class="dot ${dot}"></i>` : ''}${esc(name)}</span><b>${val}</b></div>`;
+/* Diverging columns: positive values rise in --over, negative fall in --under. pts: [{label, long, u, o, tip}] */
+function colChart(pts, w, h, { drill = null, colors = ['var(--under)', 'var(--over)'], show = { u: true, o: true } } = {}) {
+  const ml = 56, mr = 8, mt = 8, mb = 24, iw = w - ml - mr, ih = h - mt - mb;
+  let hi = 0, lo = 0;
+  for (const p of pts) { if (show.o) hi = Math.max(hi, p.o); if (show.u) lo = Math.min(lo, p.u); }
+  const ticks = niceTicks(lo, hi, 4), y0 = ticks[0], y1 = ticks[ticks.length - 1];
+  const Y = (v) => mt + ((y1 - v) / (y1 - y0 || 1)) * ih;
+  const n = Math.max(pts.length, 1), band = iw / n, bw = Math.max(1, Math.min(24, band * (band > 6 ? 0.72 : 0.9))), r = bw >= 8 ? 4 : bw >= 4 ? 2 : 0;
+  const id = 't' + ++seq;
+  TIPS[id] = pts.map((p) => p.tip);
+  if (drill) DRILL[id] = drill;
+  let g = '';
+  for (const t of ticks) g += `<line x1="${ml}" x2="${w - mr}" y1="${Y(t)}" y2="${Y(t)}" class="${t === 0 ? 'zero' : 'grid'}"/><text x="${ml - 8}" y="${Y(t) + 4}" text-anchor="end">${axisMoney(t)}</text>`;
+  pts.forEach((p, i) => {
+    const x = ml + i * band + (band - bw) / 2;
+    if (show.o && p.o > 0) g += `<path d="${barPath(x, Y(0), Y(p.o), bw, r)}" fill="${colors[1]}"/>`;
+    if (show.u && p.u < 0) g += `<path d="${barPath(x, Y(0), Y(p.u), bw, r)}" fill="${colors[0]}"/>`;
+  });
+  pts.forEach((p, i) => { g += `<rect class="hit${drill ? '' : ' nohit'}" x="${ml + i * band}" y="${mt}" width="${band}" height="${ih}" data-tip="${id}:${i}"${drill ? ` data-drill="${id}:${i}"` : ''}/>`; });
+  const every = Math.max(1, Math.ceil(n / Math.max(1, Math.floor(iw / 64))));
+  pts.forEach((p, i) => { if (i % every === 0) g += `<text x="${ml + i * band + band / 2}" y="${h - 6}" text-anchor="middle">${esc(p.label)}</text>`; });
+  return `<svg class="chart" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">${g}</svg>`;
+}
+/* Grouped columns (two series, one axis) or lines when too many points. series: [{name, color, ys}] */
+function compareChart(labels, series, w, h, tips, lines = false) {
+  const ml = 56, mr = 8, mt = 8, mb = 24, iw = w - ml - mr, ih = h - mt - mb, n = Math.max(labels.length, 1);
+  let hi = 0, lo = 0;
+  for (const s of series) for (const y of s.ys) { hi = Math.max(hi, y); lo = Math.min(lo, y); }
+  const ticks = niceTicks(lo, hi, 4), y0 = ticks[0], y1 = ticks[ticks.length - 1];
+  const Y = (v) => mt + ((y1 - v) / (y1 - y0 || 1)) * ih;
+  const band = iw / n, id = 't' + ++seq;
+  TIPS[id] = tips;
+  let g = '';
+  for (const t of ticks) g += `<line x1="${ml}" x2="${w - mr}" y1="${Y(t)}" y2="${Y(t)}" class="${t === 0 ? 'zero' : 'grid'}"/><text x="${ml - 8}" y="${Y(t) + 4}" text-anchor="end">${axisMoney(t)}</text>`;
+  if (n <= 48 && !lines) {
+    const bw = Math.max(2, Math.min(24, (band * 0.8 - 2) / series.length));
+    labels.forEach((_, i) => series.forEach((s, j) => {
+      const x = ml + i * band + (band - (bw * series.length + 2 * (series.length - 1))) / 2 + j * (bw + 2);
+      g += `<path d="${barPath(x, Y(0), Y(s.ys[i]), bw, bw >= 8 ? 4 : 1)}" fill="${s.color}"/>`;
+    }));
+  } else {
+    for (const s of series) {
+      g += `<path d="${s.ys.map((y, i) => (i ? 'L' : 'M') + (ml + i * band + band / 2).toFixed(1) + ',' + Y(y).toFixed(1)).join('')}" fill="none" stroke="${s.color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+      if (n <= 60) s.ys.forEach((y, i) => { g += `<circle cx="${(ml + i * band + band / 2).toFixed(1)}" cy="${Y(y).toFixed(1)}" r="4" fill="${s.color}" stroke="var(--surface)" stroke-width="2"/>`; });
+    }
+  }
+  labels.forEach((_, i) => { g += `<rect class="hit nohit" x="${ml + i * band}" y="${mt}" width="${band}" height="${ih}" data-tip="${id}:${i}"/>`; });
+  const every = Math.max(1, Math.ceil(n / Math.max(1, Math.floor(iw / 64))));
+  labels.forEach((l, i) => { if (i % every === 0) g += `<text x="${ml + i * band + band / 2}" y="${h - 6}" text-anchor="middle">${esc(l)}</text>`; });
+  return `<svg class="chart" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">${g}</svg>`;
+}
+/* Diverging horizontal rows. items: [{key, name, sub, u, o, right, act}] */
+function drows(items, { act, sel = null, oneSided = false, head = true, selected = null } = {}) {
+  if (!items.length) return '<div class="empty">Nothing matches these filters.</div>';
+  const mx = Math.max(1e-9, ...items.map((x) => Math.max(Math.abs(x.u), x.o)));
+  const w = (v) => ((Math.abs(v) / mx) * (oneSided ? 64 : 56)).toFixed(2) + '%';
+  let h = head ? `<div class="hd"><span></span><span class="mid">${oneSided ? '<span style="text-align:left;padding-left:8px">Amount</span>' : `<span>${S.show.u ? 'Under-billed' : ''}</span><span>${S.show.o ? 'Over-billed' : ''}</span>`}</span><span style="text-align:right">${esc(items[0].rightLabel || 'Shipments')}</span></div>` : '';
+  for (const x of items) {
+    const u = S.show.u || oneSided ? x.u : 0, o = S.show.o && !oneSided ? x.o : 0;
+    const bar = oneSided
+      ? `<div class="dbar one"><div class="l"><i style="width:${w(u)}"></i><span>${money(u)}</span></div></div>`
+      : `<div class="dbar"><div class="l">${u < 0 ? `<i style="width:${w(u)}"></i><span>${money(u)}</span>` : ''}</div><div class="r">${o > 0 ? `<i style="width:${w(o)}"></i><span>${money(o)}</span>` : ''}</div></div>`;
+    const cls = ['drow', sel != null && sel === x.key ? 'sel' : '', selected && selected.has(x.key) ? 'on' : ''].join(' ');
+    h += `<div class="${cls}" ${act ? `data-act="${act}" data-key="${x.key}"` : ''}><div class="nm"><span title="${esc(x.name)}">${esc(x.name)}</span>${x.sub ? `<small title="${esc(x.sub)}">${esc(x.sub)}</small>` : ''}</div>${bar}<div class="cnt">${x.right ?? ''}</div></div>`;
+  }
+  return `<div class="drows${oneSided ? ' one' : ''}">${h}</div>`;
+}
+function legendUO(toggle = true) {
+  const b = (k, cls, name) => toggle ? `<button data-legend="${k}" class="${S.show[k] ? '' : 'off'}"><i class="dot ${cls}"></i>${name}</button>` : `<span><i class="dot ${cls}"></i>${name}</span>`;
+  return `<div class="legend">${b('u', 'u', 'Under-billed')}${b('o', 'o', 'Over-billed')}</div>`;
+}
+function issueTip(title, s) {
+  return `<div class="tt">${esc(title)}</div>${tipRow('u', 'Under-billed', money(s.u) + ` · ${cnt(s.un)}`)}${tipRow('o', 'Over-billed', money(s.o) + ` · ${cnt(s.on)}`)}${tipRow('', 'Net', money(s.u + s.o, true))}`;
+}
+
+/* ---------------- rendering ---------------- */
+function render() { renderTabs(); renderBar(); renderView(); renderFresh(); }
+function renderTabs() { document.querySelectorAll('[data-tab]').forEach((b) => b.classList.toggle('on', b.dataset.tab === S.tab)); }
+function renderFresh() {
+  const el = $('#fresh'), btn = $('#refresh');
+  btn.classList.toggle('spin', S.loading);
+  const D = S.data;
+  const parts = [];
+  if (D?.asof) parts.push(`<span class="long">Billing data as of </span><b>${esc(fmtAsOf(D.asof))}</b>`);
+  if (S.loading) parts.push(esc(S.progressText || 'Refreshing…'));
+  else if (D) parts.push(`loaded ${ago(D.fetchedAt)}`);
+  else if (!fridge) parts.push('Connecting…');
+  el.innerHTML = parts.join(' · ') || 'Loading…';
+}
+function renderBar() {
+  const r = S.range;
+  const presets = [['30d', '30D'], ['90d', '90D'], ['ytd', 'YTD'], ['12m', '12M'], ['all', 'All']];
+  const grains = [['day', 'Day'], ['month', 'Month'], ['quarter', 'Quarter'], ['year', 'Year']];
+  let h = `<div class="seg">${presets.map(([k, l]) => `<button data-preset="${k}" class="${r.from == null && r.preset === k ? 'on' : ''}">${l}</button>`).join('')}</div>`;
+  h += `<div class="seg">${grains.map(([k, l]) => `<button data-grain="${k}" class="${S.grain === k ? 'on' : ''}">${l}</button>`).join('')}</div>`;
+  if (S.tab === 'recon') h += `<span class="vsep"></span><span class="note">Company totals. Filters don't apply here.</span>`;
+  else if (S.data) {
+    h += '<span class="vsep"></span>' + DIMS.map((dm) => { const n = S.f[dm.key].size; return `<button class="dd${n ? ' on' : ''}" data-dd="${dm.key}">${dm.label}${n ? `<b>${n}</b>` : ''}<span class="car">▼</span></button>`; }).join('');
+  }
+  const chips = [];
+  if (r.from != null) chips.push(`<span class="chip"><em>Period</em>${esc(rangeLabel())}<button data-rm="range" aria-label="Clear period">✕</button></span>`);
+  if (S.data && S.tab !== 'recon') for (const dm of DIMS) for (const k of S.f[dm.key]) chips.push(`<span class="chip"><em>${dm.label}</em>${esc(dimName(dm.key, k))}<button data-rm="${dm.key}:${k}" aria-label="Remove">✕</button></span>`);
+  if (chips.length > 1) chips.push('<button class="linkbtn" data-clear>Clear all</button>');
+  h += `<div class="chips">${chips.join('')}</div>`;
+  $('#bar').innerHTML = h;
+}
+function renderView() {
+  for (const k of [...SLOTS.keys()]) if (k[0] === 'v') SLOTS.delete(k);
+  const v = $('#view');
+  if (!S.data) {
+    v.innerHTML = S.error
+      ? `<div class="hero-msg"><h1>Couldn't load the data</h1><p>${esc(S.error)}</p><button class="btn" data-retry>Try again</button></div>`
+      : `<div class="grid kpis">${'<div class="skel"></div>'.repeat(4)}</div><div class="skel mt" style="height:320px"></div><div class="grid two mt"><div class="skel" style="height:360px"></div><div class="skel" style="height:360px"></div></div>`;
+    return;
+  }
+  v.innerHTML = ({ issues: viewIssues, owners: viewOwners, recon: viewRecon, progress: viewProgress })[S.tab]();
+  drawSlots(v);
+  if (S.tab === 'issues') loadReasons();
+}
+
+/* ----- Issues ----- */
+function kpi(label, dot, val, meta) { return `<div class="card kpi"><div class="lbl">${dot ? `<i class="dot ${dot}"></i>` : ''}${label}</div><div class="val">${val}</div><div class="meta">${meta}</div></div>`; }
+function waitingFor(ms) {
+  const M = S.data.M; let p = 0, r = 0, pn = 0, rn = 0;
+  const list = ms ?? M.id.map((_, i) => i);
+  for (const m of list) { p += M.pend[m]; r += M.rvw[m]; pn += M.pendN[m]; rn += M.rvwN[m]; }
+  return { p, r, pn, rn };
+}
+function viewIssues() {
+  const D = S.data, [from, to] = rangeDays(), g = S.grain;
+  const a = agg({ grain: g }), t = a.tot, b = agg({ by: S.bdim, excl: S.bdim });
+  const w = waitingFor(merchantScope());
+  let h = `<div class="grid kpis">
+    ${kpi('Under-billed', 'u', money(t.u), `${cnt(t.un)} shipments · ${cnt(t.mu.size)} merchants`)}
+    ${kpi('Over-billed', 'o', money(t.o), `${cnt(t.on)} shipments · ${cnt(t.mo.size)} merchants`)}
+    ${kpi('Net vs expected', '', money(t.u + t.o, true), 'Over-billed minus under-billed')}
+    ${kpi('Not yet counted', 'g', money(w.p + w.r), `${money(w.p)} still in billing window · ${money(w.r)} needs data review`)}
+  </div>`;
+  const ks = periods(from, to, g);
+  const pts = ks.map((k) => { const s = a.series.get(k) || { u: 0, o: 0, un: 0, on: 0 }; return { label: pLabel(k, g), u: s.u, o: s.o, tip: issueTip(pLabel(k, g, true), s) }; });
+  h += `<div class="card mt"><div class="card-h"><div><h2>Issues by ${g}</h2><div class="sub">Dated to when each issue last changed. ${g === 'day' ? 'Click a bar to focus on that day.' : 'Click a bar to zoom in.'}</div></div>${legendUO()}</div>
+    ${slot('v-main', 280, (w, hh) => colChart(pts, w, hh, { drill: ks.map((k) => ({ k, g })), show: S.show }))}</div>`;
+  const BD = [['type', 'Issue type'], ['carrier', 'Carrier'], ['merchant', 'Merchant'], ['origin', 'Origin'], ['dest', 'Destination'], ['pa', 'PA'], ['se', 'SE']];
+  const items = breakdownItems(S.bdim, b.groups);
+  const shown = S.bAll ? items : items.slice(0, 10);
+  h += `<div class="grid two mt"><div class="card"><div class="card-h"><div><h2>Where it's happening</h2><div class="sub">${S.bdim === 'merchant' ? 'Click a merchant for the detail and fix list.' : 'Click a row to filter everything to it.'}</div></div>
+    <div class="tabs2">${BD.map(([k, l]) => `<button data-bdim="${k}" class="${S.bdim === k ? 'on' : ''}">${l}</button>`).join('')}</div></div>
+    ${drows(shown, { act: S.bdim === 'merchant' ? 'merchant' : 'filter:' + S.bdim, selected: S.f[S.bdim] })}
+    ${items.length > 10 ? `<button class="more" data-ball>${S.bAll ? 'Show top 10' : `Show all ${items.length}`}</button>` : ''}</div>
+    <div class="card"><h2>What carriers added</h2><div class="sub">Carrier charges behind under-billed shipments</div><div id="reasons" class="mt"><div class="loading">Loading carrier detail…</div></div></div></div>`;
+  return h;
+}
+function sortItems(items) {
+  const key = S.show.u && S.show.o ? (x) => Math.abs(x.u) + x.o : S.show.u ? (x) => Math.abs(x.u) : (x) => x.o;
+  return items.sort((a, b) => key(b) - key(a));
+}
+function breakdownItems(dim, groups) {
+  const D = S.data;
+  const items = [...groups].map(([k, gr]) => {
+    const it = { key: k, name: dimName(dim, k), u: gr.u, o: gr.o, right: cnt(gr.un + gr.on) };
+    if (dim === 'type') it.sub = TYPE_BY[k]?.why;
+    if (dim === 'merchant') it.sub = [D.pa[D.M.pa[k]], D.se[D.M.se[k]]].filter((x) => x && x !== 'Unassigned').join(' · ') || 'No PA or SE';
+    if (dim === 'pa' || dim === 'se') { it.sub = `${cnt(gr.ms.size)} merchants`; }
+    if (dim === 'carrier' || dim === 'origin' || dim === 'dest') it.sub = `${cnt(gr.ms.size)} merchants`;
+    return it;
+  });
+  return sortItems(items);
+}
+const REASON_CACHE = new Map();
+async function loadReasons() {
+  const el = $('#reasons'); if (!el) return;
+  const f = S.f;
+  if (f.type.size && !f.type.has(2) && !f.type.has(9)) { el.innerHTML = '<div class="empty">Pick a carrier issue type to see carrier charges.</div>'; return; }
+  if (!S.show.u) { el.innerHTML = '<div class="empty">Turn on under-billed to see carrier charges.</div>'; return; }
+  const [from, to] = rangeDays();
+  let where = ` and issue_date between '${iso(from)}' and '${iso(to)}'`;
+  const ms = merchantScope();
+  if (ms) { const ids = ms.map((m) => safeId(S.data.M.id[m])).filter(Boolean); where += ids.length ? ` and merchant_id in (${ids.map((x) => `'${x}'`).join(', ')})` : ' and 1 = 0'; }
+  if (f.carrier.size) { const lits = [...f.carrier].flatMap((k) => [...(S.data.carRaw.get(k) || [])]).map(safeLit).filter(Boolean); if (lits.length) where += ` and ${dimExpr('carriers')} in (${lits.join(', ')})`; }
+  if (f.origin.size) { const lits = [...f.origin].map((k) => safeLit(S.data.origins[k])).filter(Boolean); if (lits.length) where += ` and ${dimExpr('origin_countries')} in (${lits.join(', ')})`; }
+  if (f.dest.size) { const lits = [...f.dest].map((k) => safeLit(S.data.dests[k])).filter(Boolean); if (lits.length) where += ` and ${dimExpr('destination_countries')} in (${lits.join(', ')})`; }
+  const sql = sqlReasons(where);
+  const key = sql;
+  if (!REASON_CACHE.has(key)) REASON_CACHE.set(key, sf(sql));
+  try {
+    const rows = await REASON_CACHE.get(key);
+    const el2 = $('#reasons'); if (!el2 || el2 !== el) return;
+    const items = rows.map((r) => ({ key: r.reason, name: r.reason, u: +r.v, o: 0, right: cnt(+r.n) })).filter((x) => x.u < 0);
+    el.innerHTML = items.length ? drows(items.map((x) => ({ ...x, rightLabel: 'Charges' })), { oneSided: true }) + '<div class="sub mt">Gross carrier adjustments on these shipments; some were partly re-billed.</div>' : '<div class="empty">No carrier adjustments behind these issues.</div>';
+  } catch (e) {
+    REASON_CACHE.delete(key);
+    el.innerHTML = `<div class="empty">Carrier detail unavailable. ${esc(msg(e))}</div>`;
+  }
+}
+
+/* ----- Owners ----- */
+function viewOwners() {
+  const D = S.data, kind = S.ownerKind;
+  const a = agg({ by: kind });
+  const items = sortItems([...a.groups].map(([k, g]) => ({ key: k, name: dimName(kind, k), sub: `${cnt(g.ms.size)} merchants`, u: g.u, o: g.o, right: cnt(g.un + g.on) })));
+  let sel = S.ownerSel[kind];
+  if (sel == null || !a.groups.has(sel)) sel = items[0]?.key;
+  S.ownerSel[kind] = sel;
+  const bm = agg({ by: 'merchant' });
+  const rows = [...bm.groups].filter(([m]) => D.M[kind][m] === sel).map(([m, g]) => ({ m, ...g }));
+  rows.sort((x, y) => x.u - y.u || y.o - x.o);
+  const label = kind === 'pa' ? 'Product analyst' : 'Sales engineer';
+  let h = `<div class="card-h" style="margin-bottom:16px"><div class="seg"><button data-okind="pa" class="${kind === 'pa' ? 'on' : ''}">Product analysts</button><button data-okind="se" class="${kind === 'se' ? 'on' : ''}">Sales engineers</button></div>
+    <div class="note">PA from HubSpot company owner fields. SE from merchant records, then the HubSpot Shipping deal.</div></div>
+    <div class="grid own"><div class="card"><div class="card-h"><div><h2>By ${label.toLowerCase()}</h2><div class="sub">Click a name to see their merchants.</div></div>${legendUO()}</div>${drows(items, { act: 'owner', sel })}</div>
+    <div class="card"><div class="card-h"><div><h2>${esc(dimName(kind, sel) ?? '—')}</h2><div class="sub">${cnt(rows.length)} merchants with open issues. Click one to fix.</div></div></div>
+    <div class="scroll"><table class="t"><thead><tr><th>Merchant</th><th class="n">Under-billed</th><th class="n">Over-billed</th><th class="n">Shipments</th><th>Fix status</th></tr></thead><tbody>
+    ${rows.map((r) => `<tr class="click" data-act="merchant" data-key="${r.m}"><td>${esc(D.M.name[r.m])}<small>${esc(kind === 'pa' ? 'SE · ' + D.se[D.M.se[r.m]] : 'PA · ' + D.pa[D.M.pa[r.m]])}</small></td><td class="n">${r.u < 0 ? `<span class="pill u">${money(r.u)}</span>` : '—'}</td><td class="n">${r.o > 0 ? `<span class="pill o">${money(r.o)}</span>` : '—'}</td><td class="n">${cnt(r.un + r.on)}</td><td>${statusPill(D.M.id[r.m])}</td></tr>`).join('') || '<tr><td colspan="5" class="empty">No merchants.</td></tr>'}
+    </tbody></table></div></div></div>`;
+  return h;
+}
+function statusPill(id) {
+  const a = S.actions.get(id);
+  const s = a?.status || 'open';
+  return `<span class="pill ${s === 'fixed' ? 'ok' : s === 'working' ? 'k' : 'g'}">${STATUS[s]}</span>`;
+}
+
+/* ----- Reconcile ----- */
+function reconRows() {
+  const R = S.data.rec, g = S.grain, [from, to] = rangeDays();
+  const out = [];
+  for (const k of periods(from, to, g)) {
+    const a = pStart(k, g), b = pEnd(k, g);
+    let lbl = 0, trbh = 0, xp = 0, labels = 0;
+    for (let d = a; d <= b; d++) { const r = R.daily.get(d); if (r) { lbl += r.cur; trbh += r.mr; xp += r.xp; labels += r.labels; } }
+    let mr = trbh;
+    if (g !== 'day' && R.monthly) {
+      mr = 0;
+      const y0 = dayDate(a), y1 = dayDate(b);
+      for (let mk = y0.getUTCFullYear() * 12 + y0.getUTCMonth(); mk <= y1.getUTCFullYear() * 12 + y1.getUTCMonth(); mk++) mr += R.monthly.get(`${Math.floor(mk / 12)}-${String((mk % 12) + 1).padStart(2, '0')}`) || 0;
+    }
+    if (Math.abs(mr) < 0.01 && Math.abs(lbl) < 0.01) continue;
+    out.push({ k, label: pLabel(k, g), long: pLabel(k, g, true), mr, lbl, xp, labels, gap: lbl - mr, pct: mr ? (lbl - mr) / Math.abs(mr) : null });
+  }
+  return out;
+}
+function viewRecon() {
+  const R = S.data.rec;
+  if (!R.daily.size && R.dailyError) return `<div class="hero-msg"><h1>Reconciliation unavailable</h1><p>${esc(R.dailyError)}</p></div>`;
+  const rows = reconRows(), g = S.grain;
+  const sum = (f) => rows.reduce((s, r) => s + r[f], 0);
+  const mr = sum('mr'), lbl = sum('lbl'), gap = lbl - mr;
+  let h = `<div class="grid k3">
+    ${kpi('Monthly Report', 'k', money(mr), g === 'day' ? 'Label spread from the hourly revenue feed' : 'OMS label spread revenue')}
+    ${kpi('Label view', 'g', money(lbl), 'Current spread, every label, by purchase date')}
+    ${kpi('Gap', gap >= 0 ? 'o' : 'u', money(gap, true), `${pct(mr ? gap / Math.abs(mr) : null)} vs Monthly Report`)}
+  </div>`;
+  if (R.monthlyError && g !== 'day') h = `<div class="banner">Monthly Report table unavailable; showing the hourly revenue feed instead. ${esc(R.monthlyError)}</div>` + h;
+  const labels = rows.map((r) => r.label);
+  const tips = rows.map((r) => `<div class="tt">${esc(r.long)}</div>${tipRow('k', 'Monthly Report', money(r.mr))}${tipRow('g', 'Label view', money(r.lbl))}${tipRow('', 'Gap', money(r.gap, true) + ' · ' + pct(r.pct))}`);
+  h += `<div class="card mt"><div class="card-h"><div><h2>Monthly Report vs label view</h2><div class="sub">The label view moves every carrier and billing adjustment back to the day the label was bought.</div></div>
+    <div class="legend"><span><i class="dot k"></i>Monthly Report</span><span><i class="dot g"></i>Label view</span></div></div>
+    ${slot('v-rec', 260, (w, hh) => compareChart(labels, [{ name: 'Monthly Report', color: 'var(--ink)', ys: rows.map((r) => r.mr) }, { name: 'Label view', color: 'var(--muted)', ys: rows.map((r) => r.lbl) }], w, hh, tips))}
+    <h3 class="mt" style="margin-top:24px">Gap · label view minus Monthly Report</h3>
+    ${slot('v-gap', 160, (w, hh) => colChart(rows.map((r, i) => ({ label: r.label, u: Math.min(r.gap, 0), o: Math.max(r.gap, 0), tip: tips[i] })), w, hh))}</div>`;
+  h += `<div class="card mt"><div class="card-h"><div><h2>By ${g}</h2><div class="sub">Newest first. ${g === 'day' ? 'Daily uses the hourly feed behind the Monthly Report.' : ''}</div></div><button class="btn ghost" data-export="recon">Export CSV</button></div>
+    <div class="scroll"><table class="t"><thead><tr><th>Period</th><th class="n">Monthly Report</th><th class="n">Label view</th><th class="n">Gap</th><th class="n">Gap %</th><th class="n">Labels</th></tr></thead><tbody>
+    ${rows.slice().reverse().map((r) => `<tr><td>${esc(r.long)}</td><td class="n">${exact(r.mr)}</td><td class="n">${exact(r.lbl)}</td><td class="n"><span class="pill ${Math.abs(r.gap) < 1 ? 'g' : r.gap > 0 ? 'o' : 'u'}">${money(r.gap, true)}</span></td><td class="n">${pct(r.pct)}</td><td class="n">${cnt(r.labels)}</td></tr>`).join('')}
+    </tbody></table></div></div>`;
+  return h;
+}
+
+/* ----- Progress ----- */
+function viewProgress() {
+  const D = S.data, snaps = S.snapshots;
+  const now = agg({ noFilters: true, allTime: true }).tot;
+  const first = snaps[0];
+  const acts = [...S.actions.entries()].map(([id, a]) => ({ id, m: D.M.idx.get(id), ...a }));
+  const working = acts.filter((a) => a.status === 'working').length, fixed = acts.filter((a) => a.status === 'fixed').length;
+  const deltaTxt = (nowV, thenV) => {
+    if (thenV == null) return 'Tracking starts today';
+    const d = Math.abs(nowV) - Math.abs(thenV);
+    if (Math.abs(d) < 0.5) return `Flat since ${shortDate(first.date)}`;
+    return `<span class="delta" style="color:${d < 0 ? 'var(--good)' : 'var(--under-ink)'}">${d < 0 ? 'Down' : 'Up'} ${money(d)}</span> since ${shortDate(first.date)}`;
+  };
+  let h = `<div class="grid kpis">
+    ${kpi('Open under-billed', 'u', money(now.u), deltaTxt(now.u, first?.u))}
+    ${kpi('Open over-billed', 'o', money(now.o), deltaTxt(now.o, first?.o))}
+    ${kpi('Merchants in progress', 'k', cnt(working), 'Being worked by PA or SE')}
+    ${kpi('Marked fixed', '', cnt(fixed), `${cnt(acts.filter((a) => a.status === 'fixed' && a.m != null && curU(a.m) < -1).length)} still show open under-billing`)}
+  </div>`;
+  const xs = snaps.map((s) => shortDate(s.date));
+  const tips = snaps.map((s) => `<div class="tt">${esc(s.date)}</div>${tipRow('u', 'Under-billed', money(s.u))}${tipRow('o', 'Over-billed', money(s.o))}`);
+  h += `<div class="card mt"><div class="card-h"><div><h2>Open balance over time</h2><div class="sub">One reading per day, all merchants. Falling lines mean issues are getting fixed.</div></div>
+    <div class="legend"><span><i class="dot u"></i>Under-billed</span><span><i class="dot o"></i>Over-billed</span></div></div>
+    ${snaps.length >= 2 ? slot('v-trend', 240, (w, hh) => compareChart(xs, [{ name: 'Under-billed', color: 'var(--under)', ys: snaps.map((s) => Math.abs(s.u)) }, { name: 'Over-billed', color: 'var(--over)', ys: snaps.map((s) => s.o) }], w, hh, tips, true))
+      : `<div class="empty">Tracking started ${esc(shortDate(first?.date || denverToday()))}. A reading is saved each day the page loads fresh data, so the trend fills in from here.</div>`}</div>`;
+  const ag = agg({ by: 'age' });
+  const ageItems = [0, 1, 2, 3, 4].filter((k) => ag.groups.has(k)).map((k) => { const g = ag.groups.get(k); return { key: k, name: AGES[k], u: g.u, o: g.o, right: cnt(g.un + g.on) }; });
+  const rows = acts.filter((a) => a.m != null).sort((a, b) => (b.updatedAt || '').localeCompare(a.updatedAt || ''));
+  h += `<div class="grid half mt"><div class="card"><div class="card-h"><div><h2>How old open issues are</h2><div class="sub">Age since each issue last changed. Uses your filters.</div></div>${legendUO(false)}</div>${drows(ageItems, {})}</div>
+    <div class="card"><div class="card-h"><div><h2>Fix tracker</h2><div class="sub">Set status from any merchant's detail view.</div></div></div>
+    ${rows.length ? `<div class="scroll"><table class="t"><thead><tr><th>Merchant</th><th>Status</th><th class="n">Open now</th><th>Updated</th></tr></thead><tbody>
+    ${rows.map((a) => { const u = curU(a.m); return `<tr class="click" data-act="merchant" data-key="${a.m}"><td>${esc(D.M.name[a.m])}<small>${esc([a.owner, a.note].filter(Boolean).join(' · ').slice(0, 90))}</small></td><td>${statusPill(a.id)}</td><td class="n">${u < -0.01 ? `<span class="pill u">${money(u)}</span>` : '<span class="pill ok">Clear</span>'}</td><td>${esc((a.updatedAt || '').slice(0, 10))}<small>${esc(a.updatedBy || '')}</small></td></tr>`; }).join('')}
+    </tbody></table></div>` : '<div class="empty">No merchants tracked yet. Open a merchant and set a status.</div>'}</div></div>`;
+  return h;
+}
+
+/* ----- Merchant drawer ----- */
+function classify(r) {
+  const v = +r.v, md = +r.billed - +r.ec, xd = +r.chg - md, xu = +r.x_unq;
+  if (!+r.joined) return 4;
+  if (v < 0) { if (+r.charges_n === 0 && +r.ec > 0) return 1; if (xd < -0.01 && xd <= md) return xu <= xd / 2 ? 9 : 2; if (md < -0.01) return 3; return 4; }
+  if (xd > 0.01 && xd > md) return 5;
+  if (md > 0.01) return 6;
+  return 4;
+}
+function openMerchant(m) {
+  closePop();
+  S.drawer = { m, range: rangeDays(), ships: null, reasons: null, form: null };
+  renderDrawer();
+  $('#drawer').classList.add('on'); $('#drawer').setAttribute('aria-hidden', 'false'); $('#scrim').classList.add('on');
+  loadDrawerData();
+}
+function closeDrawer() { S.drawer = null; $('#drawer').classList.remove('on'); $('#drawer').setAttribute('aria-hidden', 'true'); $('#scrim').classList.remove('on'); }
+async function loadDrawerData() {
+  const dw = S.drawer; if (!dw) return;
+  const id = safeId(S.data.M.id[dw.m]);
+  const [from, to] = dw.range;
+  const p1 = id ? sf(sqlShipments(id, from, to)).then((r) => { dw.ships = r; }).catch((e) => { dw.ships = { error: msg(e) }; }) : Promise.resolve((dw.ships = []));
+  const p2 = id ? sf(sqlReasons(` and merchant_id = '${id}' and issue_date between '${iso(from)}' and '${iso(to)}'`)).then((r) => { dw.reasons = r; }).catch((e) => { dw.reasons = { error: msg(e) }; }) : Promise.resolve((dw.reasons = []));
+  p1.then(() => S.drawer === dw && renderDrawer(true));
+  p2.then(() => S.drawer === dw && renderDrawer(true));
+}
+function renderDrawer(keepScroll) {
+  const dw = S.drawer; if (!dw || !S.data) return;
+  for (const k of [...SLOTS.keys()]) if (k[0] === 'd') SLOTS.delete(k);
+  const D = S.data, m = dw.m, M = D.M, id = M.id[m];
+  const saved = $('#drawer').scrollTop;
+  const [from, to] = dw.range;
+  const a = agg({ only: m, noFilters: true, grain: 'month', by: 'type', range: dw.range });
+  const t = a.tot;
+  const act = S.actions.get(id) || {};
+  const form = dw.form || (dw.form = { status: act.status || 'open', owner: act.owner || D.pa[M.pa[m]] || '', note: act.note || '' });
+  const owners = [['PA', D.pa[M.pa[m]]], ['SE', D.se[M.se[m]]], ['AE', M.ae[m] || 'Unassigned']].map(([k, v]) => `<span><em>${k}</em>${esc(v)}</span>`).join('');
+  const ks = periods(from, to, 'month');
+  const pts = ks.map((k) => { const s = a.series.get(k) || { u: 0, o: 0, un: 0, on: 0 }; return { label: pLabel(k, 'month'), u: s.u, o: s.o, tip: issueTip(pLabel(k, 'month', true), s) }; });
+  const mix = sortItems([...a.groups].map(([k, g]) => ({ key: k, name: TYPE_BY[k]?.name || 'Other', sub: 'Fix: ' + (TYPE_BY[k]?.fix || ''), u: g.u, o: g.o, right: cnt(g.un + g.on) })));
+  let reasons = '<div class="loading">Loading carrier detail…</div>';
+  if (Array.isArray(dw.reasons)) { const it = dw.reasons.map((r) => ({ key: r.reason, name: r.reason, u: +r.v, o: 0, right: cnt(+r.n), rightLabel: 'Charges' })).filter((x) => x.u < 0); reasons = it.length ? drows(it, { oneSided: true }) : '<div class="empty">No carrier adjustments behind this merchant\'s issues.</div>'; }
+  else if (dw.reasons?.error) reasons = `<div class="empty">Unavailable. ${esc(dw.reasons.error)}</div>`;
+  let ships = '<div class="loading">Loading shipments…</div>';
+  if (Array.isArray(dw.ships)) {
+    ships = dw.ships.length ? `<div class="scroll" style="max-height:480px"><table class="t"><thead><tr><th>Tracking</th><th>Bought</th><th>Issue</th><th>Billed vs expected</th><th class="n">Gap</th></tr></thead><tbody>${dw.ships.map((r) => {
+      const ty = classify(r), md = +r.billed - +r.ec, xd = +r.chg - md, carrierCost = +r.ecc - xd;
+      return `<tr><td><code>${esc(r.trk || '—')}</code><small>${esc(CARRIERS[r.car] || r.car || '')}${+r.trks > 1 ? ` · ${+r.trks} labels` : ''}</small></td><td>${esc(r.bought || '—')}</td><td>${esc(TYPE_BY[ty]?.name || 'Other')}</td><td>Merchant ${exact(+r.billed)} <small>expected ${exact(+r.ec)}</small>Carrier ${exact(carrierCost)} <small>quoted ${exact(+r.ecc)}</small></td><td class="n"><span class="pill ${+r.v < 0 ? 'u' : 'o'}">${+r.v > 0 ? '+' : ''}${exact(+r.v)}</span></td></tr>`;
+    }).join('')}</tbody></table></div><div class="sub mt">Largest ${cnt(dw.ships.length)} by dollar gap in the selected period.</div>` : '<div class="empty">No open shipments in this period.</div>';
+  } else if (dw.ships?.error) ships = `<div class="empty">Unavailable. ${esc(dw.ships.error)}</div>`;
+  const statusBtns = Object.entries(STATUS).map(([k, l]) => `<button data-status="${k}" class="${form.status === k ? 'on' : ''}">${l}</button>`).join('');
+  $('#drawer').innerHTML = `<div class="dw-h"><div class="eyebrow">Merchant · ${esc(pLabel(from, 'day', true))} – ${esc(pLabel(to, 'day', true))}</div><h1>${esc(M.name[m])}</h1><div class="owners">${owners}</div><button class="icon-btn x" data-close aria-label="Close">✕</button></div>
+  <div class="dw-b">
+    <div class="grid k3">${kpi('Under-billed', 'u', money(t.u), `${cnt(t.un)} shipments`)}${kpi('Over-billed', 'o', money(t.o), `${cnt(t.on)} shipments`)}${kpi('Not yet counted', 'g', money(M.pend[m] + M.rvw[m]), `${cnt(M.pendN[m])} in window · ${cnt(M.rvwN[m])} in review`)}</div>
+    <div class="card"><h3>Fix status</h3><div class="fix"><div class="seg">${statusBtns}</div><input data-form="owner" placeholder="Owner" value="${esc(form.owner)}"><span></span><button class="btn" data-save>Save</button>
+      <textarea data-form="note" placeholder="What's the fix? e.g. Re-billing UPS corrections for September">${esc(form.note)}</textarea>
+      <div class="meta">${act.updatedAt ? `Last updated ${esc(act.updatedAt.slice(0, 10))} by ${esc(act.updatedBy || 'unknown')}` : 'Not tracked yet.'}</div></div></div>
+    <div class="card"><div class="card-h"><div><h2>By month</h2></div>${legendUO(false)}</div>${slot('d-trend', 180, (w, hh) => colChart(pts, w, hh, { show: S.show }))}</div>
+    <div class="card"><h2>What went wrong</h2><div class="sub" style="margin-bottom:8px">Each issue type with the fix.</div>${drows(mix, {})}</div>
+    <div class="card"><h2>What carriers added</h2><div class="sub" style="margin-bottom:8px">Carrier charges behind this merchant's under-billing.</div>${reasons}</div>
+    <div class="card"><div class="card-h"><div><h2>Shipments to fix</h2></div>${Array.isArray(dw.ships) && dw.ships.length ? '<button class="btn ghost" data-export="ships">Export CSV</button>' : ''}</div>${ships}</div>
+  </div>`;
+  drawSlots($('#drawer'));
+  if (keepScroll) $('#drawer').scrollTop = saved;
+}
+async function saveFix() {
+  const dw = S.drawer; if (!dw) return;
+  const D = S.data, id = D.M.id[dw.m];
+  const val = { ...(S.actions.get(id) || {}), status: dw.form.status, owner: dw.form.owner.trim(), note: dw.form.note.trim(), name: D.M.name[dw.m], updatedAt: new Date().toISOString(), updatedBy: me?.name || me?.email || 'Unknown', openAtUpdate: round2(curU(dw.m)) };
+  const btn = $('[data-save]'); if (btn) btn.disabled = true;
+  try { await colSet('actions', id, val); S.actions.set(id, val); toast('Saved'); renderDrawer(true); if (S.tab !== 'issues') renderView(); }
+  catch (e) { toast('Could not save: ' + msg(e)); if (btn) btn.disabled = false; }
+}
+
+/* ---------------- filter popover ---------------- */
+function openPop(dim, anchor) {
+  const pop = $('#pop');
+  S.pop = { dim, q: '' };
+  const r = anchor.getBoundingClientRect();
+  pop.style.left = Math.max(8, Math.min(r.left, innerWidth - 348)) + 'px';
+  pop.style.top = r.bottom + 8 + 'px';
+  pop.innerHTML = `<input type="search" placeholder="Search ${esc(DIM_LABEL[dim].toLowerCase())}" data-popq><div class="opts"></div><div class="pf"><button class="linkbtn" data-popclear>Clear</button><button class="linkbtn" data-popdone>Done</button></div>`;
+  pop.classList.add('on');
+  renderPopOpts();
+  $('[data-popq]', pop).focus();
+}
+function closePop() { S.pop = null; $('#pop').classList.remove('on'); }
+function renderPopOpts() {
+  if (!S.pop) return;
+  const { dim, q } = S.pop, sel = S.f[dim];
+  const a = agg({ by: dim, excl: dim });
+  let items = [...a.groups].map(([k, g]) => ({ k, name: dimName(dim, k), u: g.u, o: g.o }));
+  for (const k of sel) if (!a.groups.has(k)) items.push({ k, name: dimName(dim, k), u: 0, o: 0 });
+  if (q) items = items.filter((x) => String(x.name).toLowerCase().includes(q));
+  items.sort((x, y) => (sel.has(y.k) - sel.has(x.k)) || Math.abs(y.u) + y.o - (Math.abs(x.u) + x.o));
+  const more = items.length - 200;
+  items = items.slice(0, 200);
+  $('#pop .opts').innerHTML = items.map((x) => `<div class="opt" data-opt="${x.k}"><span class="cb${sel.has(x.k) ? ' on' : ''}"></span><span class="nm" title="${esc(x.name)}">${esc(x.name)}</span><span class="v">${x.u < 0 ? money(x.u) + ' under' : ''}${x.u < 0 && x.o > 0 ? ' · ' : ''}${x.o > 0 ? money(x.o) + ' over' : ''}</span></div>`).join('') + (more > 0 ? `<div class="opt"><span></span><span class="note">${cnt(more)} more. Search to narrow.</span></div>` : '') || '<div class="empty">No matches.</div>';
+}
+
+/* ---------------- CSV ---------------- */
+function download(name, rows) {
+  const csv = rows.map((r) => r.map((c) => { const s = String(c ?? ''); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; }).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+  a.download = name; document.body.appendChild(a); a.click(); a.remove();
+}
+
+/* ---------------- events ---------------- */
+function applyChange() { savePrefs(); renderBar(); renderView(); if (S.pop) renderPopOpts(); }
+document.addEventListener('click', (e) => {
+  const el = e.target.closest('[data-tab],[data-preset],[data-grain],[data-dd],[data-opt],[data-popclear],[data-popdone],[data-clear],[data-rm],[data-drill],[data-act],[data-legend],[data-bdim],[data-ball],[data-okind],[data-close],[data-status],[data-save],[data-export],[data-retry],#refresh,#scrim');
+  if (S.pop && !e.target.closest('#pop') && !e.target.closest('[data-dd]')) closePop();
+  if (!el) return;
+  const ds = el.dataset;
+  if (ds.tab) { S.tab = ds.tab; closePop(); savePrefs(); render(); window.scrollTo(0, 0); }
+  else if (ds.preset) { S.range = { preset: ds.preset }; applyChange(); }
+  else if (ds.grain) { S.grain = ds.grain; applyChange(); }
+  else if (ds.dd) { if (S.pop?.dim === ds.dd) closePop(); else openPop(ds.dd, el); }
+  else if (ds.opt != null && S.pop) { const k = +ds.opt, set = S.f[S.pop.dim]; set.has(k) ? set.delete(k) : set.add(k); applyChange(); }
+  else if ('popclear' in ds && S.pop) { S.f[S.pop.dim].clear(); applyChange(); }
+  else if ('popdone' in ds) closePop();
+  else if ('clear' in ds) { for (const s of Object.values(S.f)) s.clear(); if (S.range.from != null) S.range = { preset: 'all' }; applyChange(); }
+  else if (ds.rm) { if (ds.rm === 'range') S.range = { preset: 'all' }; else { const [dim, k] = ds.rm.split(':'); S.f[dim].delete(+k); } applyChange(); }
+  else if (ds.drill) {
+    const [id, i] = ds.drill.split(':'), d = DRILL[id]?.[+i]; if (!d) return;
+    S.range = { from: pStart(d.k, d.g), to: pEnd(d.k, d.g), label: pLabel(d.k, d.g, true) };
+    S.grain = FINER[d.g]; hideTip(); applyChange();
+  }
+  else if (ds.act) {
+    const key = ds.key;
+    if (ds.act === 'merchant') openMerchant(+key);
+    else if (ds.act === 'owner') { S.ownerSel[S.ownerKind] = +key; renderView(); }
+    else if (ds.act.startsWith('filter:')) { const dim = ds.act.slice(7), set = S.f[dim], k = +key; set.has(k) ? set.delete(k) : set.add(k); applyChange(); }
+  }
+  else if (ds.legend) { const k = ds.legend; S.show[k] = !S.show[k]; if (!S.show.u && !S.show.o) S.show[k === 'u' ? 'o' : 'u'] = true; renderView(); if (S.drawer) renderDrawer(true); }
+  else if (ds.bdim) { S.bdim = ds.bdim; S.bAll = false; renderView(); }
+  else if ('ball' in ds) { S.bAll = !S.bAll; renderView(); }
+  else if (ds.okind) { S.ownerKind = ds.okind; renderView(); }
+  else if ('close' in ds || el.id === 'scrim') closeDrawer();
+  else if (ds.status && S.drawer) { S.drawer.form.status = ds.status; document.querySelectorAll('[data-status]').forEach((b) => b.classList.toggle('on', b.dataset.status === ds.status)); }
+  else if ('save' in ds) saveFix();
+  else if ('retry' in ds) { S.error = null; renderView(); refresh(); }
+  else if (el.id === 'refresh') refresh();
+  else if (ds.export === 'recon') download(`label-revenue-vs-monthly-report-${S.grain}.csv`, [['period', 'monthly_report', 'label_view', 'gap', 'gap_pct', 'labels'], ...reconRows().map((r) => [r.long, r.mr.toFixed(2), r.lbl.toFixed(2), r.gap.toFixed(2), r.pct == null ? '' : (r.pct * 100).toFixed(2), r.labels])]);
+  else if (ds.export === 'ships' && S.drawer) {
+    const D = S.data, name = D.M.name[S.drawer.m];
+    download(`${name.replace(/[^A-Za-z0-9]+/g, '-').toLowerCase()}-shipments.csv`, [['fulfillment_group', 'tracking', 'carrier', 'labels', 'bought', 'issue_date', 'issue_type', 'gap', 'merchant_billed', 'merchant_expected', 'carrier_cost', 'carrier_quote'],
+      ...S.drawer.ships.map((r) => { const md = +r.billed - +r.ec, xd = +r.chg - md; return [r.fg, r.trk, r.car, r.trks, r.bought, r.issued, TYPE_BY[classify(r)]?.name, (+r.v).toFixed(2), (+r.billed).toFixed(2), (+r.ec).toFixed(2), (+r.ecc - xd).toFixed(2), (+r.ecc).toFixed(2)]; })]);
+  }
+});
+document.addEventListener('input', (e) => {
+  if (e.target.matches('[data-popq]') && S.pop) { S.pop.q = e.target.value.trim().toLowerCase(); renderPopOpts(); }
+  else if (e.target.dataset.form && S.drawer?.form) S.drawer.form[e.target.dataset.form] = e.target.value;
+});
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { if (S.pop) closePop(); else if (S.drawer) closeDrawer(); } });
+const tip = $('#tip');
+function hideTip() { tip.classList.remove('on'); }
+document.addEventListener('mousemove', (e) => {
+  const t = e.target.closest?.('[data-tip]');
+  if (!t) return hideTip();
+  const [id, i] = t.dataset.tip.split(':'), html = TIPS[id]?.[+i];
+  if (!html) return hideTip();
+  if (tip.dataset.k !== t.dataset.tip) { tip.innerHTML = html; tip.dataset.k = t.dataset.tip; }
+  tip.classList.add('on');
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  let x = e.clientX + 16, y = e.clientY - h - 12;
+  if (x + w > innerWidth - 8) x = e.clientX - w - 16;
+  if (y < 8) y = e.clientY + 16;
+  tip.style.left = x + 'px'; tip.style.top = y + 'px';
+});
+let rz;
+addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { drawSlots(); }, 150); });
+setInterval(() => { renderFresh(); if (S.data && !S.loading && Date.now() - S.data.fetchedAt > STALE_MS && document.visibilityState === 'visible') refresh(); }, 60000);
+
+/* Brand fonts: assets/fonts.css ships with git deploys and Google Fonts is linked as a second source.
+   If neither loaded Instrument Serif, pull the same fonts.css from the data store. */
+async function ensureFonts() {
+  try {
+    await document.fonts.ready;
+    await new Promise((r) => setTimeout(r, 2500));
+    if ([...document.fonts].some((f) => f.family.replace(/["']/g, '') === 'Instrument Serif' && f.status === 'loaded')) return;
+    const css = await withStore((h) => h.files.text('assets/fonts.css'));
+    if (css && css.includes('@font-face')) { const st = document.createElement('style'); st.textContent = css; document.head.appendChild(st); }
+  } catch {}
+}
+
+/* ---------------- boot ---------------- */
+(async function boot() {
+  render();
+  try { await initSdk(); }
+  catch (e) { S.error = 'This page needs the Fridge runtime. Open it from its fridge.redo.builders address. (' + msg(e) + ')'; renderView(); renderFresh(); return; }
+  loadSide();
+  ensureFonts();
+  let raw = readLocal();
+  const remote = await readRemote();
+  if (remote && (!raw || remote.fetchedAt > raw.fetchedAt)) raw = remote;
+  if (raw) setRaw(raw, 'cache');
+  if (!raw || Date.now() - raw.fetchedAt > STALE_MS) await refresh();
+})();
+</script>
+</body>
+</html>
