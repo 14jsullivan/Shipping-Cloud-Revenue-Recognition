@@ -225,6 +225,7 @@ const STALE_MS = 4 * 3600e3;
 const EPOCH = '2025-01-01';
 const EPOCH_MS = Date.UTC(2025, 0, 1);
 const CHUNKS = 4;
+const SF_TIMEOUT_MS = 60000; // Fridge rejects snowflake.query timeouts above 60s
 const T = {
   DIAG: 'KITCHEN.REVENUE.OMS_LABEL_BILLING_DIAGNOSTICS_CURRENT',
   SHIP: 'KITCHEN.REVENUE.OUTBOUND_LABELS_REVENUE_BY_SHIPMENT_CURRENT',
@@ -365,9 +366,9 @@ function normRows(res) {
 async function sf(sql, attempts = 2) {
   if (/--|\/\*|;/.test(sql)) throw new Error('SQL must be a single statement without comments');
   for (let i = 1; ; i++) {
-    try { return normRows(await fridge.snowflake.query(sql, { limit: 500, timeoutMs: 180000 })); }
+    try { return normRows(await fridge.snowflake.query(sql, { limit: 500, timeoutMs: SF_TIMEOUT_MS })); }
     catch (e) {
-      if (i >= attempts || !/time|network|fetch|50[234]|ECONN|abort|queue/i.test(msg(e))) throw e;
+      if (i >= attempts || !/timed out|network|failed to fetch|50[234]|ECONN|aborted|queued/i.test(msg(e))) throw e;
       await new Promise((r) => setTimeout(r, 1500 * i));
     }
   }

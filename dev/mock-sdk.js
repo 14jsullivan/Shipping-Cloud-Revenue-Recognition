@@ -83,8 +83,10 @@ function reasons() {
   return [['Weight or size correction', -91234, 3120], ['Base rate above quote', -64010, 22011], ['Additional handling', -38110, 1280], ['Remote delivery area', -17420, 5310], ['Address correction', -6120, 410], ['Duties and customs', -4210, 90], ['Returned to sender', -2101, 44]].map(([r, v, n]) => ({ REASON: r, V: String(v), N: String(n) }));
 }
 
-async function query(sql) {
+async function query(sql, opts = {}) {
   if (/--|\/\*|;/.test(sql)) throw new Error('Fridge rejects comments and semicolons');
+  if (opts.timeoutMs > 60000) throw new Error('{"error":[{"origin":"number","code":"too_big","maximum":60000,"inclusive":true,"path":["timeoutMs"],"message":"Invalid input"}]}');
+  if (opts.limit > 500) throw new Error('limit too big');
   await wait(250 + rnd() * 700);
   if (sql.includes('dict_m')) return { rows: cubeChunk(+sql.match(/\),\s*(\d+)\)\s*=\s*(\d+)\)/)[2]), rowCount: 1, hasMore: false };
   if (sql.includes('to_json(array_agg(array_construct')) return { rows: owners() };
