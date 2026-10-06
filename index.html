@@ -110,6 +110,57 @@ table.mx{border-collapse:separate;border-spacing:4px;width:100%;font-size:13px;m
 .t tr.sel td:first-child{box-shadow:inset 2px 0 0 var(--ink)}
 .t .nm{font-weight:600}
 .reps td{vertical-align:middle}
+.dirseg button{display:inline-flex;align-items:center;gap:6px}
+.dirseg button.on .dot{box-shadow:0 0 0 2px #fff}
+.wf-r.click{cursor:pointer;border-radius:4px}
+.wf-r.click:hover{background:var(--line2)}
+.wf-r.click .nm span{text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+.btn.sm{padding:4px 12px;font-size:12px}
+.muted{color:var(--muted)}
+.aib{display:inline-block;font:700 10px/16px var(--sans);letter-spacing:.06em;padding:0 6px;border-radius:4px;background:var(--ink);color:#fff;margin-right:8px;vertical-align:1px}
+.brief .eyebrow{font:600 11px/16px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);margin-bottom:4px}
+.bl{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.bl li{padding:8px 12px;border-left:3px solid var(--under);background:var(--bg);border-radius:0 6px 6px 0;font-size:14px;line-height:20px}
+.bl li.o{border-left-color:var(--over)}
+.tops{display:grid}
+.tc{display:grid;grid-template-columns:32px minmax(0,1fr) 180px;gap:16px;padding:16px 0;border-top:1px solid var(--line2)}
+.tc:first-child{border-top:0;padding-top:0}
+.tc .rk{width:32px;height:32px;border-radius:16px;background:var(--bg);display:grid;place-items:center;font:400 20px/1 var(--serif);color:var(--ink)}
+.tc .tt{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
+.tc .who{font:600 11px/16px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--ink2)}
+.tc .sent{font:400 22px/28px var(--serif);margin:6px 0 8px;color:var(--ink);letter-spacing:-.005em}
+.tc .sent b{font-weight:400;color:var(--under-ink)}
+.tc.o .sent b{color:var(--over-ink)}
+.tc .ai{font-size:13px;line-height:19px;color:var(--ink);margin:0 0 8px;padding:8px 12px;background:var(--bg);border-radius:6px}
+.tc .facts{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.tc .facts span{font-size:12px;line-height:16px;padding:4px 8px;border-radius:4px;background:var(--line2);color:var(--ink2)}
+.tc .facts span.muted{background:none;padding-left:0}
+.tc .tf{display:flex;flex-wrap:wrap;align-items:center;gap:12px;font-size:12px;color:var(--muted)}
+.tc .tf .grow{flex:1}
+.tc .ta{text-align:right}
+.tc .ta b{display:block;font:400 32px/40px var(--serif);white-space:nowrap}
+.tc .ta b.u{color:var(--under-ink)}
+.tc .ta b.o{color:var(--over-ink)}
+.tc .ta small{display:block;font-size:11px;color:var(--muted);margin-top:4px}
+.tbar{display:block;height:6px;border-radius:3px;background:var(--line2);margin-top:6px;overflow:hidden}
+.tbar i{display:block;height:6px;border-radius:3px;margin-left:auto}
+.tbar i.u{background:var(--under)}
+.tbar i.o{background:var(--over)}
+.mtrs{display:grid;gap:12px;margin-top:12px}
+.mtr{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) 48px;gap:16px;align-items:center}
+.mtr .ml b{display:block;font-size:13px;font-weight:600}
+.mtr .ml small{display:block;font-size:12px;color:var(--muted);line-height:16px}
+.mb{display:block;height:10px;border-radius:5px;background:var(--line2);overflow:hidden}
+.mb i{display:block;height:10px;border-radius:5px}
+.mb i.u{background:var(--under)}
+.mb i.o{background:var(--over)}
+.mp{font:400 24px/28px var(--serif);text-align:right}
+.sh{white-space:nowrap;font-variant-numeric:tabular-nums}
+.sh .arw{color:var(--muted)}
+.sh b{font-weight:600}
+.sh b.bad{color:var(--under-ink)}
+.t td.n.u{color:var(--under-ink);font-weight:600}
+.t td.n.o{color:var(--over-ink);font-weight:600}
 .step{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:14px;background:var(--ink);color:#fff;font:600 13px/1 var(--sans);margin-right:12px;vertical-align:4px}
 .hdr-r{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
 .crumbs .grow{flex:1}
@@ -267,6 +318,8 @@ table.t{width:100%;border-collapse:collapse;font-size:13px;line-height:18px}
 #scrim.on{opacity:1;pointer-events:auto}
 #drawer{position:fixed;top:0;right:0;bottom:0;width:min(800px,100vw);background:var(--bg);transform:translateX(105%);transition:transform .25s ease;z-index:41;overflow:auto;box-shadow:-8px 0 32px rgba(0,0,0,.16)}
 #drawer.on{transform:none}
+#drawer.wide{width:min(1080px,100vw)}
+.t.ln td.sk{max-width:220px;overflow-wrap:anywhere}
 .dw-h{background:var(--black);color:#fff;padding:24px 32px;position:sticky;top:0;z-index:2}
 .dw-h .eyebrow{font:600 11px/16px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .dw-h h1{font:400 32px/40px var(--serif);margin:4px 48px 8px 0}
@@ -302,7 +355,7 @@ table.t{width:100%;border-collapse:collapse;font-size:13px;line-height:18px}
 #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--black);color:#fff;padding:8px 16px;border-radius:8px;font-size:13px;opacity:0;transition:all .2s;z-index:70;pointer-events:none}
 #toast.on{opacity:1;transform:translateX(-50%)}
 @media (max-width:1100px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.two,.own,.half,.hl,.s3{grid-template-columns:minmax(0,1fr)}}
-@media (max-width:720px){.chrome{position:relative}.wrap{padding:0 16px}.brand .scope,.brand .sep{display:none}.kpis,.k3{grid-template-columns:minmax(0,1fr)}.kpi .val{font-size:36px;line-height:40px}.tabs .wrap{gap:24px}.dw-h,.dw-b{padding-left:16px;padding-right:16px}.drow,.drows .hd,.drows.one .drow,.drows.one .hd{grid-template-columns:minmax(0,40%) minmax(0,1fr);gap:8px}.drow .cnt,.drows .hd>span:last-child{display:none}#fresh{display:none}.brand .app{font-size:22px}.card{padding:16px}.t{font-size:12px}.hl h2{font-size:26px;line-height:32px}.hb{width:64px}.ins{grid-template-columns:minmax(0,1fr)}.cc-r{grid-template-columns:minmax(0,38%) minmax(0,1fr) 44px;gap:8px}.cc-r .amt,.cc-r .cnt,.cc-r.cc-h{display:none}.cc-lg{display:flex}.wf-r{grid-template-columns:minmax(0,1fr) 72px 64px;gap:8px}.wf-r .cnt{display:none}.wf-r .nm span{white-space:normal}.hdr-r{width:100%}}
+@media (max-width:720px){.chrome{position:relative}.wrap{padding:0 16px}.brand .scope,.brand .sep{display:none}.kpis,.k3{grid-template-columns:minmax(0,1fr)}.kpi .val{font-size:36px;line-height:40px}.tabs .wrap{gap:24px}.dw-h,.dw-b{padding-left:16px;padding-right:16px}.drow,.drows .hd,.drows.one .drow,.drows.one .hd{grid-template-columns:minmax(0,40%) minmax(0,1fr);gap:8px}.drow .cnt,.drows .hd>span:last-child{display:none}#fresh{display:none}.brand .app{font-size:22px}.card{padding:16px}.t{font-size:12px}.hl h2{font-size:26px;line-height:32px}.hb{width:64px}.ins{grid-template-columns:minmax(0,1fr)}.cc-r{grid-template-columns:minmax(0,38%) minmax(0,1fr) 44px;gap:8px}.cc-r .amt,.cc-r .cnt,.cc-r.cc-h{display:none}.cc-lg{display:flex}.wf-r{grid-template-columns:minmax(0,1fr) 72px 64px;gap:8px}.wf-r .cnt{display:none}.wf-r .nm span{white-space:normal}.hdr-r{width:100%}.tc{grid-template-columns:minmax(0,1fr)}.tc .rk{display:none}.tc .ta{text-align:left}.tc .tbar i{margin-left:0}.tc .sent{font-size:19px;line-height:25px}.mtr{grid-template-columns:minmax(0,1fr) 48px}.mtr .mb{display:none}}
 </style>
 </head>
 <body>
@@ -317,6 +370,7 @@ table.t{width:100%;border-collapse:collapse;font-size:13px;line-height:18px}
     <div class="fresh"><span id="fresh">Connecting…</span><button id="refresh" class="icon-btn" title="Refresh from Snowflake" aria-label="Refresh"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M13.5 8a5.5 5.5 0 1 1-1.6-3.9"/><path d="M13.5 2.5v3h-3"/></svg></button></div>
   </div><div class="prog"><i id="prog"></i></div></header>
   <nav class="tabs"><div class="wrap">
+    <button data-tab="top">Top 10</button>
     <button data-tab="issues" class="on">Issues</button>
     <button data-tab="owners">Owners</button>
     <button data-tab="recon">Reconcile</button>
@@ -351,6 +405,8 @@ const T = {
   TRBH: 'KITCHEN.REVENUE.TOTAL_REVENUE_BY_HOUR',
   MR: ['KITCHEN.FINANCE.MONTHLY_REPORT_V2', 'KITCHEN.PANTRY.INGR_MONTHLY_REPORT_V2'],
   LABELS: 'KITCHEN.PANTRY.INGR_OUTBOUND_LABELS',
+  INVOICE: 'KITCHEN.PANTRY.INGR_LABEL_INVOICE_DETAIL',
+  ITEMS: 'KITCHEN.PANTRY.INGR_STG_ORDER_FULFILLMENT_LINE_ITEMS',
   TEAMS: 'KITCHEN.REV_OPS.TEAMS',
   HSC: 'KITCHEN.REV_OPS.HUBSPOT_COMPANIES',
   HSD: 'KITCHEN.REV_OPS.HUBSPOT_DEALS',
@@ -381,7 +437,7 @@ const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 const S = {
   tab: 'issues', grain: 'month', range: { preset: 'all' }, show: { u: true, o: true },
   f: { carrier: new Set(), merchant: new Set(), origin: new Set(), dest: new Set(), type: new Set(), pa: new Set(), se: new Set() },
-  ownerKind: 'pa', ownerSel: {}, data: null, raw: null, source: null, q3: null, q4: null,
+  view: 'both', top: {}, ai: null, ownerKind: 'pa', ownerSel: {}, data: null, raw: null, source: null, q3: null, q4: null,
   dx: { dir: 'u', type: null, carrier: null, rep: null, repKind: 'pa', auto: true, mAll: false, v1: 'chart', v2: 'bars', wdim: 'merchant', wAll: false },
   loading: false, error: null, actions: new Map(), snapshots: [], drawer: null, pop: null,
 };
@@ -389,8 +445,15 @@ try {
   const p = JSON.parse(localStorage.getItem('rri:prefs') || '{}');
   if (p.tab) S.tab = p.tab; if (p.grain) S.grain = p.grain; if (p.preset) S.range = { preset: p.preset };
   for (const k of ['v1', 'v2', 'wdim']) if (p[k]) S.dx[k] = p[k];
+  if (['both', 'u', 'o'].includes(p.view)) S.view = p.view;
 } catch {}
-const savePrefs = () => { try { localStorage.setItem('rri:prefs', JSON.stringify({ tab: S.tab, grain: S.grain, preset: S.range.from == null ? S.range.preset : 'all', v1: S.dx.v1, v2: S.dx.v2, wdim: S.dx.wdim })); } catch {} };
+/* The Both / Under-billed / Over-billed switch drives which series show everywhere and, when one is picked, the direction being diagnosed. */
+function applyView() {
+  S.show = { u: S.view !== 'o', o: S.view !== 'u' };
+  if (S.view !== 'both' && S.dx.dir !== S.view) Object.assign(S.dx, { dir: S.view, type: null, rep: null, mAll: false });
+}
+applyView();
+const savePrefs = () => { try { localStorage.setItem('rri:prefs', JSON.stringify({ tab: S.tab, grain: S.grain, preset: S.range.from == null ? S.range.preset : 'all', v1: S.dx.v1, v2: S.dx.v2, wdim: S.dx.wdim, view: S.view })); } catch {} };
 
 /* ---------------- helpers ---------------- */
 const $ = (s, el = document) => el.querySelector(s);
@@ -570,19 +633,83 @@ select ${REASON} reason, count(*) n, sum(revenue_usd) v from a group by 1 order 
 
 /* Issue fulfillment groups for a scope from scopeSql(): direction, period, carrier, issue type and filters. */
 function sqlIssueFgs(sc, dir) {
-  const base = `select merchant_id, fulfillment_group_id, diagnostic_variance_usd v from ${T.DIAG} where diagnostic_status = 'issue' and diagnostic_variance_usd ${dir === 'u' ? '<' : '>'} 0${sc.where}`;
+  const base = `select merchant_id, fulfillment_group_id, issue_date, ${dimExpr('carriers')} car, diagnostic_variance_usd v from ${T.DIAG} where diagnostic_status = 'issue' and diagnostic_variance_usd ${dir === 'u' ? '<' : '>'} 0${sc.where}`;
   if (!sc.types) return `d as (${base})`;
   return `d0 as (${base}),
 s as (${SQL_S('d0')}),
-d as (select d.merchant_id, d.fulfillment_group_id, d.v from d0 d left join s on s.merchant_id = d.merchant_id and s.fulfillment_group_id = d.fulfillment_group_id where (${SQL_TYPE}) in (${sc.types.join(', ')}))`;
+d as (select d.merchant_id, d.fulfillment_group_id, d.issue_date, d.car, d.v from d0 d left join s on s.merchant_id = d.merchant_id and s.fulfillment_group_id = d.fulfillment_group_id where (${SQL_TYPE}) in (${sc.types.join(', ')}))`;
 }
+/* Every revenue event after purchase for the issues in d, and the bridge line it belongs to:
+   C| carrier rate and credits, S| carrier surcharge (grouped by REASON), M| merchant billing (with its sign). */
+const SQL_ADJ = `a as (select merchant_id, fulfillment_group_id, revenue_event_type et, coalesce(invoice_cost_event_subcategory, '') sub, coalesce(invoice_cost_reporting_category, '') cat, coalesce(invoice_charge_descriptions, '') ds, revenue_usd r from ${T.ADJ} where (merchant_id, fulfillment_group_id) in (select merchant_id, fulfillment_group_id from d) and revenue_usd <> 0)`;
+const SQL_COMP = `case when et = 'invoice_cost_true_up' then case when cat ilike 'cross-currency%' then 'C|currency' when sub = 'incremental_carrier_charge' then 'S|' || (${REASON}) else 'C|' || sub end else 'M|' || et || iff(r < 0, '-', '+') end`;
 const sqlBridge = (sc, dir) => `with ${sqlIssueFgs(sc, dir)},
-a as (select merchant_id, fulfillment_group_id, revenue_event_type et, coalesce(invoice_cost_event_subcategory, '') sub, coalesce(invoice_cost_reporting_category, '') cat, coalesce(invoice_charge_descriptions, '') ds, revenue_usd r from ${T.ADJ} where (merchant_id, fulfillment_group_id) in (select merchant_id, fulfillment_group_id from d) and revenue_usd <> 0),
-c as (select merchant_id, fulfillment_group_id, r, case when et = 'invoice_cost_true_up' then case when cat ilike 'cross-currency%' then 'C|currency' when sub = 'incremental_carrier_charge' then 'S|' || (${REASON}) else 'C|' || sub end else 'M|' || et || iff(r < 0, '-', '+') end comp from a),
+${SQL_ADJ},
+c as (select merchant_id, fulfillment_group_id, r, ${SQL_COMP} comp from a),
 t as (select merchant_id, fulfillment_group_id, sum(r) r from c group by 1, 2)
 select comp, count(distinct merchant_id || '|' || fulfillment_group_id) n, round(sum(r), 2) v from c group by 1
 union all select 'X|unexplained', count_if(abs(d.v - coalesce(t.r, 0)) >= 0.01), round(sum(d.v - coalesce(t.r, 0)), 2) from d left join t on t.merchant_id = d.merchant_id and t.fulfillment_group_id = d.fulfillment_group_id
 union all select 'T|total', count(*), round(sum(v), 2) from d`;
+/* Per-shipment facts for the fulfillment groups in src: the label as quoted (heaviest label), the carrier's billed
+   weight and box from invoice detail, and the SKUs packed (store order line items, matched on tracking number). */
+const box = (l, w, h) => `iff(${l} > 0 and ${w} > 0, round(${l}) || 'x' || round(${w}) || 'x' || round(coalesce(${h}, 0)), null)`;
+const sqlLabelFacts = (src) => `lab as (select merchant_id, fulfillment_group_id, tracking_code, quoted_weight_in_oz qw, quoted_length_in_inches ql, quoted_width_in_inches qd, quoted_height_in_inches qh from ${T.SHIP} where (merchant_id, fulfillment_group_id) in (select merchant_id, fulfillment_group_id from ${src}) qualify row_number() over (partition by merchant_id, fulfillment_group_id order by quoted_weight_in_oz desc nulls last, tracking_code) = 1),
+inv as (select tracking_code, max(billed_weight_in_pounds) * 16 bw, max(try_to_double(billed_length_in_inches::string)) bl, max(try_to_double(billed_width_in_inches::string)) bd, max(try_to_double(billed_height_in_inches::string)) bh from ${T.INVOICE} where tracking_code in (select tracking_code from lab) group by 1),
+it as (select fulfillment_tracking_number trk, coalesce(nullif(listagg(distinct nullif(sku, ''), ' + ') within group (order by nullif(sku, '')), ''), max_by(name, quantity)) sku, max_by(name, quantity) title, sum(grams * quantity) / 28.3495 iw from ${T.ITEMS} where fulfillment_tracking_number in (select tracking_code from lab) group by 1)`;
+const SQL_FACT_COLS = `lab.tracking_code trk, nullif(lab.qw, 0) qw, lab.ql, lab.qd, lab.qh, inv.bw, inv.bl, inv.bd, inv.bh, it.sku, it.title, it.iw, ${box('lab.ql', 'lab.qd', 'lab.qh')} qb, ${box('inv.bl', 'inv.bd', 'inv.bh')} bb`;
+const SQL_FACT_JOIN = (src) => `${src} join lab on lab.merchant_id = ${src}.merchant_id and lab.fulfillment_group_id = ${src}.fulfillment_group_id left join inv on inv.tracking_code = lab.tracking_code left join it on it.trk = lab.tracking_code`;
+const SQL_FACT_STATS = `'n', count(*), 'heavier', count_if(bw > qw * 1.1), 'withw', count_if(bw > 0 and qw > 0), 'bigger', count_if(bl * bd * bh > ql * qd * qh * 1.1 and ql * qd * qh > 0), 'withd', count_if(bl * bd * bh > 0 and ql * qd * qh > 0), 'itemsheavier', count_if(iw > qw * 1.1), 'withi', count_if(iw > 0 and qw > 0), 'withsku', count(sku), 'qw', round(median(qw), 1), 'bw', round(median(bw), 1), 'iw', round(median(iw), 1), 'qb', mode(qb), 'bb', mode(bb)`;
+/* Drill-down for one bridge line (comp): totals over every shipment with that line, and the patterns, SKUs and
+   shipment list from the 5,000 largest (the lookups behind them scan large tables). */
+function sqlLine(sc, dir, comp) {
+  const ord = dir === 'u' ? 'asc' : 'desc', lit = `'${String(comp).replace(/'/g, "''")}'`;
+  return `with ${sqlIssueFgs(sc, dir)},
+${SQL_ADJ},
+c as (select merchant_id, fulfillment_group_id, et, ds, r, ${SQL_COMP} comp from a),
+f as (select merchant_id, fulfillment_group_id, sum(iff(comp = ${lit}, r, 0)) lv, sum(iff(et ilike 'merchant_surcharge%', r, 0)) rb, sum(r) net from c group by 1, 2 having sum(iff(comp = ${lit}, r, 0)) <> 0),
+fx as (select * from f qualify row_number() over (order by abs(lv) desc) <= 5000),
+${sqlLabelFacts('fx')},
+x as (select fx.*, ${SQL_FACT_COLS} from ${SQL_FACT_JOIN('fx')}),
+ch as (select coalesce(nullif(ds, ''), '(no description)') ds, count(distinct merchant_id || '|' || fulfillment_group_id) n, sum(r) v from c where comp = ${lit} group by 1 qualify row_number() over (order by sum(r) ${ord}) <= 12),
+k as (select merchant_id, coalesce(sku, 'Unknown') sku, any_value(title) title, count(*) n, sum(lv) lv, sum(rb) rb, median(qw) qw, median(bw) bw, median(iw) iw, mode(qb) qb, mode(bb) bb from x group by 1, 2 qualify row_number() over (order by sum(lv) ${ord}) <= 25),
+s as (select * from x qualify row_number() over (order by lv ${ord}) <= 60)
+select (select object_construct('n', count(*), 'lv', round(sum(lv), 2), 'rb', round(sum(rb), 2), 'net', round(sum(net), 2)) from f) stats,
+(select object_construct(${SQL_FACT_STATS}) from x) facts,
+(select array_agg(object_construct('d', ds, 'n', n, 'v', round(v, 2))) within group (order by v ${ord}) from ch) charges,
+(select array_agg(object_construct('m', merchant_id, 'sku', sku, 't', title, 'n', n, 'lv', round(lv, 2), 'rb', round(rb, 2), 'qw', round(qw, 1), 'bw', round(bw, 1), 'iw', round(iw, 1), 'qb', qb, 'bb', bb)) within group (order by lv ${ord}) from k) skus,
+(select array_agg(object_construct('m', merchant_id, 'fg', fulfillment_group_id, 'trk', trk, 'sku', sku, 't', title, 'lv', round(lv, 2), 'rb', round(rb, 2), 'qw', round(qw, 1), 'bw', round(bw, 1), 'iw', round(iw, 1), 'qb', qb, 'bb', bb)) within group (order by lv ${ord}) from s) ships`;
+}
+/* Top 10: each issue is assigned to its biggest line in the direction of the variance, then grouped by
+   merchant, carrier and line. sqlTopRank ranks the groups (a few seconds); sqlTopFacts then adds the
+   shipment facts and top SKU for just those groups, from their 3,000 largest shipments each (the SKU lookup
+   scans a large table, about 10s). */
+const SQL_DOM = (ord) => `c as (select merchant_id, fulfillment_group_id, et, ds, r, ${SQL_COMP} comp from a),
+cs as (select merchant_id, fulfillment_group_id, comp, sum(r) r, max_by(ds, abs(r)) ds from c group by 1, 2, 3),
+dom as (select cs.*, sum(iff(comp ilike 'M|merchant_surcharge%', r, 0)) over (partition by merchant_id, fulfillment_group_id) rbf from cs qualify row_number() over (partition by merchant_id, fulfillment_group_id order by r ${ord}) = 1)`;
+function sqlTopRank(sc, dir, toDay) {
+  const ord = dir === 'u' ? 'asc' : 'desc', d30 = `dateadd('day', -30, '${iso(toDay)}'::date)`;
+  return `with ${sqlIssueFgs(sc, dir)},
+${SQL_ADJ},
+${SQL_DOM(ord)},
+g as (select d.merchant_id m, d.car, coalesce(dom.comp, 'X|unexplained') comp, count(*) n, sum(d.v) v, sum(coalesce(dom.r, 0)) lr, mode(nullif(dom.ds, '')) ds, min(d.issue_date) first, max(d.issue_date) last, sum(iff(d.issue_date > ${d30}, d.v, 0)) v30, count_if(d.issue_date > ${d30}) n30, sum(sum(d.v)) over () tot from d left join dom on dom.merchant_id = d.merchant_id and dom.fulfillment_group_id = d.fulfillment_group_id group by 1, 2, 3 qualify row_number() over (order by sum(d.v) ${ord}) <= 10)
+select m, car, comp, n, round(v, 2) v, round(lr, 2) lr, ds, to_char(first, 'YYYY-MM-DD') first, to_char(last, 'YYYY-MM-DD') last, round(v30, 2) v30, n30, round(tot, 2) tot from g order by v ${ord}`;
+}
+function sqlTopFacts(sc, dir, groups) {
+  const ord = dir === 'u' ? 'asc' : 'desc', q = (x) => `'${String(x).replace(/'/g, "''")}'`;
+  const ms = [...new Set(groups.map((g) => g.m))].map(safeId).filter(Boolean);
+  const sc2 = { ...sc, where: sc.where + (ms.length ? ` and merchant_id in (${ms.map(q).join(', ')})` : ' and 1 = 0') };
+  return `with ${sqlIssueFgs(sc2, dir)},
+${SQL_ADJ},
+${SQL_DOM(ord)},
+t0 as (select d.merchant_id, d.fulfillment_group_id, d.v, d.merchant_id || '|' || d.car || '|' || coalesce(dom.comp, 'X|unexplained') gk, coalesce(dom.rbf, 0) rbf from d left join dom on dom.merchant_id = d.merchant_id and dom.fulfillment_group_id = d.fulfillment_group_id where d.merchant_id || '|' || d.car || '|' || coalesce(dom.comp, 'X|unexplained') in (${groups.map((g) => q(`${g.m}|${g.car}|${g.comp}`)).join(', ')})),
+t as (select * from t0 qualify row_number() over (partition by gk order by abs(v) desc) <= 3000),
+${sqlLabelFacts('t')},
+x as (select t.gk, ${SQL_FACT_COLS} from ${SQL_FACT_JOIN('t')}),
+e as (select gk, object_construct(${SQL_FACT_STATS}) facts from x group by 1),
+sk as (select gk, sku, any_value(title) title, count(*) n from x where sku is not null group by 1, 2 qualify row_number() over (partition by gk order by count(*) desc) = 1),
+rb as (select gk, sum(rbf) rb from t0 group by 1)
+select rb.gk, e.facts, sk.sku topsku, sk.title toptitle, sk.n topn, round(rb.rb, 2) rb from rb left join e on e.gk = rb.gk left join sk on sk.gk = rb.gk`;
+}
 /* Step 4: issue dollars by label attribute next to a hash sample of every label bought in the same window
    (at least 28 days). One row per bucket, top 40 per dimension, plus the grand total. */
 function sqlWhere(sc, dir) {
@@ -709,6 +836,7 @@ async function refresh() {
 }
 async function loadSide() {
   try { const docs = await colList('actions'); S.actions = new Map(docs.filter((x) => x.key).map((x) => [x.key, x.value])); } catch (e) { console.warn('actions', e); }
+  try { const ai = await fileJson('summary/ai.json'); if (ai?.notes) { S.ai = ai; if (S.tab === 'top' && S.data) renderView(); } } catch {}
   try { S.snapshots = (await colList('snapshots')).map((x) => x.value).filter((x) => x && x.date).sort((a, b) => (a.date < b.date ? -1 : 1)); } catch (e) { console.warn('snapshots', e); }
   if (S.data && (S.tab === 'progress' || S.tab === 'owners')) renderView();
 }
@@ -915,9 +1043,8 @@ function drows(items, { act, attr = null, sel = null, oneSided = false, head = t
   }
   return `<div class="drows${oneSided ? ' one' : ''}">${h}</div>`;
 }
-function legendUO(toggle = true) {
-  const b = (k, cls, name) => toggle ? `<button data-legend="${k}" class="${S.show[k] ? '' : 'off'}"><i class="dot ${cls}"></i>${name}</button>` : `<span><i class="dot ${cls}"></i>${name}</span>`;
-  return `<div class="legend">${b('u', 'u', 'Under-billed')}${b('o', 'o', 'Over-billed')}</div>`;
+function legendUO() {
+  return `<div class="legend">${S.show.u ? '<span><i class="dot u"></i>Under-billed</span>' : ''}${S.show.o ? '<span><i class="dot o"></i>Over-billed</span>' : ''}</div>`;
 }
 function issueTip(title, s) {
   return `<div class="tt">${esc(title)}</div>${tipRow('u', 'Under-billed', money(s.u) + ` · ${cnt(s.un)}`)}${tipRow('o', 'Over-billed', money(s.o) + ` · ${cnt(s.on)}`)}${tipRow('', 'Net', money(s.u + s.o, true))}`;
@@ -941,8 +1068,9 @@ function renderBar() {
   const r = S.range;
   const presets = [['30d', '30D'], ['90d', '90D'], ['ytd', 'YTD'], ['12m', '12M'], ['all', 'All']];
   const grains = [['day', 'Day'], ['month', 'Month'], ['quarter', 'Quarter'], ['year', 'Year']];
-  let h = `<div class="seg">${presets.map(([k, l]) => `<button data-preset="${k}" class="${r.from == null && r.preset === k ? 'on' : ''}">${l}</button>`).join('')}</div>`;
-  h += `<div class="seg">${grains.map(([k, l]) => `<button data-grain="${k}" class="${S.grain === k ? 'on' : ''}">${l}</button>`).join('')}</div>`;
+  let h = S.tab === 'recon' ? '' : `<div class="seg dirseg">${[['both', 'Both'], ['u', 'Under-billed'], ['o', 'Over-billed']].map(([k, l]) => `<button data-view="${k}" class="${S.view === k ? 'on' : ''}">${k !== 'both' ? `<i class="dot ${k}"></i>` : ''}${l}</button>`).join('')}</div><span class="vsep"></span>`;
+  h += `<div class="seg">${presets.map(([k, l]) => `<button data-preset="${k}" class="${r.from == null && r.preset === k ? 'on' : ''}">${l}</button>`).join('')}</div>`;
+  if (S.tab !== 'top') h += `<div class="seg">${grains.map(([k, l]) => `<button data-grain="${k}" class="${S.grain === k ? 'on' : ''}">${l}</button>`).join('')}</div>`;
   if (S.tab === 'recon') h += `<span class="vsep"></span><span class="note">Company totals. Filters don't apply here.</span>`;
   else if (S.data) {
     h += '<span class="vsep"></span>' + DIMS.map((dm) => { const n = S.f[dm.key].size; return `<button class="dd${n ? ' on' : ''}" data-dd="${dm.key}">${dm.label}${n ? `<b>${n}</b>` : ''}<span class="car">▼</span></button>`; }).join('');
@@ -963,14 +1091,15 @@ function renderView() {
       : `<div class="grid kpis">${'<div class="skel"></div>'.repeat(4)}</div><div class="skel mt" style="height:320px"></div><div class="grid two mt"><div class="skel" style="height:360px"></div><div class="skel" style="height:360px"></div></div>`;
     return;
   }
-  v.innerHTML = ({ issues: viewIssues, owners: viewOwners, recon: viewRecon, progress: viewProgress })[S.tab]();
+  v.innerHTML = ({ top: viewTop, issues: viewIssues, owners: viewOwners, recon: viewRecon, progress: viewProgress })[S.tab]();
   drawSlots(v);
   if (S.tab === 'issues') { loadBridge(); loadWhere(); }
+  if (S.tab === 'top') loadTop();
 }
 
 /* ----- Issues ----- */
 function kpi(label, dot, val, meta, pick) {
-  const attrs = pick ? ` pick${S.dx.dir === pick ? ' on' : ''}" data-dx-dir="${pick}" title="Diagnose ${esc(label.toLowerCase())} below` : '';
+  const attrs = pick && S.view === 'both' ? ` pick${S.dx.dir === pick ? ' on' : ''}" data-dx-dir="${pick}" title="Diagnose ${esc(label.toLowerCase())} below` : '';
   return `<div class="card kpi${attrs}"><div class="lbl">${dot ? `<i class="dot ${dot}"></i>` : ''}${label}</div><div class="val">${val}</div><div class="meta">${meta}</div></div>`;
 }
 function waitingFor(ms) {
@@ -1037,7 +1166,7 @@ function hbar(v, mx, under) {
   return `<span class="hb"><i style="width:${w.toFixed(1)}%;background:var(--${under ? 'under' : 'over'})"></i></span><b>${money(v)}</b>`;
 }
 const stepH = (n, title, sub, right = '') => `<div class="card-h"><div><h2><span class="step">${n}</span>${title}</h2>${sub ? `<div class="sub">${sub}</div>` : ''}</div>${right ? `<div class="hdr-r">${right}</div>` : ''}</div>`;
-const segDir = () => `<div class="seg"><button data-dx-dir="u" class="${S.dx.dir === 'u' ? 'on' : ''}">Under-billed</button><button data-dx-dir="o" class="${S.dx.dir === 'o' ? 'on' : ''}">Over-billed</button></div>`;
+const segDir = () => S.view !== 'both' ? '' : `<div class="seg"><button data-dx-dir="u" class="${S.dx.dir === 'u' ? 'on' : ''}">Under-billed</button><button data-dx-dir="o" class="${S.dx.dir === 'o' ? 'on' : ''}">Over-billed</button></div>`;
 const seg = (attr, cur, opts) => `<div class="seg">${opts.map(([k, l]) => `<button data-${attr}="${k}" class="${cur === k ? 'on' : ''}">${l}</button>`).join('')}</div>`;
 
 /* Step 1: every issue, good and bad, by period. */
@@ -1154,8 +1283,8 @@ function step3(X) {
     <div><h3>What moved the money</h3><div id="bridge" class="minh"><div class="loading">Loading line items…</div></div></div></div></div>`;
 }
 /* Snowflake scope for the current selection: period, carrier, issue type and global filters. */
-function scopeSql() {
-  const D = S.data, f = S.f, dx = S.dx, [from, to] = rangeDays();
+function scopeSql(useDx = true) {
+  const D = S.data, f = S.f, dx = useDx ? S.dx : { carrier: null, type: null }, [from, to] = rangeDays();
   let where = ` and issue_date between '${iso(from)}' and '${iso(to)}'`, mids = null, carRaw = null, orgs = null, dsts = null;
   const ms = merchantScope();
   if (ms) {
@@ -1202,7 +1331,7 @@ function bridgeGroups(rows) {
     if (Math.abs(v) < 0.005) continue;
     const side = comp[0] in COMP_GROUP ? comp[0] : 'X', name = compName(comp), key = side + name;
     let it = by.get(key);
-    if (!it) by.set(key, (it = { side, name, v: 0, n: 0 }));
+    if (!it) by.set(key, (it = { side, name, comp, v: 0, n: 0 }));
     it.v += v; it.n += n;
   }
   const items = [...by.values()], gross = items.reduce((s, x) => s + Math.abs(x.v), 0);
@@ -1234,11 +1363,12 @@ function bridgeHtml(rows, dir) {
   for (const L of lines) {
     if (L.g) { h += `<div class="wf-r wf-g"><span>${esc(L.g.name)}</span><span></span><span class="amt">${money(L.g.v, true)}</span><span></span></div>`; continue; }
     const { it, a, b } = L, c = it.v < 0 ? 'u' : 'o';
-    h += `<div class="wf-r"><div class="nm"><span title="${esc(it.name)}">${esc(it.name)}</span></div><div class="trk">${z}<i class="${c}" style="left:${P(Math.min(a, b))}%;width:${Math.max(0.4, Math.abs(P(b) - P(a))).toFixed(2)}%"></i></div><div class="amt ${c}">${money(it.v, true)}</div><div class="cnt">${cnt(it.n)}</div></div>`;
+    const go = !it.small && it.side !== 'X' ? ` click" data-line="${esc(it.comp)}" data-lname="${esc(it.name)}" title="See the shipments behind ${esc(it.name.toLowerCase())}` : '';
+    h += `<div class="wf-r${go}"><div class="nm"><span>${esc(it.name)}</span></div><div class="trk">${z}<i class="${c}" style="left:${P(Math.min(a, b))}%;width:${Math.max(0.4, Math.abs(P(b) - P(a))).toFixed(2)}%"></i></div><div class="amt ${c}">${money(it.v, true)}</div><div class="cnt">${cnt(it.n)}</div></div>`;
   }
   h += `<div class="wf-r tot"><div class="nm"><span>Net ${dir === 'u' ? 'under-billed' : 'over-billed'}</span></div><div class="trk">${z}<i class="k" style="left:${P(Math.min(0, total))}%;width:${Math.max(0.4, Math.abs(P(total) - P(0))).toFixed(2)}%"></i></div><div class="amt">${money(total, true)}</div><div class="cnt">${cnt(totalN)}</div></div>`;
   const lede = driver ? `<p class="lede">Biggest driver: <b>${esc(driver.name.toLowerCase())}</b>, <span class="nw">${money(driver.v, true)}</span>.${offset ? ` Partly offset by ${esc(offset.name.toLowerCase())}, <span class="nw">${money(offset.v, true)}</span>.` : ''}</p>` : '';
-  return `${lede}<div class="wf">${h}</div><div class="sub mt">Each bar moves the running total. Orange lost revenue, blue added it. Shipments can appear in more than one line.</div>`;
+  return `${lede}<div class="wf">${h}</div><div class="sub mt">Each bar moves the running total. Orange lost revenue, blue added it. Click a line for its shipments, SKUs and carrier measurements.</div>`;
 }
 const QCACHE = new Map();
 function cachedSf(sql) {
@@ -1398,12 +1528,18 @@ function viewIssues() {
   const a = agg({ grain: g }), t = a.tot;
   const w = waitingFor(merchantScope());
   const X = dxCompute();
-  let h = `<div class="grid kpis">
+  const waiting = kpi('Not yet counted', 'g', money(w.p + w.r), `${money(w.p)} still in billing window · ${money(w.r)} needs data review`);
+  let h;
+  if (S.view === 'both') h = `<div class="grid kpis">
     ${kpi('Under-billed', 'u', money(t.u), `${cnt(t.un)} shipments · ${cnt(t.mu.size)} merchants`, 'u')}
     ${kpi('Over-billed', 'o', money(t.o), `${cnt(t.on)} shipments · ${cnt(t.mo.size)} merchants`, 'o')}
-    ${kpi('Net vs expected', '', money(t.u + t.o, true), 'Over-billed minus under-billed')}
-    ${kpi('Not yet counted', 'g', money(w.p + w.r), `${money(w.p)} still in billing window · ${money(w.r)} needs data review`)}
-  </div>`;
+    ${kpi('Net vs expected', '', money(t.u + t.o, true), 'Over-billed minus under-billed')}${waiting}</div>`;
+  else {
+    const u = S.view === 'u', top = [...X.rows].sort((a, b) => Math.abs(b[1].v) - Math.abs(a[1].v))[0];
+    h = `<div class="grid kpis">${kpi(u ? 'Under-billed' : 'Over-billed', S.view, money(u ? t.u : t.o), `${cnt(u ? t.un : t.on)} shipments`)}
+      ${kpi('Merchants affected', '', cnt((u ? t.mu : t.mo).size), `With ${u ? 'under' : 'over'}-billing in this period`)}
+      ${kpi('Biggest carrier', '', top ? esc(S.data.carriers[top[0]]) : '—', top ? `${money(top[1].v)} · ${X.tot.v ? Math.round((top[1].v / X.tot.v) * 100) : 0}% of the total` : '')}${waiting}</div>`;
+  }
   h += step1(a, from, to, g) + step2(X, from, to, g) + dxHeadline(X);
   if (X.rows.size) h += step3(X) + step4() + `<div class="grid half mt">${dxReps(X)}${dxMerchants(X)}</div>`;
   return h;
@@ -1411,6 +1547,205 @@ function viewIssues() {
 function sortItems(items) {
   const key = S.show.u && S.show.o ? (x) => Math.abs(x.u) + x.o : S.show.u ? (x) => Math.abs(x.u) : (x) => x.o;
   return items.sort((a, b) => key(b) - key(a));
+}
+
+/* ----- Exact carrier charge names ----- */
+const CHARGE_WORDS = [
+  [/^POSTAGEDELTA AGGREGATED$/i, 'postage correction'], [/^DUPLICATE MONTHLY$/i, 'duplicate monthly charge'], [/^UNUSED_LABEL$/i, 'charge for a refunded label'],
+  [/^Shipping Charge Correction.*/i, 'shipping charge correction'], [/^Ca Customs Hst$/i, 'Canadian HST'], [/^Customs Gst$/i, 'GST'], [/^Ca British Columbia Pst$/i, 'BC PST'],
+  [/^Pst Quebec$/i, 'Quebec PST'], [/^Missing PLD Fee$/i, 'missing package data fee'], [/^Not Previously Billed.*/i, 'late billing'],
+  [/^Characteristics modifier$/i, 'package characteristics fee'], [/^Unitemized Adjustment$/i, 'unitemized adjustment'], [/^\(no description\)$/i, 'no description'],
+];
+function prettyCharge(ds) {
+  const parts = String(ds || '').split('|').map((x) => x.trim()).filter(Boolean);
+  return [...new Set(parts.map((p) => { for (const [re, t] of CHARGE_WORDS) if (re.test(p)) return t; return p; }))].join(' + ');
+}
+const cap = (t) => String(t).replace(/^./, (x) => x.toUpperCase());
+const fmtW = (oz) => (oz == null || !(+oz > 0) ? '—' : +oz >= 16 ? +(+oz / 16).toFixed(+oz >= 160 ? 0 : 1) + ' lb' : +(+oz).toFixed(+oz < 10 ? 1 : 0) + ' oz');
+const fmtBox = (b) => { if (!b) return '—'; const p = String(b).split('x').map(Number); return p[2] > 0 ? `${p[0]}×${p[1]}×${p[2]} in` : `${p[0]}×${p[1]} in`; };
+const boxVol = (b) => { if (!b) return 0; const p = String(b).split('x').map(Number); return p[0] * p[1] * Math.max(p[2], 1); };
+const worse = (a, b) => b > 0 && a > 0 && b > a * 1.1;
+const shift = (a, b, bad) => `<span class="sh">${a} <span class="arw">→</span> <b class="${bad ? 'bad' : ''}">${b}</b></span>`;
+const pctOf = (a, b) => (b ? Math.round((a / b) * 100) : 0);
+const merchantName = (id) => { const i = S.data.M.idx.get(id); return i == null ? 'Merchant ' + String(id).slice(-6) : S.data.M.name[i]; };
+
+/* What the shipment facts say, in a few plain phrases. f: stats object from SQL_FACT_STATS. */
+function factPhrases(f, carrier) {
+  if (!f) return [];
+  const out = [];
+  if (+f.withw >= 5 && f.heavier / f.withw >= 0.4) out.push(`${pctOf(f.heavier, f.withw)}% billed heavier than the label (${fmtW(f.qw)} on the label, ${fmtW(f.bw)} billed${carrier ? ' by ' + carrier : ''})`);
+  if (+f.withd >= 5 && f.bigger / f.withd >= 0.25) out.push(`${pctOf(f.bigger, f.withd)}% measured bigger than declared (${fmtBox(f.qb)} declared, ${fmtBox(f.bb)} measured)`);
+  else if (f.qb && f.bb && f.qb !== f.bb) out.push(`Most common box ${fmtBox(f.qb)} declared, ${fmtBox(f.bb)} measured`);
+  if (+f.withi >= 5 && f.itemsheavier / f.withi >= 0.3) out.push(`${pctOf(f.itemsheavier, f.withi)}% hold items heavier than the label weight`);
+  return out;
+}
+function likelyCause(f, lv, rb) {
+  if (f && +f.withw >= 5 && f.heavier / f.withw >= 0.5) return 'Labels understate the weight. Check the product and box weights the merchant uses, and re-bill the difference.';
+  if (f && +f.withd >= 5 && f.bigger / f.withd >= 0.3) return 'The declared box is smaller than what ships. Update the box size for these SKUs and re-bill the difference.';
+  if (Math.abs(rb) < Math.abs(lv) * 0.05) return 'The carrier charge was never passed on to the merchant. Re-bill it.';
+  return '';
+}
+
+/* ----- Line drill-down: the shipments behind one bridge line or top 10 issue ----- */
+function showDrawer() { $('#drawer').classList.add('on'); $('#drawer').setAttribute('aria-hidden', 'false'); $('#scrim').classList.add('on'); }
+function openLine(spec) {
+  closePop(); hideTip();
+  const dw = (S.drawer = { kind: 'line', spec, res: null, err: null, ltab: 'sku' });
+  $('#drawer').classList.add('wide');
+  renderDrawer(); showDrawer();
+  cachedSf(sqlLine(spec.sc, spec.dir, spec.comp))
+    .then((rows) => { if (S.drawer !== dw) return; const r = rows[0] || {}; const fa = parseMaybe(r.facts) || {}; dw.res = { stats: { ...fa, fn: +fa.n || 0, ...(parseMaybe(r.stats) || {}) }, charges: parseMaybe(r.charges) || [], skus: parseMaybe(r.skus) || [], ships: parseMaybe(r.ships) || [] }; renderDrawer(true); })
+    .catch((e) => { if (S.drawer !== dw) return; dw.err = msg(e); renderDrawer(true); });
+}
+function renderLineDrawer(keepScroll) {
+  const dw = S.drawer, sp = dw.spec, under = sp.dir === 'u', c = under ? 'u' : 'o', saved = $('#drawer').scrollTop;
+  const [from, to] = [sp.sc.from, sp.sc.to];
+  const chips = [['', under ? 'Under-billed' : 'Over-billed'], ['Carrier', sp.carrier || 'All carriers'], sp.merchant ? ['Merchant', sp.merchant] : null, sp.type ? ['Issue', sp.type] : null, ['Period', `${pLabel(from, 'day', true)} – ${pLabel(to, 'day', true)}`]].filter(Boolean);
+  let body;
+  if (dw.err) body = `<div class="card"><div class="empty">Couldn't load the shipments. ${esc(dw.err)}</div></div>`;
+  else if (!dw.res) body = `<div class="card"><div class="loading">Matching shipments to carrier invoices and SKUs. This takes about 20 seconds…</div></div>`;
+  else {
+    const { stats: f, charges, skus, ships } = dw.res, lv = +f.lv || 0, rb = +f.rb || 0, net = +f.net || 0;
+    const meter = (label, a, b, sub) => (+b >= 5 ? `<div class="mtr"><div class="ml"><b>${label}</b><small>${sub}</small></div><span class="mb"><i class="${c}" style="width:${pctOf(a, b)}%"></i></span><span class="mp">${pctOf(a, b)}%</span></div>` : '');
+    const cause = likelyCause(f, lv, rb);
+    const pattern = [
+      meter('Billed heavier than the label', f.heavier, f.withw, `Median ${fmtW(f.qw)} on the label, ${fmtW(f.bw)} billed · ${cnt(f.withw)} shipments with both weights`),
+      meter('Measured bigger than declared', f.bigger, f.withd, `Most common box ${fmtBox(f.qb)} declared, ${fmtBox(f.bb)} measured · ${cnt(f.withd)} with both sizes`),
+      meter('Items heavier than the label', f.itemsheavier, f.withi, `Median item weight ${fmtW(f.iw)} from the store's product data`),
+      meter('Matched to a SKU', f.withsku, f.fn, `${cnt(f.withsku)} of ${cnt(f.fn)} shipments`),
+    ].join('');
+    const chItems = charges.map((x) => ({ key: x.d, name: cap(prettyCharge(x.d) || x.d), sub: x.d, u: under ? +x.v : 0, o: under ? 0 : +x.v, right: cnt(+x.n), rightLabel: 'Shipments' }));
+    const passed = (r) => (+r.rb ? `<small>${money(+r.rb, true)} passed on</small>` : '');
+    const wcell = (r) => (r.qw || r.bw ? shift(fmtW(r.qw), fmtW(r.bw), worse(+r.qw, +r.bw)) : '—');
+    const bcell = (r) => (r.qb || r.bb ? shift(fmtBox(r.qb), fmtBox(r.bb), worse(boxVol(r.qb), boxVol(r.bb))) : '—');
+    const tbl = dw.ltab === 'ships'
+      ? `<table class="t ln"><thead><tr><th>Shipment</th><th>SKU</th><th>Weight: label → billed</th><th>Box: declared → measured</th><th class="n">Amount</th></tr></thead><tbody>${ships.map((r) => `<tr><td><code>${esc(r.trk || '—')}</code><small>${esc(merchantName(r.m))}</small></td><td class="sk">${esc(r.sku || '—')}<small>${esc(r.t && r.t !== r.sku ? r.t : '')}</small></td><td>${wcell(r)}</td><td>${bcell(r)}</td><td class="n ${c}">${money(+r.lv, true)}${passed(r)}</td></tr>`).join('')}</tbody></table>`
+      : `<table class="t ln"><thead><tr><th>SKU</th><th class="n">Shipments</th><th>Weight: label → billed</th><th>Box: declared → measured</th><th class="n">Amount</th></tr></thead><tbody>${skus.map((r) => { const mi = S.data.M.idx.get(r.m); return `<tr${mi != null ? ` class="click" data-act="merchant" data-key="${mi}"` : ''}><td><b class="nm">${esc(r.sku || '—')}</b><small>${esc(r.t && r.t !== r.sku ? r.t + ' · ' : '')}${esc(merchantName(r.m))}</small></td><td class="n">${cnt(+r.n)}</td><td>${wcell(r)}</td><td>${bcell(r)}</td><td class="n ${c}">${money(+r.lv, true)}${passed(r)}</td></tr>`; }).join('')}</tbody></table>`;
+    body = `<div class="grid k3">${kpi(under ? 'This charge' : 'This line', c, money(lv, true), `${cnt(f.n)} shipments`)}${kpi('Passed on to merchant', '', money(rb, true), 'Surcharges re-billed, net of reversals')}${kpi(under ? 'Still not billed' : 'Net extra', '', money(net, true), 'All lines on these shipments')}</div>
+      <div class="card"><h2>What's happening</h2>${f.fn < f.n ? `<div class="sub">Patterns from the ${cnt(f.fn)} largest of ${cnt(f.n)} shipments.</div>` : ''}${cause ? `<p class="lede mt">${esc(cause)}</p>` : ''}${pattern ? `<div class="mtrs">${pattern}</div>` : '<div class="empty">No weight or size data on these shipments.</div>'}</div>
+      ${chItems.length ? `<div class="card"><h2>Exact carrier charges</h2><div class="sub" style="margin-bottom:8px">As written on the carrier invoice.</div>${drows(chItems, { oneSided: true, attr: () => '' })}</div>` : ''}
+      <div class="card"><div class="card-h"><div><h2>${dw.ltab === 'ships' ? 'Shipments' : 'By SKU'}</h2><div class="sub">${dw.ltab === 'ships' ? `Largest ${cnt(ships.length)} by amount.` : `Top ${cnt(skus.length)} SKUs or SKU combinations by amount. Click one for the merchant.`} Orange means the carrier found more than the label said.</div></div>
+        <div class="hdr-r">${seg('ltab', dw.ltab, [['sku', 'By SKU'], ['ships', 'Shipments']])}<button class="btn ghost" data-export="line">Export CSV</button></div></div><div class="scroll" style="max-height:560px">${tbl}</div></div>`;
+  }
+  $('#drawer').innerHTML = `<div class="dw-h"><div class="eyebrow">${esc(sp.group || 'Line item')}</div><h1>${esc(sp.name)}</h1><div class="owners">${chips.map(([k, v]) => `<span>${k ? `<em>${esc(k)}</em>` : ''}${esc(v)}</span>`).join('')}</div><button class="icon-btn x" data-close aria-label="Close">✕</button></div><div class="dw-b">${body}</div>`;
+  if (keepScroll) $('#drawer').scrollTop = saved;
+}
+function exportLine() {
+  const dw = S.drawer, r = dw?.res; if (!r) return;
+  const slug = dw.spec.name.replace(/[^A-Za-z0-9]+/g, '-').toLowerCase();
+  if (dw.ltab === 'ships') download(`${slug}-shipments.csv`, [['merchant', 'tracking', 'sku', 'product', 'label_weight_oz', 'billed_weight_oz', 'item_weight_oz', 'box_declared', 'box_measured', 'amount', 'passed_on'], ...r.ships.map((x) => [merchantName(x.m), x.trk, x.sku, x.t, x.qw, x.bw, x.iw, x.qb, x.bb, x.lv, x.rb])]);
+  else download(`${slug}-by-sku.csv`, [['merchant', 'sku', 'product', 'shipments', 'label_weight_oz', 'billed_weight_oz', 'item_weight_oz', 'box_declared', 'box_measured', 'amount', 'passed_on'], ...r.skus.map((x) => [merchantName(x.m), x.sku, x.t, x.n, x.qw, x.bw, x.iw, x.qb, x.bb, x.lv, x.rb])]);
+}
+
+/* ----- Top 10 ----- */
+const isDefaultScope = () => S.range.from == null && S.range.preset === 'all' && !anyFilter();
+const TOP_CACHE = 'cache/top-v1.json';
+let topStore = null;
+async function topStoreLoad() { if (topStore) return topStore; try { topStore = await fileJson(TOP_CACHE); } catch { topStore = {}; } return topStore || (topStore = {}); }
+function topKey(r) { return `${r.m}|${r.car}|${r.comp}`; }
+/* One sentence per issue, written from the data: who, which carrier, what charge, how much. */
+function topSentence(r, dir, name, car) {
+  const amt = `<b>${money(Math.abs(+r.v))}</b>`, ch = prettyCharge(r.ds), comp = r.comp, M = esc(name), C = esc(car), CH = esc(ch);
+  if (comp.startsWith('S|')) {
+    const what = ch || compName(comp).toLowerCase();
+    return dir === 'u' ? `We are not passing on ${C} ${esc(what)} charges for ${M}: ${amt} not billed.` : `${C} later credited ${esc(what)} charges on ${M}'s labels that were already billed: ${amt} over-billed.`;
+  }
+  const T = {
+    'C|base_invoice_above_purchase_quote': `${C} is billing ${M}'s labels above our quote${ch ? ` (${CH})` : ''}, and the difference isn't passed on: ${amt}.`,
+    'C|prior_invoice_upward_revision': `${C} re-billed ${M}'s labels higher after the fact${ch ? ` (${CH})` : ''}, and we haven't passed it on: ${amt}.`,
+    'C|post_void_carrier_cost': `${C} charged us for labels ${M} voided: ${amt} not recovered.`,
+    'C|currency': `Currency conversion on ${M}'s ${C} invoices${ch ? ` (${CH})` : ''} cost ${amt}.`,
+    'C|ups_return_to_sender_carrier_cost': `${C} return-to-sender charges for ${M} weren't passed on: ${amt}.`,
+    'M|merchant_surcharge_recovery-': `${C} surcharges we re-billed to ${M} were reversed: ${amt} given back.`,
+    'M|merchant_base_charge_adjustment-': `${M} is being charged below our ${C} quote: ${amt} short.`,
+    'M|label_void_reversal-': `${M} voided ${C} labels and got full refunds: ${amt} of spread lost.`,
+    'M|merchant_label_charge_refund-': `${M} was refunded label charges on ${C}: ${amt}.`,
+    'M|merchant_surcharge_refund-': `We refunded ${C} surcharges to ${M}: ${amt}.`,
+    'C|base_invoice_below_purchase_quote': `${C} invoiced ${M}'s labels below our quote${ch ? ` (${CH})` : ''}: ${amt} more than expected.`,
+    'C|carrier_credit_or_refund': `${C} credited or refunded ${M}'s labels after billing${ch ? ` (${CH})` : ''}: ${amt} more than expected.`,
+    'C|usps_favorable_repricing': `USPS re-priced ${M}'s labels lower: ${amt} more than expected.`,
+    'C|usps_unused_label_credit': `USPS credited ${M}'s unused labels: ${amt} more than expected.`,
+    'M|merchant_surcharge_recovery+': `We re-billed ${M} for ${C} surcharges, but the carrier charged less in the end: ${amt} over-billed.`,
+    'M|merchant_duplicate_charge+': `${M} was charged twice on ${C} labels: ${amt} to refund.`,
+    'M|merchant_base_charge_adjustment+': `${M} was charged above our ${C} quote: ${amt} over.`,
+    'M|usps_pc_postage_fee_revenue+': `USPS postage fees on ${M}'s labels added ${amt} that wasn't in the quote.`,
+    'M|used_voided_label_recharge+': `${M} was re-charged for voided ${C} labels: ${amt}.`,
+    'X|unexplained': `${M} on ${C}: ${amt} ${dir === 'u' ? 'under' : 'over'}-billed with no itemized cause.`,
+  };
+  return T[comp] || `${esc(compName(comp))} for ${M} on ${C}: ${amt} ${dir === 'u' ? 'under' : 'over'}-billed.`;
+}
+const fillAi = (txt, r, name, car) => String(txt).replace(/\{amount\}/g, money(Math.abs(+r.v))).replace(/\{shipments\}/g, cnt(+r.n)).replace(/\{merchant\}/g, name).replace(/\{carrier\}/g, car);
+const shortY = (s) => { const [y, m, d] = String(s || '').split('-').map(Number); return m ? `${MONTHS[m - 1]} ${d}, ${y}` : '—'; };
+function topCard(r, i, dir, mx, facts) {
+  const D = S.data, mi = D.M.idx.get(r.m), name = merchantName(r.m), car = CARRIERS[r.car] || r.car, v = +r.v, c = dir;
+  const active = +r.n30 > 0, f = facts?.[topKey(r)];
+  const ff = f ? factPhrases(f.facts, car) : null;
+  if (f?.topsku) ff.push(`Top SKU <b>${esc(f.topsku)}</b>${f.toptitle && f.toptitle !== f.topsku ? ` (${esc(f.toptitle)})` : ''} in ${cnt(+f.topn)} of ${+f.facts?.n < +r.n ? `the ${cnt(f.facts.n)} largest` : cnt(r.n)}`);
+  if (f && dir === 'u' && r.comp.startsWith('S|')) ff.push(`${money(+f.rb, true)} passed on to the merchant`);
+  const ai = S.ai?.notes?.[`${dir}|${topKey(r)}`];
+  const owners = mi != null ? `PA ${esc(D.pa[D.M.pa[mi]])} · SE ${esc(D.se[D.M.se[mi]])}` : '';
+  return `<div class="tc ${c}">
+    <div class="rk">${i + 1}</div>
+    <div class="tb">
+      <div class="tt"><span class="who">${esc(name)} · ${esc(car)} · ${esc(compName(r.comp))}</span><span class="pill ${active ? c : 'g'}">${active ? `Still happening · ${money(+r.v30)} in the last 30 days` : `Last seen ${shortY(r.last)}`}</span></div>
+      <p class="sent">${topSentence(r, dir, name, car)}</p>
+      ${ai ? `<p class="ai"><span class="aib">AI</span>${esc(fillAi(ai, r, name, car))}</p>` : ''}
+      <div class="facts">${ff ? ff.map((x) => `<span>${x}</span>`).join('') : '<span class="muted">Loading weights, boxes and SKUs…</span>'}</div>
+      <div class="tf"><span>${cnt(+r.n)} shipments · ${shortY(r.first)} – ${shortY(r.last)}</span><span>${owners}</span>${mi != null ? statusPill(D.M.id[mi]) : ''}<span class="grow"></span>${mi != null ? `<button class="linkbtn" data-act="merchant" data-key="${mi}">Merchant detail</button>` : ''}<button class="btn ghost sm" data-top="${dir}:${i}">See the shipments</button></div>
+    </div>
+    <div class="ta"><b class="${c}">${money(v)}</b><span class="tbar"><i class="${c}" style="width:${Math.max(2, (Math.abs(v) / mx) * 100).toFixed(1)}%"></i></span><small>${+r.tot ? Math.round((v / +r.tot) * 100) : 0}% of all ${dir === 'u' ? 'under' : 'over'}-billing</small></div>
+  </div>`;
+}
+function viewTop() {
+  const dirs = ['u', 'o'].filter((d) => S.show[d]);
+  const ai = S.ai;
+  let h = '';
+  if (ai?.briefing) {
+    const bul = dirs.flatMap((d) => (ai.briefing[d] || []).map((t) => `<li class="${d}">${esc(t)}</li>`)).join('');
+    if (bul) h += `<div class="card brief"><div class="card-h"><div><div class="eyebrow"><span class="aib">AI</span> Briefing</div><h2>What stands out</h2><div class="sub">Written by Claude on ${esc(shortY(ai.writtenAt))} from ${esc(ai.scope || 'the issue data')}. The cards below are live.</div></div></div><ul class="bl">${bul}</ul></div>`;
+  }
+  const scope = isDefaultScope() ? 'all time, every merchant' : `${rangeLabel()}${anyFilter() ? ', with your filters' : ''}`;
+  for (const d of dirs) h += `<div class="card ${h ? 'mt' : ''}"><div class="card-h"><div><h2>Top 10 ${d === 'u' ? 'under-billed' : 'over-billed'} issues</h2><div class="sub">Merchant, carrier and charge, ${esc(scope)}. Each shipment counts once, under its biggest charge.</div></div></div><div class="tops" data-topdir="${d}"><div class="loading">Ranking issues…</div></div></div>`;
+  return h;
+}
+async function loadTop() {
+  const [, to] = rangeDays(), sc = scopeSql(false), def = isDefaultScope();
+  await Promise.all(['u', 'o'].filter((d) => S.show[d]).map(async (dir) => {
+    const el = $(`[data-topdir="${dir}"]`); if (!el) return;
+    const rankSql = sqlTopRank(sc, dir, to);
+    const st = def ? await topStoreLoad() : null;
+    const cached = st?.[dir]?.rankSql === rankSql && Date.now() - (st[dir].at || 0) < STALE_MS && st[dir].dataAt === S.data.fetchedAt ? st[dir] : null;
+    try {
+      const rank = cached ? cached.rank : await cachedSf(rankSql);
+      S.top[dir] = { rankSql, rank, facts: cached?.facts || null };
+      renderTopBody(dir);
+      if (!rank.length || cached?.facts) return;
+      const rows = await cachedSf(sqlTopFacts(sc, dir, rank));
+      if (S.top[dir]?.rankSql !== rankSql) return;
+      const facts = {};
+      for (const r of rows) facts[r.gk] = { facts: parseMaybe(r.facts) || {}, topsku: r.topsku, toptitle: r.toptitle, topn: r.topn, rb: r.rb };
+      S.top[dir].facts = facts;
+      renderTopBody(dir);
+      if (def) { topStore = { ...(topStore || {}), [dir]: { rankSql, rank, facts, at: Date.now(), dataAt: S.data.fetchedAt } }; fileUpload(TOP_CACHE, JSON.stringify(topStore)).catch((e) => console.warn('top cache', e)); }
+    } catch (e) {
+      const el2 = $(`[data-topdir="${dir}"]`);
+      if (el2) el2.innerHTML = `<div class="empty">Couldn't rank issues. ${esc(msg(e))}</div>`;
+    }
+  }));
+}
+function renderTopBody(dir) {
+  const el = $(`[data-topdir="${dir}"]`), T = S.top[dir];
+  if (!el || !T) return;
+  if (!T.rank.length) { el.innerHTML = '<div class="empty">No issues match.</div>'; return; }
+  const mx = Math.max(...T.rank.map((r) => Math.abs(+r.v)));
+  el.innerHTML = T.rank.map((r, i) => topCard(r, i, dir, mx, T.facts)).join('');
+}
+function openTopLine(dir, i) {
+  const r = S.top[dir]?.rank?.[i]; if (!r) return;
+  const sc = scopeSql(false), car = safeLit(r.car), mid = safeId(r.m);
+  if (!car || !mid) return;
+  const sc2 = { ...sc, where: sc.where + ` and merchant_id = '${mid}' and ${dimExpr('carriers')} = ${car}` };
+  openLine({ comp: r.comp, name: r.comp.startsWith('S|') && r.ds ? cap(prettyCharge(r.ds)) : compName(r.comp), group: COMP_GROUP[r.comp[0]] || 'Line item', dir, sc: sc2, carrier: CARRIERS[r.car] || r.car, merchant: merchantName(r.m) });
 }
 
 /* ----- Owners ----- */
@@ -1423,14 +1758,15 @@ function viewOwners() {
   S.ownerSel[kind] = sel;
   const bm = agg({ by: 'merchant' });
   const rows = [...bm.groups].filter(([m]) => D.M[kind][m] === sel).map(([m, g]) => ({ m, ...g }));
-  rows.sort((x, y) => x.u - y.u || y.o - x.o);
+  rows.sort((x, y) => (S.show.u ? x.u - y.u : 0) || y.o - x.o);
+  const shown = rows.filter((r) => (S.show.u && r.u < 0) || (S.show.o && r.o > 0));
   const label = kind === 'pa' ? 'Product analyst' : 'Sales engineer';
   let h = `<div class="card-h" style="margin-bottom:16px"><div class="seg"><button data-okind="pa" class="${kind === 'pa' ? 'on' : ''}">Product analysts</button><button data-okind="se" class="${kind === 'se' ? 'on' : ''}">Sales engineers</button></div>
     <div class="note">PA from HubSpot company owner fields. SE from merchant records, then the HubSpot Shipping deal.</div></div>
     <div class="grid own"><div class="card"><div class="card-h"><div><h2>By ${label.toLowerCase()}</h2><div class="sub">Click a name to see their merchants.</div></div>${legendUO()}</div>${drows(items, { act: 'owner', sel })}</div>
-    <div class="card"><div class="card-h"><div><h2>${esc(dimName(kind, sel) ?? '—')}</h2><div class="sub">${cnt(rows.length)} merchants with open issues. Click one to fix.</div></div></div>
-    <div class="scroll"><table class="t"><thead><tr><th>Merchant</th><th class="n">Under-billed</th><th class="n">Over-billed</th><th class="n">Shipments</th><th>Fix status</th></tr></thead><tbody>
-    ${rows.map((r) => `<tr class="click" data-act="merchant" data-key="${r.m}"><td>${esc(D.M.name[r.m])}<small>${esc(kind === 'pa' ? 'SE · ' + D.se[D.M.se[r.m]] : 'PA · ' + D.pa[D.M.pa[r.m]])}</small></td><td class="n">${r.u < 0 ? `<span class="pill u">${money(r.u)}</span>` : '—'}</td><td class="n">${r.o > 0 ? `<span class="pill o">${money(r.o)}</span>` : '—'}</td><td class="n">${cnt(r.un + r.on)}</td><td>${statusPill(D.M.id[r.m])}</td></tr>`).join('') || '<tr><td colspan="5" class="empty">No merchants.</td></tr>'}
+    <div class="card"><div class="card-h"><div><h2>${esc(dimName(kind, sel) ?? '—')}</h2><div class="sub">${cnt(shown.length)} merchants with open ${S.view === 'u' ? 'under-billing' : S.view === 'o' ? 'over-billing' : 'issues'}. Click one to fix.</div></div></div>
+    <div class="scroll"><table class="t"><thead><tr><th>Merchant</th>${S.show.u ? '<th class="n">Under-billed</th>' : ''}${S.show.o ? '<th class="n">Over-billed</th>' : ''}<th class="n">Shipments</th><th>Fix status</th></tr></thead><tbody>
+    ${shown.map((r) => `<tr class="click" data-act="merchant" data-key="${r.m}"><td>${esc(D.M.name[r.m])}<small>${esc(kind === 'pa' ? 'SE · ' + D.se[D.M.se[r.m]] : 'PA · ' + D.pa[D.M.pa[r.m]])}</small></td>${S.show.u ? `<td class="n">${r.u < 0 ? `<span class="pill u">${money(r.u)}</span>` : '—'}</td>` : ''}${S.show.o ? `<td class="n">${r.o > 0 ? `<span class="pill o">${money(r.o)}</span>` : '—'}</td>` : ''}<td class="n">${cnt((S.show.u ? r.un : 0) + (S.show.o ? r.on : 0))}</td><td>${statusPill(D.M.id[r.m])}</td></tr>`).join('') || '<tr><td colspan="5" class="empty">No merchants.</td></tr>'}
     </tbody></table></div></div></div>`;
   return h;
 }
@@ -1498,9 +1834,9 @@ function viewProgress() {
     if (Math.abs(d) < 0.5) return `Flat since ${shortDate(first.date)}`;
     return `<span class="delta" style="color:${d < 0 ? 'var(--good)' : 'var(--under-ink)'}">${d < 0 ? 'Down' : 'Up'} ${money(d)}</span> since ${shortDate(first.date)}`;
   };
-  let h = `<div class="grid kpis">
-    ${kpi('Open under-billed', 'u', money(now.u), deltaTxt(now.u, first?.u))}
-    ${kpi('Open over-billed', 'o', money(now.o), deltaTxt(now.o, first?.o))}
+  let h = `<div class="grid ${S.view === 'both' ? 'kpis' : 'k3'}">
+    ${S.show.u ? kpi('Open under-billed', 'u', money(now.u), deltaTxt(now.u, first?.u)) : ''}
+    ${S.show.o ? kpi('Open over-billed', 'o', money(now.o), deltaTxt(now.o, first?.o)) : ''}
     ${kpi('Merchants in progress', 'k', cnt(working), 'Being worked by PA or SE')}
     ${kpi('Marked fixed', '', cnt(fixed), `${cnt(acts.filter((a) => a.status === 'fixed' && a.m != null && curU(a.m) < -1).length)} still show open under-billing`)}
   </div>`;
@@ -1510,13 +1846,13 @@ function viewProgress() {
   const du = snaps.map((s) => Math.abs(s.u) - Math.abs(first.u)), dov = snaps.map((s) => Math.abs(s.o) - Math.abs(first.o));
   const tips = snaps.map((s, i) => `<div class="tt">${esc(shortDate(s.date))}</div>${tipRow('u', 'Under-billed open', money(s.u))}${tipRow('', 'Change', money(du[i], true))}${tipRow('o', 'Over-billed open', money(s.o))}${tipRow('', 'Change', money(dov[i], true))}`);
   h += `<div class="card mt"><div class="card-h"><div><h2>Change since tracking started</h2><div class="sub">Open balance vs ${esc(shortDate(first?.date || denverToday()))}, one reading per day, all merchants. Below zero means issues are getting fixed.</div></div>
-    <div class="legend"><span><i class="dot u"></i>Under-billed</span><span><i class="dot o"></i>Over-billed</span></div></div>
-    ${snaps.length >= 2 ? slot('v-trend', 240, (w, hh) => compareChart(xs, [{ name: 'Under-billed', color: 'var(--under)', ys: du }, { name: 'Over-billed', color: 'var(--over)', ys: dov }], w, hh, tips, true))
+    ${legendUO()}</div>
+    ${snaps.length >= 2 ? slot('v-trend', 240, (w, hh) => compareChart(xs, [S.show.u && { name: 'Under-billed', color: 'var(--under)', ys: du }, S.show.o && { name: 'Over-billed', color: 'var(--over)', ys: dov }].filter(Boolean), w, hh, tips, true))
       : `<div class="empty">Tracking started ${esc(shortDate(first?.date || denverToday()))}. A reading is saved each day the page loads fresh data, so the trend fills in from here.</div>`}</div>`;
   const ag = agg({ by: 'age' });
   const ageItems = [0, 1, 2, 3, 4].filter((k) => ag.groups.has(k)).map((k) => { const g = ag.groups.get(k); return { key: k, name: AGES[k], u: g.u, o: g.o, right: cnt(g.un + g.on) }; });
   const rows = acts.filter((a) => a.m != null).sort((a, b) => (b.updatedAt || '').localeCompare(a.updatedAt || ''));
-  h += `<div class="grid half mt"><div class="card"><div class="card-h"><div><h2>How old open issues are</h2><div class="sub">Age since each issue last changed. Uses your filters.</div></div>${legendUO(false)}</div>${drows(ageItems, {})}</div>
+  h += `<div class="grid half mt"><div class="card"><div class="card-h"><div><h2>How old open issues are</h2><div class="sub">Age since each issue last changed. Uses your filters.</div></div>${legendUO()}</div>${drows(ageItems, {})}</div>
     <div class="card"><div class="card-h"><div><h2>Fix tracker</h2><div class="sub">Set status from any merchant's detail view.</div></div></div>
     ${rows.length ? `<div class="scroll"><table class="t"><thead><tr><th>Merchant</th><th>Status</th><th class="n">Open now</th><th>Updated</th></tr></thead><tbody>
     ${rows.map((a) => { const u = curU(a.m); return `<tr class="click" data-act="merchant" data-key="${a.m}"><td>${esc(D.M.name[a.m])}<small>${esc([a.owner, a.note].filter(Boolean).join(' · ').slice(0, 90))}</small></td><td>${statusPill(a.id)}</td><td class="n">${u < -0.01 ? `<span class="pill u">${money(u)}</span>` : '<span class="pill ok">Clear</span>'}</td><td>${esc((a.updatedAt || '').slice(0, 10))}<small>${esc(a.updatedBy || '')}</small></td></tr>`; }).join('')}
@@ -1536,8 +1872,8 @@ function classify(r) {
 function openMerchant(m) {
   closePop();
   S.drawer = { m, range: rangeDays(), ships: null, reasons: null, form: null };
-  renderDrawer();
-  $('#drawer').classList.add('on'); $('#drawer').setAttribute('aria-hidden', 'false'); $('#scrim').classList.add('on');
+  $('#drawer').classList.remove('wide');
+  renderDrawer(); showDrawer();
   loadDrawerData();
 }
 function closeDrawer() { S.drawer = null; $('#drawer').classList.remove('on'); $('#drawer').setAttribute('aria-hidden', 'true'); $('#scrim').classList.remove('on'); }
@@ -1552,6 +1888,7 @@ async function loadDrawerData() {
 }
 function renderDrawer(keepScroll) {
   const dw = S.drawer; if (!dw || !S.data) return;
+  if (dw.kind === 'line') return renderLineDrawer(keepScroll);
   for (const k of [...SLOTS.keys()]) if (k[0] === 'd') SLOTS.delete(k);
   const D = S.data, m = dw.m, M = D.M, id = M.id[m];
   const saved = $('#drawer').scrollTop;
@@ -1581,7 +1918,7 @@ function renderDrawer(keepScroll) {
     <div class="card"><h3>Fix status</h3><div class="fix"><div class="seg">${statusBtns}</div><input data-form="owner" placeholder="Owner" value="${esc(form.owner)}"><span></span><button class="btn" data-save>Save</button>
       <textarea data-form="note" placeholder="What's the fix? e.g. Re-billing UPS corrections for September">${esc(form.note)}</textarea>
       <div class="meta">${act.updatedAt ? `Last updated ${esc(act.updatedAt.slice(0, 10))} by ${esc(act.updatedBy || 'unknown')}` : 'Not tracked yet.'}</div></div></div>
-    <div class="card"><div class="card-h"><div><h2>By month</h2></div>${legendUO(false)}</div>${slot('d-trend', 180, (w, hh) => colChart(pts, w, hh, { show: S.show }))}</div>
+    <div class="card"><div class="card-h"><div><h2>By month</h2></div>${legendUO()}</div>${slot('d-trend', 180, (w, hh) => colChart(pts, w, hh, { show: S.show }))}</div>
     <div class="card"><h2>What went wrong</h2><div class="sub" style="margin-bottom:8px">Each issue type with the fix.</div>${drows(mix, {})}</div>
     <div class="card"><h2>What carriers added</h2><div class="sub" style="margin-bottom:8px">Carrier charges behind this merchant's under-billing.</div>${reasons}</div>
     <div class="card"><div class="card-h"><div><h2>Shipments to fix</h2></div>${Array.isArray(dw.ships) && dw.ships.length ? '<button class="btn ghost" data-export="ships">Export CSV</button>' : ''}</div>${ships}</div>
@@ -1635,7 +1972,7 @@ function download(name, rows) {
 /* ---------------- events ---------------- */
 function applyChange() { savePrefs(); renderBar(); renderView(); if (S.pop) renderPopOpts(); }
 document.addEventListener('click', (e) => {
-  const el = e.target.closest('[data-tab],[data-preset],[data-grain],[data-dd],[data-opt],[data-popclear],[data-popdone],[data-clear],[data-rm],[data-drill],[data-act],[data-legend],[data-okind],[data-close],[data-status],[data-save],[data-export],[data-retry],[data-dx-cell],[data-dx-type],[data-dx-car],[data-dx-dir],[data-dx-rep],[data-dx-kind],[data-dx-reset],[data-dx-clear],[data-dx-mall],[data-dx-all],[data-dx-t],[data-v1],[data-v2],[data-wdim],[data-wall],#refresh,#scrim');
+  const el = e.target.closest('[data-tab],[data-preset],[data-grain],[data-dd],[data-opt],[data-popclear],[data-popdone],[data-clear],[data-rm],[data-drill],[data-act],[data-legend],[data-okind],[data-close],[data-status],[data-save],[data-export],[data-retry],[data-dx-cell],[data-dx-type],[data-dx-car],[data-dx-dir],[data-dx-rep],[data-dx-kind],[data-dx-reset],[data-dx-clear],[data-dx-mall],[data-dx-all],[data-dx-t],[data-v1],[data-v2],[data-wdim],[data-wall],[data-view],[data-top],[data-line],[data-ltab],#refresh,#scrim');
   if (S.pop && !e.target.closest('#pop') && !e.target.closest('[data-dd]')) closePop();
   if (!el) return;
   const ds = el.dataset;
@@ -1644,7 +1981,7 @@ document.addEventListener('click', (e) => {
   if (ds.dxCell) { const [c, t] = ds.dxCell.split(':').map(Number); pick(t, c); }
   else if (ds.dxType) pick(+ds.dxType, null);
   else if (ds.dxCar) {
-    const side = e.target.closest('.dbar .l') ? 'u' : e.target.closest('.dbar .r') ? 'o' : null;
+    const side = S.view !== 'both' ? null : e.target.closest('.dbar .l') ? 'u' : e.target.closest('.dbar .r') ? 'o' : null;
     if (side) { Object.assign(dx, { dir: side, carrier: +ds.dxCar, type: null, auto: false, rep: null, mAll: false }); renderView(); }
     else pick(null, +ds.dxCar);
   }
@@ -1679,7 +2016,11 @@ document.addEventListener('click', (e) => {
     else if (ds.act === 'owner') { S.ownerSel[S.ownerKind] = +key; renderView(); }
     else if (ds.act.startsWith('filter:')) { const dim = ds.act.slice(7), set = S.f[dim], k = +key; set.has(k) ? set.delete(k) : set.add(k); applyChange(); }
   }
-  else if (ds.legend) { const k = ds.legend; S.show[k] = !S.show[k]; if (!S.show.u && !S.show.o) S.show[k === 'u' ? 'o' : 'u'] = true; renderView(); if (S.drawer) renderDrawer(true); }
+  else if (ds.view) { S.view = ds.view; applyView(); applyChange(); if (S.drawer && S.drawer.kind !== 'line') renderDrawer(true); }
+  else if (ds.top) { const [d, i] = ds.top.split(':'); openTopLine(d, +i); }
+  else if (ds.line) { const D = S.data; openLine({ comp: ds.line, name: ds.lname || compName(ds.line), group: COMP_GROUP[ds.line[0]] || 'Line item', dir: dx.dir, sc: scopeSql(), carrier: dx.carrier != null ? D.carriers[dx.carrier] : null, type: dx.type != null ? TYPE_BY[dx.type]?.name : null }); }
+  else if (ds.ltab && S.drawer?.kind === 'line') { S.drawer.ltab = ds.ltab; renderDrawer(true); }
+  else if (ds.export === 'line') exportLine();
   else if (ds.okind) { S.ownerKind = ds.okind; renderView(); }
   else if ('close' in ds || el.id === 'scrim') closeDrawer();
   else if (ds.status && S.drawer) { S.drawer.form.status = ds.status; document.querySelectorAll('[data-status]').forEach((b) => b.classList.toggle('on', b.dataset.status === ds.status)); }

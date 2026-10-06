@@ -1,0 +1,40 @@
+{
+  "v": 1,
+  "writtenAt": "2026-10-06",
+  "by": "Claude",
+  "scope": "all-time issues across every merchant",
+  "briefing": {
+    "u": [
+      "Three of the ten biggest under-billing issues are still happening: FedEx duty and VAT re-bills at District Vision, Izzy Zero Waste Beauty being charged below the USPS quote, and UPS currency losses at Pond Pro Canada. Together they added about $4.4K in the last 30 days.",
+      "USPS Package Type charges are the biggest single pattern: about $40K across Easy Clothes, Primo Golf Apparel, Wig Studio 1 and ENRFORCE. None have recurred since Sep 28, 2025, but the backlog was never billed.",
+      "Surcharge re-bills were reversed in one batch between May 14 and Jun 7, 2025, giving back about $23K at Easy Clothes and WESTON JON BOUCHÉR alone. Confirm whether that was intentional."
+    ],
+    "o": [
+      "Freckled Poppy is the largest over-billing account: DHL eCommerce bills its labels below quote ($17K and still adding about $3K a month), and FirstMile surcharges re-billed to it came in higher than FirstMile's final charge ($15K).",
+      "Surcharge re-bills that ran ahead of the final carrier charge account for about $38K at Freckled Poppy, RESA and Girls Crew between Aug 2025 and Jan 2026. These merchants may be owed credits.",
+      "USPS postage fees on By Alexa Rae and Camp Snap add about $1.1K a month across roughly 93K labels. That is a pricing setting, not a billing error: confirm it is intended."
+    ]
+  },
+  "notes": {
+    "u|689a67d5f8907cd382f0497e|FedEx|C|prior_invoice_upward_revision": "FedEx keeps adding customs duty and VAT after delivery on District Vision's international orders. We passed some of it on, but {amount} is still uncollected and new charges arrived in the last 30 days. Turn on duty and VAT re-billing for this account, then bill the backlog.",
+    "u|656cb9c5293f8600072136f7|USPS|M|merchant_surcharge_recovery-": "Surcharges re-billed to Easy Clothes North America were reversed in one batch between May 14 and Jun 7, 2025, across {shipments} shipments. Nothing new since. If the reversal was a mistake, re-bill {amount}.",
+    "u|656cb9c5293f8600072136f7|USPS|S|Package type change": "USPS charged Package Type adjustments on Easy Clothes' 7×6 in mailers from April to September 2025, and the re-bills were later reversed. {amount} was never recovered. Check the package type set for this mailer.",
+    "u|64dfde8b64583e00077c6515|USPS|S|Package type change": "Primo Golf Apparel's flat 12×12 in mailers, mostly hoodies, drew USPS Package Type charges from February to September 2025. {amount} was never billed back. The charges stopped after Sep 28, 2025.",
+    "u|67af9012aca81c11b76e4074|USPS|M|merchant_base_charge_adjustment-": "Izzy Zero Waste Beauty is still being charged less than our USPS quote, often on single 2 oz mascara orders (IZ-MAS-3M). It has run since February 2026 and added about $1.8K in the last 30 days. Check the merchant's rate card or discount.",
+    "u|656a2bbd0433410007cb4c80|USPS|S|Package type change": "Wig Studio 1's 14×8×4 in boxes drew USPS Package Type charges from February to August 2025, and {amount} was never passed on.",
+    "u|6883e61304f6da0728099ad3|UPS|C|base_invoice_above_purchase_quote": "UPS billed Jon Hart Fulfillment's heavy parcels far above quote: where both weights are known, labels said about 15 lb and UPS billed about 59 lb. {amount} across {shipments} shipments, last seen July 2026. Fix the weights entered at label purchase and re-bill.",
+    "u|65bc29da0404ff0007372bab|USPS|S|Package type change": "ENRFORCE's 12×9×1 in mailers, mostly car chargers, drew USPS Package Type charges from March to August 2025. {amount} was never passed on.",
+    "u|66f4509e60239d968c4edc61|FedEx|M|merchant_surcharge_recovery-": "FedEx surcharges re-billed to WESTON JON BOUCHÉR were reversed between May 22 and Jun 5, 2025, in the same window as the Easy Clothes reversal: {amount} on {shipments} shipments.",
+    "u|69726ff1809a5cc0e538c8cd|UPS|C|currency": "Pond Pro Canada's UPS invoices convert from Canadian dollars above our quote, and it is still happening: about $1.2K in the last 30 days. Its boxes also ship far bigger than declared (8×8×6 in declared, 19×13×13 in measured), so fix the box settings too.",
+    "o|680c0c18e723d27391ccf6b1|DhlEcs|C|base_invoice_below_purchase_quote": "DHL eCommerce bills Freckled Poppy's labels slightly under our quote on almost every shipment ({shipments} of them), about $3K in the last 30 days. Small per label but steady: review the DHL quote for this account.",
+    "o|680c0c18e723d27391ccf6b1|FirstMile|M|merchant_surcharge_recovery+": "Freckled Poppy was re-billed {amount} more in FirstMile surcharges than FirstMile finally charged, between November 2025 and January 2026. Labels said about 1.6 lb and FirstMile billed 2 lb, but the re-bill overshot. Freckled Poppy may be owed a credit.",
+    "o|680bec096d1576ec2acc85b9|USPS|C|carrier_credit_or_refund": "USPS credited postage fees back on Washington Park's labels after billing, from May 2025 to July 2026. We kept {amount}. Decide whether to pass it to the merchant.",
+    "o|66d7b1a82e64762396a5f621|FedEx|M|merchant_surcharge_recovery+": "RESA was re-billed FedEx surcharges that ended up larger than FedEx's final charge, from August to November 2025. Labels did run light (about 11 oz on the label, 1.5 lb billed), but the re-bill overshot by {amount}. RESA may be owed a credit.",
+    "o|68a50505c0d7094cbd96cd7c|FirstMile|M|merchant_surcharge_recovery+": "Girls Crew was re-billed {amount} more than FirstMile charged for weight surcharges on {shipments} small 4 oz shipments, October 2025 to January 2026. Likely owed a credit.",
+    "o|66d7b1a82e64762396a5f621|FedEx|C|base_invoice_below_purchase_quote": "FedEx billed RESA's labels below our quote after discounts were applied, from July 2025 to June 2026: {amount} more than expected.",
+    "o|686ff7dbbbd350fe657b0f13|USPS|M|usps_pc_postage_fee_revenue+": "A small USPS postage fee on every By Alexa Rae label adds up to {amount} across {shipments} labels, and it is still running. It is a pricing choice, not an error: confirm it is intended.",
+    "o|683f75e117015f88cc6f1c16|USPS|M|usps_pc_postage_fee_revenue+": "Same postage fee pattern as By Alexa Rae: {amount} across {shipments} Camp Snap labels, still running. Confirm it is intended.",
+    "o|6893ae2b2ca596af5928b677|DhlEcs|C|base_invoice_below_purchase_quote": "DHL eCommerce bills FB County's labels below quote on most shipments, about $0.8K in the last 30 days. Review the DHL quote for this account.",
+    "o|666a12e530718f30eda584d7|USPS|C|carrier_credit_or_refund": "USPS credited postage back on Little Stocking Company's labels after billing, and still does: {amount} kept so far. Decide whether to pass it on."
+  }
+}

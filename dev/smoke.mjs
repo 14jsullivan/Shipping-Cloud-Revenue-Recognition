@@ -64,6 +64,13 @@ const run = async (width, height, tag) => {
     await page.click('[data-dx-dir="u"] >> nth=0');
     await page.click('tr[data-dx-t] >> nth=0');
     await steps34();
+    // Drill into a bridge line: carrier measurements, exact charges, SKUs and shipments
+    await page.click('#bridge .wf-r.click >> nth=0');
+    await page.waitForSelector('#drawer.on .mtrs', { timeout: 15000 });
+    await page.screenshot({ path: `${out}/${tag}-line.png` });
+    await page.click('[data-ltab="ships"]');
+    await page.waitForSelector('#drawer table.ln tbody tr');
+    await page.click('[data-close]');
     await page.click('[data-wdim="zone"]');
     await shot('where-zone');
     await page.click('[data-wdim="surcharge"]');
@@ -105,6 +112,22 @@ const run = async (width, height, tag) => {
     await page.waitForTimeout(400);
     await page.click('[data-close]');
   }
+  // Top 10 with written summaries, its drill-down, and the direction switch on every tab
+  await page.click('[data-tab="top"]');
+  await page.waitForSelector('.tc .facts span:not(.muted)', { timeout: 20000 });
+  if (!(await page.$('.brief li')) || !(await page.$('.tc .ai'))) errors.push(`[${tag}] Top 10 is missing the AI briefing or notes`);
+  await shot('top');
+  await page.click('[data-top="u:0"]');
+  await page.waitForSelector('#drawer.on .mtrs', { timeout: 15000 });
+  await page.click('[data-close]');
+  await page.click('[data-view="u"]');
+  await page.waitForTimeout(500);
+  if (await page.$('[data-topdir="o"]')) errors.push(`[${tag}] Under-billed view still shows over-billed issues`);
+  await shot('top-under');
+  await page.click('[data-tab="issues"]');
+  await page.waitForSelector('#where .cc', { timeout: 15000 });
+  await shot('issues-under');
+  await page.click('[data-view="both"]');
   for (const tab of ['owners', 'recon', 'progress']) {
     await page.click(`[data-tab="${tab}"]`);
     await page.waitForTimeout(500);

@@ -8,14 +8,25 @@ A Fridge app for catching, diagnosing and fixing revenue recognition issues on S
 
 | Tab | Purpose |
 |---|---|
-| **Issues** | Five steps, each narrowing the next. **1 Issues over time**: under- and over-billed by day, month, quarter or year, as a chart or a table (click a period to zoom in). **2 Which carriers**: totals for both directions, or a pivot of carrier by period or by issue type (click a carrier; click its orange or blue bar to pick a direction). The headline then shows what you're diagnosing; it starts on the biggest carrier. **3 What was billed**: the issue types for that carrier, and a bridge of every carrier charge, surcharge, credit and merchant charge that adds up to the total. **4 Where it concentrates**: share of issue dollars against share of labels shipped, by merchant, Redo vs merchant label, weight, package size, zone, service, ship-to state, ship-to ZIP, ship-from and surcharge type, with the three biggest outliers called out. **5 Who owns the fix**: by PA or SE, with their merchants and fix status. |
+| **Top 10** | The ten biggest under-billed and over-billed issues, each a merchant, carrier and charge, written as one sentence ("We are not passing on USPS Package Type charges for …: $15K not billed"). Each card shows whether it is still happening, the label vs carrier-measured weight and box, the top SKU, owners and fix status, and opens the shipments behind it. An AI briefing and per-issue notes written by Claude sit on top (see below). |
+| **Issues** | Five steps, each narrowing the next. **1 Issues over time**: under- and over-billed by day, month, quarter or year, as a chart or a table (click a period to zoom in). **2 Which carriers**: totals for both directions, or a pivot of carrier by period or by issue type (click a carrier; click its orange or blue bar to pick a direction). The headline then shows what you're diagnosing; it starts on the biggest carrier. **3 What was billed**: the issue types for that carrier, and a bridge of every carrier charge, surcharge, credit and merchant charge that adds up to the total. **4 Where it concentrates**: share of issue dollars against share of labels shipped, by merchant, Redo vs merchant label, weight, package size, zone, service, ship-to state, ship-to ZIP, ship-from and surcharge type, with the three biggest outliers called out. **5 Who owns the fix**: by PA or SE, with their merchants and fix status. Click any line in step 3 to open its shipments (see Drill-down). |
 | **Owners** | The same dollars by Shipping Cloud product analyst (PA) or sales engineer (SE), with each owner's merchants and fix status. |
 | **Reconcile** | Monthly Report label spread vs the label-level view, by period, with the gap. |
 | **Progress** | Open balance over time (one reading per day), age of open issues, and the fix tracker. |
 
 Clicking a merchant opens a detail view with its owners, trend, issue mix with the fix for each type, carrier surcharge reasons, the shipments to fix (tracking numbers, CSV export), and a fix status that is saved for everyone.
 
-Global filters: period (30D, 90D, YTD, 12M, All, or a drilled period), grain, carrier, merchant, origin, destination, issue type, PA, SE.
+Global filters: **Both / Under-billed / Over-billed** (applies to every tab except Reconcile), period (30D, 90D, YTD, 12M, All, or a drilled period), grain, carrier, merchant, origin, destination, issue type, PA, SE.
+
+### Drill-down
+
+Clicking a line in step 3, or "See the shipments" on a Top 10 card, opens the shipments behind it:
+
+- **What's happening**: share billed heavier than the label (label weight vs carrier-billed weight), share measured bigger than declared (declared box vs carrier-measured box), share whose items weigh more than the label (store product weights), and SKU match rate, with a one-line likely cause.
+- **Exact carrier charges** as written on the invoice (e.g. `POSTAGEDELTA AGGREGATED`, `Package Type`, `Non-Standard Length`).
+- **By SKU** and **Shipments** tables: label → billed weight, declared → measured box, amount, and how much was passed on to the merchant. Both export to CSV.
+
+Totals cover every shipment with that line; patterns, SKUs and the shipment list come from the 5,000 largest.
 
 ## Data
 
@@ -26,6 +37,8 @@ All data is queried live from Snowflake through the Fridge runtime (`fridge.snow
 | `KITCHEN.REVENUE.OMS_LABEL_BILLING_DIAGNOSTICS_CURRENT` | One row per merchant and fulfillment group with unresolved variance. Only `diagnostic_status = 'issue'` counts toward the totals. `within_grace` (still in the billing window) and `needs_review` (source data needs review) are shown separately as "Not yet counted". Dated by `issue_date` (America/Denver). |
 | `KITCHEN.REVENUE.OUTBOUND_LABELS_REVENUE_BY_SHIPMENT_CURRENT` | Label-level merchant billing and carrier invoicing, used to classify each issue and for the label view of revenue. |
 | `KITCHEN.REVENUE.OUTBOUND_LABEL_REVENUE_ADJUSTMENTS` | Every charge and credit after purchase (step 3 and the merchant view), carrier charge descriptions, and the merchant-record PA and SE. |
+| `KITCHEN.PANTRY.INGR_LABEL_INVOICE_DETAIL` | Carrier-billed weight and box per tracking number (drill-down and Top 10). |
+| `KITCHEN.PANTRY.INGR_STG_ORDER_FULFILLMENT_LINE_ITEMS` | SKUs, product names and item weights, matched on tracking number (about 85% of shipments). This lookup scans about 200 GB (~10s), so it only runs for the drill-down and Top 10, never on page load. |
 | `KITCHEN.PANTRY.INGR_OUTBOUND_LABELS` | Label attributes for step 4: Redo or merchant label, service, zone, ship-to and ship-from address, and weight and size when the quote lacks them. Joined on shipment ID and tracking code. |
 | `KITCHEN.REV_OPS.TEAMS`, `HUBSPOT_COMPANIES`, `HUBSPOT_DEALS` | Owners from HubSpot. |
 | `KITCHEN.FINANCE.MONTHLY_REPORT_V2` (fallback `KITCHEN.PANTRY.INGR_MONTHLY_REPORT_V2`) | Monthly Report `OMS Label Spread Revenue`. |
@@ -53,6 +66,12 @@ Each line is a group of revenue events from the adjustments table for the select
 
 For each group, the share of issue dollars is set against the share of all labels bought in the same period (at least the last 28 days; carrier and merchant filters apply). "2×" means the group has twice the issue dollars its volume would predict. Each shipment with an issue counts once, using its heaviest label. Over long periods the label count comes from a hash sample of shipments (about 40 days' worth), so shares are estimates. Surcharge type has no fair-share figure because label volume isn't split by surcharge.
 
+### Top 10 and the AI summaries
+
+Each issue is assigned to its biggest line in the direction of its variance (the same lines as step 3), then grouped by merchant, carrier and line. The ten largest groups are ranked in a few seconds; their weights, boxes and top SKU load next. For the default view (All, no filters) results are cached in the store for 4 hours.
+
+Fridge has no AI model access at runtime yet, so the page cannot write summaries itself. The card sentences are written in the page from live data. The **AI briefing** and per-issue **AI notes** were written by Claude from the same queries and saved to the store at `summary/ai.json` (a copy is in this repo). Notes use `{amount}` and `{shipments}` placeholders, which the page fills with live numbers, and only show for issues still in the top 10. To refresh them, ask Claude to rerun the top-10 queries (`node dev/print-sql.mjs top '{"dir":"u"}'` and `topfacts`) and rewrite `summary/ai.json`.
+
 ### Owners
 
 - **PA**: HubSpot company `OMS_PRODUCT_ANALYST_FULL_NAME` (via `TEAMS.HUBSPOT_COMPANY_ID`), falling back to the merchant record.
@@ -76,6 +95,8 @@ Fridge shared store `shipping-rev-rec`, which the site can write to:
 - `snapshots` collection: one document per day (`YYYY-MM-DD`) with open totals.
 - `actions` collection: fix status per merchant id (`open`, `working`, `fixed`), owner, note, who updated it and when.
 - `cache/data-v1.json`: the last Snowflake pull, shared so the page opens instantly.
+- `cache/top-v1.json`: the last Top 10 results for the default view.
+- `summary/ai.json`: the AI briefing and notes for the Top 10 tab.
 - `app/index.html`, `assets/fonts.css`: see Deploying.
 
 ## Deploying

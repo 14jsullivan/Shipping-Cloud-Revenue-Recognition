@@ -118,6 +118,38 @@ function where(sql) {
   return rows;
 }
 
+// Top 10: ranked merchant x carrier x line groups, then their shipment facts and top SKU.
+const TOPMIX = {
+  u: [['USPS', 'S|Package type change', 'Package Type'], ['FedEx', 'C|prior_invoice_upward_revision', 'Customs Duty | Original VAT'], ['USPS', 'M|merchant_surcharge_recovery-', ''], ['UPS', 'C|base_invoice_above_purchase_quote', 'SMALL PACKAGE FREIGHT'], ['USPS', 'S|Weight or size correction', 'POSTAGEDELTA AGGREGATED'], ['USPS', 'M|merchant_base_charge_adjustment-', ''], ['UPS', 'S|Duties and customs', 'Brokerage | Ca Customs Hst'], ['DhlEcs', 'M|label_void_reversal-', ''], ['UPS', 'C|currency', 'Freight Charge | Fuel Surcharge | HST'], ['UPSSurePost', 'S|Oversize package', 'Non-Standard Cube | Shipping Charge Correction UPS Ground Saver - 1 LB or Greater']],
+  o: [['DhlEcs', 'C|base_invoice_below_purchase_quote', 'Base Charge | Fuel Surcharge'], ['FirstMile', 'M|merchant_surcharge_recovery+', ''], ['USPS', 'C|carrier_credit_or_refund', 'Postage Fee'], ['FedEx', 'M|merchant_surcharge_recovery+', ''], ['USPS', 'M|usps_pc_postage_fee_revenue+', ''], ['FedEx', 'C|base_invoice_below_purchase_quote', 'Discount | Transportation Charge'], ['UPS', 'M|merchant_duplicate_charge+', ''], ['USPS', 'C|usps_unused_label_credit', ''], ['DhlEcs', 'C|base_invoice_below_purchase_quote', 'Base Charge'], ['USPS', 'C|usps_favorable_repricing', '']],
+};
+function topRank(sql) {
+  const dir = sql.includes('diagnostic_variance_usd < 0') ? 'u' : 'o', sign = dir === 'u' ? -1 : 1;
+  return TOPMIX[dir].map(([car, comp, ds], i) => {
+    const v = sign * (22000 / (1 + i * 0.35)), n = Math.round(300 + rnd() * 2000), act = i % 3 !== 1;
+    return { M: merchants[(i * 7 + (dir === 'u' ? 1 : 4)) % merchants.length].id, CAR: car, COMP: comp, N: String(n), V: v.toFixed(2), LR: (v * 1.3).toFixed(2), DS: ds || null, FIRST: '2025-0' + (2 + (i % 7)) + '-1' + i, LAST: act ? '2026-10-0' + (1 + (i % 5)) : '2025-09-28', V30: act ? (v * 0.08).toFixed(2) : '0', N30: act ? String(Math.round(n * 0.08)) : '0', TOT: (sign * 543004).toFixed(2) };
+  });
+}
+function topFacts(sql) {
+  const gks = [...sql.matchAll(/'([0-9a-f]{24}\|[^']+)'/g)].map((m) => m[1]);
+  const titles = [['F-06-16', 'Blue and Ecru Striped Soam Dress - One Size'], ['DVG004-NB', 'Takeyoshi Altitude Master NB Clear'], ['N-HO-XL', 'Navy Golf Hoodie - Navy / XL'], ['IZ-MAS-3M', 'Zero Waste Mascara - BLK'], ['PP-PROBLUE-7P', 'Pond Pro Blue Pond & Lake Dye']];
+  return gks.map((gk, i) => {
+    const n = 200 + i * 37, heavy = i % 2 === 0;
+    const facts = { n, heavier: heavy ? Math.round(n * 0.7) : 3, withw: Math.round(n * 0.9), bigger: i % 3 === 0 ? Math.round(n * 0.4) : 2, withd: Math.round(n * 0.6), itemsheavier: Math.round(n * 0.2), withi: Math.round(n * 0.7), withsku: Math.round(n * 0.85), qw: 9.6 + i, bw: heavy ? 24.8 + i : 10 + i, iw: 8 + i, qb: '12x9x1', bb: i % 3 === 0 ? '13x10x2' : '12x9x1' };
+    const [sku, title] = titles[i % titles.length];
+    return { GK: gk, FACTS: JSON.stringify(facts), TOPSKU: sku, TOPTITLE: title, TOPN: String(Math.round(n * 0.4)), RB: (i % 2 ? -120.5 : 35.2).toFixed(2) };
+  });
+}
+function line(sql) {
+  const under = sql.includes('diagnostic_variance_usd < 0'), sign = under ? -1 : 1;
+  const stats = { n: 15650, heavier: 4639, withw: 5295, bigger: 2133, withd: 5976, itemsheavier: 815, withi: 4694, withsku: 15387, qw: 15.1, bw: 24.8, iw: 12.2, qb: '12x9x1', bb: '13x10x2', lv: sign * 49917.36, rb: -242.59, net: sign * 41020.11 };
+  const charges = [['POSTAGEDELTA AGGREGATED', 9120, -30120], ['Weight', 4120, -11200], ['Dimensions', 2210, -6350], ['Inaccurate Dimensions', 200, -2247]].map(([d, n, v]) => ({ d, n, v: sign * Math.abs(v) }));
+  const skus = merchants.slice(0, 18).map((m, i) => ({ m: m.id, sku: i % 4 === 3 ? 'Unknown' : `SKU-${100 + i}${i % 5 === 0 ? ' + GIFT-BOX' : ''}`, t: `${pick(WORDS)} ${pick(['Tee', 'Backpack', 'Hoodie', 'Serum', 'Board Book'])}`, n: 2060 - i * 100, lv: sign * (4539 - i * 220), rb: i % 3 ? 0 : -42.1, qw: 9.6 + i, bw: 14.9 + i * 2, iw: 8 + i, qb: '12x9x1', bb: i % 2 ? '13x10x2' : '12x9x1' }));
+  const ships = Array.from({ length: 40 }, (_, i) => ({ m: merchants[i % 20].id, fg: 'fg' + i, trk: '9400111206' + String(21388000 + i * 97), sku: `SKU-${100 + (i % 18)}`, t: 'Product ' + i, lv: sign * (38 - i * 0.7), rb: i % 4 ? 0 : 4.1, qw: 8 + (i % 9), bw: 16 + (i % 13), iw: 7 + (i % 6), qb: '12x9x1', bb: i % 3 ? '13x10x2' : '12x9x1' }));
+  const facts = { ...stats, n: 5000 };
+  return [{ STATS: JSON.stringify({ n: stats.n, lv: stats.lv, rb: stats.rb, net: stats.net }), FACTS: JSON.stringify(facts), CHARGES: JSON.stringify(charges), SKUS: JSON.stringify(skus), SHIPS: JSON.stringify(ships) }];
+}
+
 async function query(sql, opts = {}) {
   if (/--|\/\*|;/.test(sql)) throw new Error('Fridge rejects comments and semicolons');
   if (opts.timeoutMs > 60000) throw new Error('{"error":[{"origin":"number","code":"too_big","maximum":60000,"inclusive":true,"path":["timeoutMs"],"message":"Invalid input"}]}');
@@ -127,6 +159,9 @@ async function query(sql, opts = {}) {
   if (sql.includes('to_json(array_agg(array_construct')) return { rows: owners() };
   if (sql.includes("monetization_type = 'OMS Label Spread'")) return { rows: recDaily() };
   if (sql.includes('"OMS Label Spread Revenue"')) { if (sql.includes('FINANCE')) throw new Error('Object does not exist or not authorized'); return { rows: recMonthly() }; }
+  if (sql.includes(') charges,')) return { rows: line(sql) };
+  if (sql.includes('topsku')) return { rows: topFacts(sql) };
+  if (sql.includes(' n30,')) return { rows: topRank(sql) };
   if (sql.includes("'T|total'")) return { rows: bridge(sql) };
   if (sql.includes('grouping sets')) return { rows: where(sql) };
   if (sql.includes('min(tracking_code) trk')) return { rows: shipments() };
@@ -160,6 +195,9 @@ function makeStore(key) {
 (() => {
   const s = makeStore('shipping-rev-rec').db.collection('snapshots');
   [['2026-09-28', -585000, 702000], ['2026-10-01', -571000, 699000], ['2026-10-03', -560000, 695000]].forEach(([date, u, o]) => s.create({ date, u, o, un: 150000, on: 690000 }, date));
+  mem.files.set('shipping-rev-rec/summary/ai.json', JSON.stringify({ v: 1, writtenAt: '2026-10-06', by: 'Claude', scope: 'all-time issues across every merchant',
+    briefing: { u: ['Three of the ten biggest under-billing issues are still happening.', 'USPS Package Type charges are the biggest single pattern.'], o: ['Surcharge re-bills ran ahead of the final carrier charge at three merchants.'] },
+    notes: { [`u|${merchants[1].id}|USPS|S|Package type change`]: 'USPS charged Package Type adjustments on these mailers; {amount} across {shipments} shipments was never recovered.', [`o|${merchants[4].id}|DhlEcs|C|base_invoice_below_purchase_quote`]: 'DHL bills these labels slightly under quote: {amount} so far.' } }));
   const a = makeStore('shipping-rev-rec').db.collection('actions');
   a.create({ status: 'working', owner: 'Avery Lin', note: 'Re-billing UPS corrections for Sept', name: merchants[3].name, updatedAt: '2026-10-04T15:00:00Z', updatedBy: 'Jackie' }, merchants[3].id);
   a.create({ status: 'fixed', owner: 'Jordan Park', note: 'Duplicate charges refunded', name: merchants[7].name, updatedAt: '2026-10-02T15:00:00Z', updatedBy: 'Jackie' }, merchants[7].id);
