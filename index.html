@@ -705,8 +705,8 @@ function niceTicks(lo, hi, count = 4) {
   if (hi - lo < 1e-9) hi = lo + 1;
   const raw = (hi - lo) / count, mag = 10 ** Math.floor(Math.log10(raw)), e = raw / mag;
   const step = (e >= 7.5 ? 10 : e >= 3.5 ? 5 : e >= 1.5 ? 2 : 1) * mag;
-  const out = [];
-  for (let v = Math.floor(lo / step) * step; v <= hi + step * 0.5; v += step) out.push(Math.abs(v) < step / 1e6 ? 0 : Math.round(v / step) * step);
+  const a = Math.floor(lo / step + 1e-9), b = Math.ceil(hi / step - 1e-9), out = [];
+  for (let k = a; k <= b; k++) out.push(k === 0 ? 0 : k * step);
   return out;
 }
 function barPath(x, y0, y1, w, r) {
@@ -1138,11 +1138,14 @@ function viewProgress() {
     ${kpi('Merchants in progress', 'k', cnt(working), 'Being worked by PA or SE')}
     ${kpi('Marked fixed', '', cnt(fixed), `${cnt(acts.filter((a) => a.status === 'fixed' && a.m != null && curU(a.m) < -1).length)} still show open under-billing`)}
   </div>`;
+  // Plot each reading as the change in open balance since tracking started: a few thousand dollars
+  // of progress would be invisible on a $0 to $700K scale.
   const xs = snaps.map((s) => shortDate(s.date));
-  const tips = snaps.map((s) => `<div class="tt">${esc(s.date)}</div>${tipRow('u', 'Under-billed', money(s.u))}${tipRow('o', 'Over-billed', money(s.o))}`);
-  h += `<div class="card mt"><div class="card-h"><div><h2>Open balance over time</h2><div class="sub">One reading per day, all merchants. Falling lines mean issues are getting fixed.</div></div>
+  const du = snaps.map((s) => Math.abs(s.u) - Math.abs(first.u)), dov = snaps.map((s) => Math.abs(s.o) - Math.abs(first.o));
+  const tips = snaps.map((s, i) => `<div class="tt">${esc(shortDate(s.date))}</div>${tipRow('u', 'Under-billed open', money(s.u))}${tipRow('', 'Change', money(du[i], true))}${tipRow('o', 'Over-billed open', money(s.o))}${tipRow('', 'Change', money(dov[i], true))}`);
+  h += `<div class="card mt"><div class="card-h"><div><h2>Change since tracking started</h2><div class="sub">Open balance vs ${esc(shortDate(first?.date || denverToday()))}, one reading per day, all merchants. Below zero means issues are getting fixed.</div></div>
     <div class="legend"><span><i class="dot u"></i>Under-billed</span><span><i class="dot o"></i>Over-billed</span></div></div>
-    ${snaps.length >= 2 ? slot('v-trend', 240, (w, hh) => compareChart(xs, [{ name: 'Under-billed', color: 'var(--under)', ys: snaps.map((s) => Math.abs(s.u)) }, { name: 'Over-billed', color: 'var(--over)', ys: snaps.map((s) => s.o) }], w, hh, tips, true))
+    ${snaps.length >= 2 ? slot('v-trend', 240, (w, hh) => compareChart(xs, [{ name: 'Under-billed', color: 'var(--under)', ys: du }, { name: 'Over-billed', color: 'var(--over)', ys: dov }], w, hh, tips, true))
       : `<div class="empty">Tracking started ${esc(shortDate(first?.date || denverToday()))}. A reading is saved each day the page loads fresh data, so the trend fills in from here.</div>`}</div>`;
   const ag = agg({ by: 'age' });
   const ageItems = [0, 1, 2, 3, 4].filter((k) => ag.groups.has(k)).map((k) => { const g = ag.groups.get(k); return { key: k, name: AGES[k], u: g.u, o: g.o, right: cnt(g.un + g.on) }; });

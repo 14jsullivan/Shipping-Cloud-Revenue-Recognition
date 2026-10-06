@@ -22,7 +22,16 @@ const run = async (width, height, tag) => {
   await page.waitForSelector('.kpi .val', { timeout: 20000 });
   await page.waitForFunction(() => !document.querySelector('#refresh').classList.contains('spin'), null, { timeout: 30000 });
   await page.waitForTimeout(1500);
-  const shot = (name) => page.screenshot({ path: `${out}/${tag}-${name}.png`, fullPage: true });
+  // Every bar, line and dot must sit inside its chart frame (catches axis ranges that stop short of the data).
+  const checkCharts = async (where) => {
+    const bad = await page.evaluate(() => [...document.querySelectorAll('svg.chart')].flatMap((svg) => {
+      const h = svg.viewBox.baseVal.height;
+      return [...svg.querySelectorAll('path,circle')].filter((el) => { const b = el.getBBox(); return b.height + b.width > 0 && (b.y < -1 || b.y + b.height > h + 1); })
+        .map(() => svg.closest('.card')?.querySelector('h2')?.textContent || 'chart');
+    }));
+    if (bad.length) errors.push(`[${tag}/${where}] marks drawn outside chart: ${[...new Set(bad)].join(', ')}`);
+  };
+  const shot = async (name) => { await checkCharts(name); return page.screenshot({ path: `${out}/${tag}-${name}.png`, fullPage: true }); };
   await shot('issues');
   if (tag === 'desktop') {
     await page.hover('svg.chart .hit >> nth=12');
