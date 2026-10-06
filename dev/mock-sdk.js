@@ -83,6 +83,41 @@ function reasons() {
   return [['Weight or size correction', -91234, 3120], ['Base rate above quote', -64010, 22011], ['Additional handling', -38110, 1280], ['Remote delivery area', -17420, 5310], ['Address correction', -6120, 410], ['Duties and customs', -4210, 90], ['Returned to sender', -2101, 44]].map(([r, v, n]) => ({ REASON: r, V: String(v), N: String(n) }));
 }
 
+// Step 3 line items: carrier rate, surcharges and merchant billing that add up to the selection's net.
+function bridge(sql) {
+  const under = sql.includes('diagnostic_variance_usd < 0'), k = (sql.length % 7) / 10 + 0.7;
+  const comps = under
+    ? [['S|Weight or size correction', -91234, 3120], ['C|base_invoice_above_purchase_quote', -64010, 22011], ['M|merchant_surcharge_recovery-', -41870, 9120], ['M|label_void_reversal-', -38412, 5410], ['S|Package type change', -33120, 8120], ['S|Additional handling', -18110, 1280], ['M|merchant_base_charge_adjustment-', -15715, 6883], ['S|Remote delivery area', -7420, 5310], ['C|usps_unused_label_credit', 27195, 3371], ['M|merchant_surcharge_recovery+', 15227, 4321], ['C|prior_invoice_upward_revision', -11311, 3959], ['S|Address correction', -6120, 410], ['C|post_void_carrier_cost', -2341, 300], ['S|Duties and customs', -1210, 90], ['M|merchant_duplicate_charge-', -197, 2], ['X|unexplained', 1994, 812]]
+    : [['C|base_invoice_below_purchase_quote', 237351, 382229], ['M|merchant_surcharge_recovery+', 198954, 120874], ['C|carrier_credit_or_refund', 145950, 26477], ['C|usps_favorable_repricing', 71197, 33160], ['M|merchant_duplicate_charge+', 51038, 5671], ['M|merchant_base_charge_adjustment+', 43011, 31467], ['C|usps_unused_label_credit', 29808, 3949], ['M|usps_pc_postage_fee_revenue+', 24453, 132298], ['S|Weight or size correction', -18120, 2311], ['C|currency', 18813, 4980], ['M|label_void_reversal-', -12100, 1210], ['X|unexplained', -1662, 402]];
+  const rows = comps.map(([c, v, n]) => ({ COMP: c, N: String(Math.round(n * k)), V: (v * k).toFixed(2) }));
+  rows.push({ COMP: 'T|total', N: String(Math.round((under ? 41000 : 190000) * k)), V: rows.reduce((s, r) => s + +r.V, 0).toFixed(2) });
+  return rows;
+}
+// Step 4 concentration: issue dollars and a label sample by bucket, per dimension, plus the grand total.
+function where(sql) {
+  const sign = sql.includes('diagnostic_variance_usd < 0') ? -1 : 1, IV = sign * (120000 + (sql.length % 13) * 9000), PN = 180000, IN = 31000;
+  const dims = {
+    weight: [['1', 0.09, 0.4], ['2', 0.15, 0.6], ['3', 0.22, 0.8], ['4', 0.24, 1.0], ['5', 0.18, 1.3], ['6', 0.07, 2.1], ['7', 0.03, 3.4], ['8', 0.01, 6.5], ['Unknown', 0.01, 1]],
+    size: [['1', 0.37, 0.7], ['2', 0.45, 0.9], ['3', 0.11, 1.4], ['4', 0.05, 2.6], ['5', 0.01, 5.2], ['Unknown', 0.01, 1]],
+    zone: [['1', 0.02, 0.3], ['2', 0.08, 0.5], ['3', 0.07, 0.6], ['4', 0.15, 0.8], ['5', 0.21, 0.9], ['6', 0.14, 1.0], ['7', 0.12, 1.2], ['8', 0.2, 1.5], ['9', 0.003, 2], ['Unknown', 0.017, 3]],
+    label: [['Redo', 0.87, 1.1], ['Merchant', 0.125, 0.3], ['Unknown', 0.005, 1]],
+    service: [['GroundAdvantage', 0.53, 0.8], ['Ground', 0.15, 1.6], ['DHLParcelExpedited', 0.12, 0.3], ['SurePostOver1Lb', 0.08, 0.9], ['2ndDayAir', 0.01, 6], ['FEDEX_INTERNATIONAL_CONNECT_PLUS', 0.002, 25], ['Priority', 0.02, 1.2], ['SMART_POST', 0.006, 4]],
+    state: [['CA', 0.11, 0.9], ['TX', 0.1, 1.1], ['FL', 0.06, 1.0], ['NY', 0.05, 1.0], ['Outside US', 0.005, 30], ['CO', 0.022, 2.4], ['HI', 0.005, 3.1], ['AK', 0.002, 4.2], ['PA', 0.033, 0.9], ['OH', 0.03, 0.8], ['IL', 0.034, 0.7], ['WA', 0.025, 1.0]],
+    zip: [['Other', 0.014, 9], ['816', 0.001, 40], ['283', 0.002, 15], ['939', 0.001, 20], ['840', 0.012, 1.1], ['770', 0.007, 1.2], ['750', 0.009, 0.9], ['100', 0.005, 1.4], ['967', 0.004, 3.2]],
+    origin: [['Los Angeles, CA', 0.032, 2.8], ['Commerce, CA', 0.018, 4.3], ['Beaverton, OR', 0.034, 1.2], ['Denver, CO', 0.021, 1.7], ['Lehi, UT', 0.01, 3.5], ['Salt Lake City, UT', 0.012, 0.9], ['Dallas, TX', 0.018, 0.6], ['Tempe, AZ', 0.012, 1.4]],
+    merchant: merchants.slice(0, 30).map((m, i) => [m.id, Math.max(0.001, m.w / 300), i < 3 ? 4 - i : 0.5 + (i % 5) / 3]),
+  };
+  const rows = [{ DIM: 'all', K: '', IV: IV.toFixed(2), INN: String(IN), PN: String(PN) }];
+  for (const [dim, list] of Object.entries(dims)) {
+    const wsum = list.reduce((s, [, sp, lift]) => s + sp * lift, 0), full = ['weight', 'size', 'zone', 'label'].includes(dim);
+    for (const [k, sp, lift] of list) {
+      const si = (sp * lift) / (full ? wsum : Math.max(wsum, 1));
+      rows.push({ DIM: dim, K: k, IV: (IV * si).toFixed(2), INN: String(Math.round(IN * si)), PN: String(Math.round(PN * sp)) });
+    }
+  }
+  return rows;
+}
+
 async function query(sql, opts = {}) {
   if (/--|\/\*|;/.test(sql)) throw new Error('Fridge rejects comments and semicolons');
   if (opts.timeoutMs > 60000) throw new Error('{"error":[{"origin":"number","code":"too_big","maximum":60000,"inclusive":true,"path":["timeoutMs"],"message":"Invalid input"}]}');
@@ -92,6 +127,8 @@ async function query(sql, opts = {}) {
   if (sql.includes('to_json(array_agg(array_construct')) return { rows: owners() };
   if (sql.includes("monetization_type = 'OMS Label Spread'")) return { rows: recDaily() };
   if (sql.includes('"OMS Label Spread Revenue"')) { if (sql.includes('FINANCE')) throw new Error('Object does not exist or not authorized'); return { rows: recMonthly() }; }
+  if (sql.includes("'T|total'")) return { rows: bridge(sql) };
+  if (sql.includes('grouping sets')) return { rows: where(sql) };
   if (sql.includes('min(tracking_code) trk')) return { rows: shipments() };
   if (sql.includes('invoice_charge_descriptions')) return { rows: reasons() };
   throw new Error('mock: unknown query ' + sql.slice(0, 80));

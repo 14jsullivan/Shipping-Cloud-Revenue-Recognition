@@ -8,7 +8,7 @@ A Fridge app for catching, diagnosing and fixing revenue recognition issues on S
 
 | Tab | Purpose |
 |---|---|
-| **Issues** | A guided path: the **biggest issue** (headline), an **issue type × carrier grid** (click any cell, carrier or issue), the **merchants affected**, the carrier surcharges behind it, and **who owns the fix** by PA or SE with each rep's fix status. Click the Under-billed or Over-billed tile to switch direction. Below that: issues over time (day, month, quarter, year; click a bar to zoom in) and a breakdown by origin, destination and the other dimensions. |
+| **Issues** | Five steps, each narrowing the next. **1 Issues over time**: under- and over-billed by day, month, quarter or year, as a chart or a table (click a period to zoom in). **2 Which carriers**: totals for both directions, or a pivot of carrier by period or by issue type (click a carrier; click its orange or blue bar to pick a direction). The headline then shows what you're diagnosing; it starts on the biggest carrier. **3 What was billed**: the issue types for that carrier, and a bridge of every carrier charge, surcharge, credit and merchant charge that adds up to the total. **4 Where it concentrates**: share of issue dollars against share of labels shipped, by merchant, Redo vs merchant label, weight, package size, zone, service, ship-to state, ship-to ZIP, ship-from and surcharge type, with the three biggest outliers called out. **5 Who owns the fix**: by PA or SE, with their merchants and fix status. |
 | **Owners** | The same dollars by Shipping Cloud product analyst (PA) or sales engineer (SE), with each owner's merchants and fix status. |
 | **Reconcile** | Monthly Report label spread vs the label-level view, by period, with the gap. |
 | **Progress** | Open balance over time (one reading per day), age of open issues, and the fix tracker. |
@@ -25,7 +25,8 @@ All data is queried live from Snowflake through the Fridge runtime (`fridge.snow
 |---|---|
 | `KITCHEN.REVENUE.OMS_LABEL_BILLING_DIAGNOSTICS_CURRENT` | One row per merchant and fulfillment group with unresolved variance. Only `diagnostic_status = 'issue'` counts toward the totals. `within_grace` (still in the billing window) and `needs_review` (source data needs review) are shown separately as "Not yet counted". Dated by `issue_date` (America/Denver). |
 | `KITCHEN.REVENUE.OUTBOUND_LABELS_REVENUE_BY_SHIPMENT_CURRENT` | Label-level merchant billing and carrier invoicing, used to classify each issue and for the label view of revenue. |
-| `KITCHEN.REVENUE.OUTBOUND_LABEL_REVENUE_ADJUSTMENTS` | Carrier invoice charge descriptions behind under-billed shipments, plus the merchant-record PA and SE. |
+| `KITCHEN.REVENUE.OUTBOUND_LABEL_REVENUE_ADJUSTMENTS` | Every charge and credit after purchase (step 3 and the merchant view), carrier charge descriptions, and the merchant-record PA and SE. |
+| `KITCHEN.PANTRY.INGR_OUTBOUND_LABELS` | Label attributes for step 4: Redo or merchant label, service, zone, ship-to and ship-from address, and weight and size when the quote lacks them. Joined on shipment ID and tracking code. |
 | `KITCHEN.REV_OPS.TEAMS`, `HUBSPOT_COMPANIES`, `HUBSPOT_DEALS` | Owners from HubSpot. |
 | `KITCHEN.FINANCE.MONTHLY_REPORT_V2` (fallback `KITCHEN.PANTRY.INGR_MONTHLY_REPORT_V2`) | Monthly Report `OMS Label Spread Revenue`. |
 | `KITCHEN.REVENUE.TOTAL_REVENUE_BY_HOUR` | Daily label spread (`product = 'OMS'`, `monetization_type = 'OMS Label Spread'`) for the day-level reconciliation. It sums to the Monthly Report within about $200 a month. |
@@ -43,6 +44,14 @@ Each fulfillment group's variance is split into a merchant part (net billed minu
 | Over-billed | Carrier billed below quote | Carrier part is positive and larger |
 | Over-billed | Merchant over-billed | Merchant part is positive and larger (often a duplicate charge) |
 | Either | Other | Rounding or revenue-share differences |
+
+### What was billed (step 3)
+
+Each line is a group of revenue events from the adjustments table for the selected issues: carrier rate and credits (base rate above or below quote, later re-bills, credits, voided-label charges, currency), carrier surcharges (by charge description: weight or size correction, package type change, address correction and so on), and merchant billing (surcharges re-billed or reversed, duplicate charges, refunds, voided labels). The lines add up to the issue total; anything left over shows as "Not itemized" (about $2K on $258K for USPS under-billing). Lines under 1% of the gross are folded into "Other small items".
+
+### Where it concentrates (step 4)
+
+For each group, the share of issue dollars is set against the share of all labels bought in the same period (at least the last 28 days; carrier and merchant filters apply). "2×" means the group has twice the issue dollars its volume would predict. Each shipment with an issue counts once, using its heaviest label. Over long periods the label count comes from a hash sample of shipments (about 40 days' worth), so shares are estimates. Surcharge type has no fair-share figure because label volume isn't split by surcharge.
 
 ### Owners
 
@@ -91,6 +100,7 @@ cd dev && npm install
 node server.mjs            # http://localhost:4321 with a mock Fridge SDK and synthetic data
 node smoke.mjs ./shots     # clicks through every tab, the drawer and filters; fails on console errors
 node print-sql.mjs cube 0  # prints a generated query to run directly in Snowflake
+node print-sql.mjs where '{"dir":"u","car":["USPS"]}'  # step 4 for USPS under-billing
 ```
 
 `LOADER=1 node smoke.mjs` runs the same test through the loader page.
