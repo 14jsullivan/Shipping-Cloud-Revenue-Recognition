@@ -8,7 +8,7 @@ A Fridge app for catching, diagnosing and fixing revenue recognition issues on S
 
 | Tab | Purpose |
 |---|---|
-| **Issues** | Under-billed vs over-billed dollars by day, month, quarter or year. Break them down by issue type, carrier, merchant, origin, destination, PA or SE. Click a bar to zoom in. Click a row to filter. "What carriers added" lists the carrier surcharges behind under-billed shipments. |
+| **Issues** | A guided path: the **biggest issue** (headline), an **issue type × carrier grid** (click any cell, carrier or issue), the **merchants affected**, the carrier surcharges behind it, and **who owns the fix** by PA or SE with each rep's fix status. Click the Under-billed or Over-billed tile to switch direction. Below that: issues over time (day, month, quarter, year; click a bar to zoom in) and a breakdown by origin, destination and the other dimensions. |
 | **Owners** | The same dollars by Shipping Cloud product analyst (PA) or sales engineer (SE), with each owner's merchants and fix status. |
 | **Reconcile** | Monthly Report label spread vs the label-level view, by period, with the gap. |
 | **Progress** | Open balance over time (one reading per day), age of open issues, and the fix tracker. |

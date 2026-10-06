@@ -27,8 +27,21 @@ const run = async (width, height, tag) => {
   if (tag === 'desktop') {
     await page.hover('svg.chart .hit >> nth=12');
     await page.screenshot({ path: `${out}/${tag}-tooltip.png` });
+    // Diagnose path: biggest issue -> carrier -> merchants -> reps
+    await page.waitForSelector('.hl h2');
+    await shot('diagnose');
+    await page.click('td[data-dx-cell] >> nth=3');
+    await page.waitForTimeout(200);
+    await page.click('[data-dx-kind="se"]');
+    await page.click('tr[data-dx-rep] >> nth=0');
+    await page.waitForTimeout(300);
+    await shot('diagnose-rep');
+    await page.click('[data-dx-reset]');
+    await page.click('[data-dx-dir="o"] >> nth=0');
+    await page.click('th[data-dx-car] >> nth=0');
+    await page.click('[data-dx-dir="u"] >> nth=0');
     await page.click('[data-bdim="carrier"]');
-    await page.click('.drow >> nth=0');
+    await page.click('[data-act^="filter:"] >> nth=0');
     await page.waitForTimeout(300);
     await shot('filtered-carrier');
     await page.click('[data-dd="merchant"]');
@@ -44,7 +57,7 @@ const run = async (width, height, tag) => {
     await page.click('[data-rm="range"]');
     await page.click('[data-grain="month"]');
     await page.click('[data-bdim="merchant"]');
-    await page.click('.drow >> nth=0');
+    await page.click('.drow[data-act="merchant"] >> nth=0');
     await page.waitForSelector('#drawer.on table.t', { timeout: 15000 });
     await page.waitForTimeout(500);
     await page.screenshot({ path: `${out}/${tag}-drawer.png` });
