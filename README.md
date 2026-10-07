@@ -24,7 +24,8 @@ Clicking a line in step 3, or "See the shipments" on a Summary row, opens the sh
 
 - **What's breaking**, at the top: one sentence of cause and one of fix, in plain words, and the evidence that fits the kind of issue:
   - **Labels the merchant was never charged for** are split by what the carrier invoice says happened to each label: a prepaid **return label not used yet** (the carrier bills return labels only when a customer uses them, so this is not a loss yet), a **return label used but not charged** to the merchant (real loss; the carrier has billed us), a **shipping label never charged**, and orders where the charge went through later.
-  - **Size-driven charges** (base rate above the label price, weight and size corrections, packaging, oversize, foreign currency bills): share the carrier weighed heavier than the label, measured a bigger box than declared, and whose products alone outweigh the label.
+  - **Size-driven charges** (base rate above the label price, weight and size corrections, packaging, oversize, foreign currency bills): share of bills with a carrier weight or size correction line, share where the measured box is bigger than declared, share where the carrier's scale weight beats the label, and share where the products alone outweigh the label.
+  - Weights and boxes are compared the way carriers price them: the label weight is rounded up first (to the next pound, or the next ounce under a pound on USPS and DHL eCommerce; FedEx and UPS always round to the pound), and boxes to whole inches. A 2.3 lb label priced as 3 lb is not "heavier" when the carrier bills 3 lb.
   - **Other carrier charges**: the charges as written on the carrier invoice (e.g. `POSTAGEDELTA AGGREGATED`, `Customs Duty`).
 - **By product** and **Shipments** tables with only the columns that matter for that issue (weights and boxes for size issues; the uncharged label, its kind and what the carrier billed for label issues). Both export to CSV.
 
@@ -99,7 +100,7 @@ Fridge shared store `shipping-rev-rec`, which the site can write to:
 - `snapshots` collection: one document per day (`YYYY-MM-DD`) with open totals.
 - `actions` collection: fix status per merchant id (`open`, `working`, `fixed`), owner, note, who updated it and when.
 - `cache/data-v1.json`: the last Snowflake pull, shared so the page opens instantly.
-- `cache/top-v2.json`: the last Summary results (60 days, no filters).
+- `cache/top-v3.json`: the last Summary results (60 days, no filters).
 - `summary/ai.json`: the AI briefing and notes for the Summary tab.
 - `app/index.html`, `assets/fonts.css`: see Deploying.
 

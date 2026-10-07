@@ -689,15 +689,19 @@ t as (select merchant_id, fulfillment_group_id, sum(r) r from c group by 1, 2)
 select comp, count(distinct merchant_id || '|' || fulfillment_group_id) n, round(sum(r), 2) v from c group by 1
 union all select 'X|unexplained', count_if(abs(d.v - coalesce(t.r, 0)) >= 0.01), round(sum(d.v - coalesce(t.r, 0)), 2) from d left join t on t.merchant_id = d.merchant_id and t.fulfillment_group_id = d.fulfillment_group_id
 union all select 'T|total', count(*), round(sum(v), 2) from d`;
-/* Per-shipment facts for the fulfillment groups in src: the label as quoted (heaviest label), the carrier's billed
-   weight and box from invoice detail, and the SKUs packed (store order line items, matched on tracking number). */
+/* Per-shipment facts for the fulfillment groups in src: the label as quoted (heaviest label), what the carrier billed
+   (billed weight, scale weight, measured box, and whether the bill carries a weight or size correction line), and the
+   SKUs packed (store order line items, matched on tracking number). Carriers round weight up before pricing (whole
+   pounds; whole ounces under a pound on USPS and DHL eCommerce) and dimensions up to whole inches, so the label is
+   compared at its rated weight (rq) and rounded-up box volume (dv), never at its raw value. */
 const box = (l, w, h) => `iff(${l} > 0 and ${w} > 0, round(${l}) || 'x' || round(${w}) || 'x' || round(coalesce(${h}, 0)), null)`;
-const sqlLabelFacts = (src) => `lab as (select merchant_id, fulfillment_group_id, tracking_code, quoted_weight_in_oz qw, quoted_length_in_inches ql, quoted_width_in_inches qd, quoted_height_in_inches qh from ${T.SHIP} where (merchant_id, fulfillment_group_id) in (select merchant_id, fulfillment_group_id from ${src}) qualify row_number() over (partition by merchant_id, fulfillment_group_id order by quoted_weight_in_oz desc nulls last, tracking_code) = 1),
-inv as (select tracking_code, max(billed_weight_in_pounds) * 16 bw, max(try_to_double(billed_length_in_inches::string)) bl, max(try_to_double(billed_width_in_inches::string)) bd, max(try_to_double(billed_height_in_inches::string)) bh from ${T.INVOICE} where tracking_code in (select tracking_code from lab) group by 1),
+const sqlLabelFacts = (src) => `lab as (select merchant_id, fulfillment_group_id, tracking_code, carrier, quoted_weight_in_oz qw, quoted_length_in_inches ql, quoted_width_in_inches qd, quoted_height_in_inches qh from ${T.SHIP} where (merchant_id, fulfillment_group_id) in (select merchant_id, fulfillment_group_id from ${src}) qualify row_number() over (partition by merchant_id, fulfillment_group_id order by quoted_weight_in_oz desc nulls last, tracking_code) = 1),
+inv as (select tracking_code, max(billed_weight_in_pounds) * 16 bw, max(actual_weight_in_pounds) * 16 aw, max(try_to_double(billed_length_in_inches::string)) bl, max(try_to_double(billed_width_in_inches::string)) bd, max(try_to_double(billed_height_in_inches::string)) bh, max(iff(charge_description ilike any ('%discrepancy%', '%correction%', '%postagedelta%', '%weight%', '%dimension%', '%census%') and not charge_description ilike '%address%', 1, 0)) rm from ${T.INVOICE} where tracking_code in (select tracking_code from lab) and coalesce(is_invoiced, true) group by 1),
 it as (select fulfillment_tracking_number trk, coalesce(nullif(listagg(distinct nullif(sku, ''), ' + ') within group (order by nullif(sku, '')), ''), max_by(name, quantity)) sku, max_by(name, quantity) title, sum(grams * quantity) / 28.3495 iw from ${T.ITEMS} where fulfillment_tracking_number in (select tracking_code from lab) group by 1)`;
-const SQL_FACT_COLS = `lab.tracking_code trk, nullif(lab.qw, 0) qw, lab.ql, lab.qd, lab.qh, inv.bw, inv.bl, inv.bd, inv.bh, it.sku, it.title, it.iw, ${box('lab.ql', 'lab.qd', 'lab.qh')} qb, ${box('inv.bl', 'inv.bd', 'inv.bh')} bb`;
+const SQL_RQ = `case when not lab.qw > 0 then null when lab.carrier ilike 'fedex%' or lab.carrier ilike 'ups%' or lab.qw > 16 then ceil(round(lab.qw / 16, 4)) * 16 else ceil(round(lab.qw, 2)) end`;
+const SQL_FACT_COLS = `lab.tracking_code trk, nullif(lab.qw, 0) qw, ${SQL_RQ} rq, lab.ql, lab.qd, lab.qh, inv.bw, inv.aw, inv.rm, inv.bl, inv.bd, inv.bh, it.sku, it.title, it.iw, ${box('lab.ql', 'lab.qd', 'lab.qh')} qb, ${box('inv.bl', 'inv.bd', 'inv.bh')} bb, iff(lab.ql > 0 and lab.qd > 0, ceil(lab.ql) * ceil(lab.qd) * greatest(ceil(coalesce(lab.qh, 0)), 1), null) dv, iff(inv.bl > 0 and inv.bd > 0, inv.bl * inv.bd * greatest(coalesce(inv.bh, 0), 1), null) bv`;
 const SQL_FACT_JOIN = (src) => `${src} join lab on lab.merchant_id = ${src}.merchant_id and lab.fulfillment_group_id = ${src}.fulfillment_group_id left join inv on inv.tracking_code = lab.tracking_code left join it on it.trk = lab.tracking_code`;
-const SQL_FACT_STATS = `'n', count(*), 'heavier', count_if(bw > qw * 1.1), 'withw', count_if(bw > 0 and qw > 0), 'bigger', count_if(bl * bd * bh > ql * qd * qh * 1.1 and ql * qd * qh > 0), 'withd', count_if(bl * bd * bh > 0 and ql * qd * qh > 0), 'itemsheavier', count_if(iw > qw * 1.1), 'withi', count_if(iw > 0 and qw > 0), 'withsku', count(sku), 'qw', round(median(qw), 1), 'bw', round(median(bw), 1), 'iw', round(median(iw), 1), 'qb', mode(qb), 'bb', mode(bb)`;
+const SQL_FACT_STATS = `'n', count(*), 'remeasured', count_if(rm = 1), 'withinv', count(rm), 'heavier', count_if(bw > rq + 0.5), 'withw', count_if(bw > 0 and rq > 0), 'scale', count_if(aw > rq + 0.5), 'withaw', count_if(aw > 0 and rq > 0), 'bigger', count_if(bv > dv * 1.1), 'withd', count_if(bv > 0 and dv > 0), 'itemsheavier', count_if(iw > rq + 0.5), 'withi', count_if(iw > 0 and rq > 0), 'withsku', count(sku), 'qw', round(median(qw), 1), 'rq', round(median(rq), 1), 'bw', round(median(bw), 1), 'aw', round(median(aw), 1), 'iw', round(median(iw), 1), 'qb', mode(qb), 'bb', coalesce(mode(iff(bv > dv * 1.1, bb, null)), mode(bb))`;
 /* Drill-down for one bridge line (comp): totals over every shipment with that line, and the patterns, SKUs and
    shipment list from the 5,000 largest (the lookups behind them scan large tables). */
 function sqlLine(sc, dir, comp) {
@@ -711,14 +715,14 @@ ${sqlLabelFacts('fx')},
 x as (select fx.*, ${SQL_FACT_COLS} from ${SQL_FACT_JOIN('fx')}),
 ch as (select coalesce(nullif(ds, ''), '(no description)') ds, count(distinct merchant_id || '|' || fulfillment_group_id) n, sum(r) v from c where comp = ${lit} group by 1 qualify row_number() over (order by sum(r) ${ord}) <= 12),
 lc as (select iff(r < 0, coalesce(nullif(rk, ''), 'ship'), 'late') k, count(distinct merchant_id || '|' || fulfillment_group_id) n, sum(r) v, sum(cb) cb from c where et = 'merchant_base_charge_adjustment' group by 1),
-k as (select merchant_id, coalesce(sku, 'Unknown') sku, any_value(title) title, count(*) n, sum(lv) lv, sum(rb) rb, median(qw) qw, median(bw) bw, median(iw) iw, mode(qb) qb, mode(bb) bb from x group by 1, 2 qualify row_number() over (order by sum(lv) ${ord}) <= 25),
+k as (select merchant_id, coalesce(sku, 'Unknown') sku, any_value(title) title, count(*) n, sum(lv) lv, sum(rb) rb, median(qw) qw, median(rq) rq, median(bw) bw, median(aw) aw, median(iw) iw, mode(qb) qb, coalesce(mode(iff(bv > dv * 1.1, bb, null)), mode(bb)) bb from x group by 1, 2 qualify row_number() over (order by sum(lv) ${ord}) <= 25),
 s as (select * from x qualify row_number() over (order by lv ${ord}) <= 60)
 select (select object_construct('n', count(*), 'lv', round(sum(lv), 2), 'rb', round(sum(rb), 2), 'net', round(sum(net), 2), 'cb', round(sum(mcb), 2), 'used', count_if(mcb > 0)) from f) stats,
 (select object_construct(${SQL_FACT_STATS}) from x) facts,
 (select array_agg(object_construct('d', ds, 'n', n, 'v', round(v, 2))) within group (order by v ${ord}) from ch) charges,
 (select object_agg(k, object_construct('n', n, 'v', round(v, 2), 'cb', round(cb, 2))) from lc) life,
-(select array_agg(object_construct('m', merchant_id, 'sku', sku, 't', title, 'n', n, 'lv', round(lv, 2), 'rb', round(rb, 2), 'qw', round(qw, 1), 'bw', round(bw, 1), 'iw', round(iw, 1), 'qb', qb, 'bb', bb)) within group (order by lv ${ord}) from k) skus,
-(select array_agg(object_construct('m', merchant_id, 'fg', fulfillment_group_id, 'trk', trk, 'sku', sku, 't', title, 'lv', round(lv, 2), 'rb', round(rb, 2), 'qw', round(qw, 1), 'bw', round(bw, 1), 'iw', round(iw, 1), 'qb', qb, 'bb', bb, 'mtrk', mtrk, 'mrk', mrk, 'mcb', round(mcb, 2))) within group (order by lv ${ord}) from s) ships`;
+(select array_agg(object_construct('m', merchant_id, 'sku', sku, 't', title, 'n', n, 'lv', round(lv, 2), 'rb', round(rb, 2), 'qw', round(qw, 1), 'rq', round(rq, 1), 'bw', round(bw, 1), 'aw', round(aw, 1), 'iw', round(iw, 1), 'qb', qb, 'bb', bb)) within group (order by lv ${ord}) from k) skus,
+(select array_agg(object_construct('m', merchant_id, 'fg', fulfillment_group_id, 'trk', trk, 'sku', sku, 't', title, 'lv', round(lv, 2), 'rb', round(rb, 2), 'qw', round(qw, 1), 'rq', round(rq, 1), 'bw', round(bw, 1), 'aw', round(aw, 1), 'rm', rm, 'iw', round(iw, 1), 'qb', qb, 'bb', bb, 'mtrk', mtrk, 'mrk', mrk, 'mcb', round(mcb, 2))) within group (order by lv ${ord}) from s) ships`;
 }
 /* Summary top 10: each issue is assigned to its biggest line in the direction of the variance, then grouped by
    merchant, carrier and line. sqlTopRank ranks the groups (a few seconds); sqlTopFacts then adds the
@@ -1659,12 +1663,13 @@ function renderLineDrawer(keepScroll) {
     const { stats: f, charges, life, skus, ships } = dw.res, lv = +f.lv || 0, rb = +f.rb || 0, net = +f.net || 0, n = +f.n || 0;
     const top = skus.find((x) => x.sku && x.sku !== 'Unknown');
     const rr = { comp: sp.comp, ds, n, v: lv }, fo = { facts: f, topsku: top?.sku, toptitle: top?.t, topn: top?.n };
-    const cause = causeLine(rr, sp.dir, fo, C), fix = fixLine(rr, sp.dir, dollars(lv));
+    const cause = causeLine(rr, sp.dir, fo, C), fix = fixLine(rr, sp.dir, dollars(lv), fo);
     const meter = (label, a, b, sub) => (+b >= 5 ? `<div class="mtr"><div class="ml"><b>${label}</b><small>${sub}</small></div><span class="mb"><i class="${c}" style="width:${pctOf(a, b)}%"></i></span><span class="mp">${pctOf(a, b)}%</span></div>` : '');
     const meters = fam === 'size' ? [
-      meter('Carrier weighed it heavier than the label', f.heavier, f.withw, `Typical label ${plainW(f.qw)}, carrier weighed ${plainW(f.bw)}. ${cnt(f.withw)} shipments have both weights.`),
-      meter('Carrier measured a bigger box than declared', f.bigger, f.withd, `Most common box ${f.qb ? plainBox(f.qb) : 'unknown'} declared, ${f.bb ? plainBox(f.bb) : 'unknown'} measured. ${cnt(f.withd)} shipments have both sizes.`),
-      meter('Products alone weigh more than the label', f.itemsheavier, f.withi, `Typical product weight ${plainW(f.iw)}, from the store's product data.`),
+      meter(`${C === 'The carrier' ? 'The carrier' : C} corrected the size or weight on the bill`, f.remeasured, f.withinv, `The carrier's bill has a weight or size correction line. ${cnt(f.withinv)} shipments have a carrier bill.`),
+      meter('Measured box bigger than declared', f.bigger, f.withd, `Declared ${f.qb ? plainBox(f.qb) : 'unknown'}, typically measured ${f.bb ? plainBox(f.bb) : 'unknown'}, after rounding to whole inches.`),
+      meter('Scale weight above the label', f.scale, f.withaw, `A ${plainWAdj(f.qw)} label is priced as ${plainW(f.rq)} after rounding up. Typical scale weight ${plainW(f.aw)}.`),
+      meter('Products alone weigh more than the label', f.itemsheavier, f.withi, `Typical product weight ${plainW(f.iw)}, from the store's product data, against ${plainW(f.rq)} on the label after rounding up.`),
     ].join('') : '';
     const visual = fam === 'label' ? lifeBlock(life, sp.comp, C) : meters ? `<div class="mtrs">${meters}</div>` : '';
     const brk = `<div class="card brk ${sp.comp === 'M|return_label_unused-' ? 'pend' : c}"><div class="eyebrow">What's breaking</div><p class="big">${esc(cause || 'No single pattern stands out on these shipments.')}</p><p class="fx"><b>Fix</b>${esc(fix)}</p>${visual}${fam === 'size' && f.fn < f.n ? `<div class="sub mt">Patterns from the ${cnt(f.fn)} largest of ${cnt(f.n)} shipments.</div>` : ''}</div>`;
@@ -1676,7 +1681,7 @@ function renderLineDrawer(keepScroll) {
     const chItems = charges.map((x) => ({ key: x.d, name: cap(prettyCharge(x.d) || x.d), sub: x.d, u: under ? +x.v : 0, o: under ? 0 : +x.v, right: cnt(+x.n), rightLabel: 'Shipments' }));
     const showCharges = (fam === 'size' || fam === 'carrier') && chItems.length && !(chItems.length === 1 && charges[0].d === '(no description)');
     const passed = (r) => (+r.rb ? `<small>${money(+r.rb, true)} passed on</small>` : '');
-    const wcell = (r) => (r.qw || r.bw ? shift(fmtW(r.qw), fmtW(r.bw), worse(+r.qw, +r.bw)) : '—');
+    const wcell = (r) => { if (!r.qw && !r.bw) return '—'; const note = [+r.rq && Math.abs(+r.rq - +r.qw) >= 0.5 ? `label priced as ${fmtW(r.rq)}` : '', +r.aw && Math.abs(+r.aw - +r.bw) >= 0.5 ? `scale ${fmtW(r.aw)}` : ''].filter(Boolean).join(', '); return `${shift(fmtW(r.qw), fmtW(r.bw), +r.bw > (+r.rq || +r.qw) + 0.5)}${note ? `<small>${capFirst(note)}</small>` : ''}`; };
     const bcell = (r) => (r.qb || r.bb ? shift(fmtBox(r.qb), fmtBox(r.bb), worse(boxVol(r.qb), boxVol(r.bb))) : '—');
     const kind = (r) => ({ used: 'Return label, used', unused: 'Return label, not used yet', ship: 'Shipping label' })[r.mrk] || 'Shipping label';
     const prod = (r) => `${esc(r.sku || '—')}<small>${esc(r.t && r.t !== r.sku ? r.t : '')}</small>`;
@@ -1685,11 +1690,11 @@ function renderLineDrawer(keepScroll) {
       tbl = fam === 'label'
         ? `<table class="t ln"><thead><tr><th>Order shipping label</th><th>Label not charged</th><th>Product</th><th class="n">${esc(C === 'The carrier' ? 'Carrier' : C)} billed us</th><th class="n">Not charged</th></tr></thead><tbody>${ships.map((r) => `<tr><td><code>${esc(r.trk || '—')}</code><small>${esc(merchantName(r.m))}</small></td><td><code>${esc(r.mtrk || '—')}</code><small>${esc(kind(r))}</small></td><td class="sk">${prod(r)}</td><td class="n">${+r.mcb ? money(+r.mcb) : '<span class="muted">Not yet</span>'}</td><td class="n ${c}">${money(+r.lv, true)}</td></tr>`).join('')}</tbody></table>`
         : fam === 'size'
-          ? `<table class="t ln"><thead><tr><th>Shipment</th><th>Product</th><th>Weight: label → carrier</th><th>Box: declared → measured</th><th class="n">Amount</th></tr></thead><tbody>${ships.map((r) => `<tr><td><code>${esc(r.trk || '—')}</code><small>${esc(merchantName(r.m))}</small></td><td class="sk">${prod(r)}</td><td>${wcell(r)}</td><td>${bcell(r)}</td><td class="n ${c}">${money(+r.lv, true)}${passed(r)}</td></tr>`).join('')}</tbody></table>`
+          ? `<table class="t ln"><thead><tr><th>Shipment</th><th>Product</th><th>Weight: label → carrier billed</th><th>Box: declared → measured</th><th class="n">Amount</th></tr></thead><tbody>${ships.map((r) => `<tr><td><code>${esc(r.trk || '—')}</code><small>${esc(merchantName(r.m))}</small></td><td class="sk">${prod(r)}</td><td>${wcell(r)}</td><td>${bcell(r)}</td><td class="n ${c}">${money(+r.lv, true)}${passed(r)}</td></tr>`).join('')}</tbody></table>`
           : `<table class="t ln"><thead><tr><th>Shipment</th><th>Product</th><th class="n">Amount</th></tr></thead><tbody>${ships.map((r) => `<tr><td><code>${esc(r.trk || '—')}</code><small>${esc(merchantName(r.m))}</small></td><td class="sk">${prod(r)}</td><td class="n ${c}">${money(+r.lv, true)}${passed(r)}</td></tr>`).join('')}</tbody></table>`;
     } else {
       const row = (r) => { const mi = S.data.M.idx.get(r.m); return `<tr${mi != null ? ` class="click" data-act="merchant" data-key="${mi}"` : ''}><td><b class="nm">${esc(r.sku || '—')}</b><small>${esc(r.t && r.t !== r.sku ? r.t + ', ' : '')}${esc(merchantName(r.m))}</small></td><td class="n">${cnt(+r.n)}</td>${fam === 'size' ? `<td>${wcell(r)}</td><td>${bcell(r)}</td>` : ''}<td class="n ${c}">${money(+r.lv, true)}${passed(r)}</td></tr>`; };
-      tbl = `<table class="t ln"><thead><tr><th>Product</th><th class="n">Shipments</th>${fam === 'size' ? '<th>Weight: label → carrier</th><th>Box: declared → measured</th>' : ''}<th class="n">Amount</th></tr></thead><tbody>${skus.map(row).join('')}</tbody></table>`;
+      tbl = `<table class="t ln"><thead><tr><th>Product</th><th class="n">Shipments</th>${fam === 'size' ? '<th>Weight: label → carrier billed</th><th>Box: declared → measured</th>' : ''}<th class="n">Amount</th></tr></thead><tbody>${skus.map(row).join('')}</tbody></table>`;
     }
     const tsub = dw.ltab === 'ships' ? `Largest ${cnt(ships.length)} by amount.` : `Top ${cnt(skus.length)} products or product combinations by amount. Click one for the merchant.`;
     body = `${brk}<div class="grid k3">${k3}</div>
@@ -1703,13 +1708,13 @@ function renderLineDrawer(keepScroll) {
 function exportLine() {
   const dw = S.drawer, r = dw?.res; if (!r) return;
   const slug = capFirst(chargeType({ comp: dw.spec.comp, ds: r.charges?.[0]?.d || '' }, dw.spec.dir)).replace(/[^A-Za-z0-9]+/g, '-').toLowerCase();
-  if (dw.ltab === 'ships') download(`${slug}-shipments.csv`, [['merchant', 'tracking', 'sku', 'product', 'label_weight_oz', 'billed_weight_oz', 'item_weight_oz', 'box_declared', 'box_measured', 'amount', 'passed_on', 'uncharged_label', 'uncharged_label_kind', 'carrier_billed_uncharged_label'], ...r.ships.map((x) => [merchantName(x.m), x.trk, x.sku, x.t, x.qw, x.bw, x.iw, x.qb, x.bb, x.lv, x.rb, x.mtrk || '', x.mrk || '', x.mcb || ''])]);
+  if (dw.ltab === 'ships') download(`${slug}-shipments.csv`, [['merchant', 'tracking', 'sku', 'product', 'label_weight_oz', 'label_rated_oz', 'billed_weight_oz', 'scale_weight_oz', 'carrier_correction', 'item_weight_oz', 'box_declared', 'box_measured', 'amount', 'passed_on', 'uncharged_label', 'uncharged_label_kind', 'carrier_billed_uncharged_label'], ...r.ships.map((x) => [merchantName(x.m), x.trk, x.sku, x.t, x.qw, x.rq, x.bw, x.aw, x.rm ? 'yes' : '', x.iw, x.qb, x.bb, x.lv, x.rb, x.mtrk || '', x.mrk || '', x.mcb || ''])]);
   else download(`${slug}-by-product.csv`, [['merchant', 'sku', 'product', 'shipments', 'label_weight_oz', 'billed_weight_oz', 'item_weight_oz', 'box_declared', 'box_measured', 'amount', 'passed_on'], ...r.skus.map((x) => [merchantName(x.m), x.sku, x.t, x.n, x.qw, x.bw, x.iw, x.qb, x.bb, x.lv, x.rb])]);
 }
 
 /* ----- Summary: last 60 days ----- */
 const isDefaultScope = () => !anyFilter();
-const TOP_CACHE = 'cache/top-v2.json';
+const TOP_CACHE = 'cache/top-v3.json';
 let topStore = null;
 async function topStoreLoad() { if (topStore) return topStore; try { topStore = await fileJson(TOP_CACHE); } catch { topStore = {}; } return topStore || (topStore = {}); }
 function topKey(r) { return `${r.m}|${r.car}|${r.comp}`; }
@@ -1720,6 +1725,9 @@ const ymd = (s) => String(s || '').split('-').map(Number);
 const fullDate = (s) => { const [y, m, d] = ymd(s); return m ? `${MONTHS_FULL[m - 1]} ${d}, ${y}` : 'an unknown date'; };
 const dollars = (v) => { const a = Math.abs(+v || 0); return '$' + (a >= 1000 ? Math.round(a / 100) * 100 : Math.round(a)).toLocaleString('en-US'); };
 const plainW = (oz) => (+oz >= 16 ? `${+(+oz / 16).toFixed(1)} pounds` : `${Math.max(1, Math.round(+oz))} ounces`);
+/* The same, used before a noun: "a 17 by 13 by 1 inch box", "a 2.3 pound label". */
+const plainWAdj = (oz) => plainW(oz).replace(/pounds$/, 'pound').replace(/ounces$/, 'ounce');
+const plainBoxAdj = (b) => plainBox(b).replace(/inches$/, 'inch');
 const plainBox = (b) => { const p = String(b || '').split('x').map(Number); return p[2] > 0 ? `${p[0]} by ${p[1]} by ${p[2]} inches` : `${p[0]} by ${p[1]} inches`; };
 /* Extra carrier fees, by the step 3 surcharge group: a plain name, and what makes the carrier charge it. */
 const PLAIN_FEE = {
@@ -1780,14 +1788,25 @@ function chargeType(r, dir) {
 }
 /* Weight and box findings only explain charges that depend on package size. */
 const SIZED = (r, dir) => dir === 'u' && (['S|Weight or size correction', 'S|Package type change', 'S|Additional handling', 'S|Oversize package', 'S|Base rate above quote', 'C|base_invoice_above_purchase_quote', 'C|currency'].includes(r.comp) || (r.comp === 'C|prior_invoice_upward_revision' && !DUTY_RE.test(r.ds || '')));
+/* What the carrier's bill shows about package size, judged the way carriers price: box bigger than declared after
+   rounding up to whole inches, scale weight above the label's rated weight, or a correction line on the bill. */
+function sizeFindings(x) {
+  return {
+    box: +x.withd >= 5 && x.bigger / x.withd >= 0.25 && !!x.qb && !!x.bb,
+    scale: +x.withaw >= 5 && x.scale / x.withaw >= 0.4 && +x.aw > +x.rq,
+    rm: +x.withinv >= 5 && x.remeasured / x.withinv >= 0.4,
+  };
+}
 /* One sentence on the cause: the strongest measured fact, else the usual cause for that kind of charge. */
 function causeLine(r, dir, f, C) {
   const x = f?.facts || {}, n = +x.n || +r.n, top = +f?.topn || 0;
   if (SIZED(r, dir)) {
-    const w = +x.withw >= 5 && x.heavier / x.withw >= 0.4, b = +x.withd >= 5 && x.bigger / x.withd >= 0.25 && x.qb && x.bb;
-    if (w && b) return `Labels say about ${plainW(x.qw)} in a ${plainBox(x.qb)} box, but ${C} measured about ${plainW(x.bw)} in a ${plainBox(x.bb)} box.`;
-    if (w) return `Labels say about ${plainW(x.qw)}, but ${C} weighed about ${plainW(x.bw)} on ${cnt(x.heavier)} of ${cnt(x.withw)} shipments.`;
-    if (b) return `Boxes are declared as ${plainBox(x.qb)}, but ${C} measured ${plainBox(x.bb)} on ${cnt(x.bigger)} of ${cnt(x.withd)} shipments.`;
+    const { box: b, scale: w, rm } = sizeFindings(x);
+    const boxS = b ? `Labels declare a ${plainBoxAdj(x.qb)} box, but ${C} measured bigger boxes, typically ${plainBox(x.bb)}, on ${cnt(x.bigger)} of ${cnt(x.withd)} shipments.` : '';
+    const rmS = rm ? `${C} added a weight or size correction to ${cnt(x.remeasured)} of ${cnt(x.withinv)} bills.` : '';
+    const wS = w ? `Labels rate at about ${plainW(x.rq)} after rounding up, but ${C}'s scale read about ${plainW(x.aw)} on ${cnt(x.scale)} of ${cnt(x.withaw)} shipments.` : '';
+    const out = [boxS, wS, boxS && wS ? '' : rmS].filter(Boolean).slice(0, 2).join(' ');
+    if (out) return out;
   }
   const base = ({
     'M|merchant_base_charge_adjustment-': 'The shipping label was bought, but the charge to the merchant never went through.',
@@ -1808,10 +1827,11 @@ function causeLine(r, dir, f, C) {
   const prod = f?.topsku && n && top <= n && top / n >= 0.4 ? ` Mostly one product: ${cleanText(f.toptitle || f.topsku)}, in ${cnt(top)} of ${cnt(n)}.` : '';
   return (base + prod).trim();
 }
-function fixLine(r, dir, A) {
-  const c = r.comp;
+function fixLine(r, dir, A, f) {
+  const c = r.comp, z = sizeFindings(f?.facts || {});
   if (c === 'S|Package type change') return `Fix the package type saved for this box and bill the ${A}.`;
-  if (c === 'S|Weight or size correction' || c === 'C|base_invoice_above_purchase_quote') return `Correct the product weights and box sizes, then bill the ${A}.`;
+  if (SIZED(r, dir) && (z.box || z.scale)) return `${z.box && z.scale ? 'Correct the box sizes and product weights' : z.box ? 'Update the box size' : 'Correct the product weights'} saved for these orders so labels match what ships, then bill the ${A}.`;
+  if (c === 'S|Weight or size correction' || c === 'C|base_invoice_above_purchase_quote') return `Check the box sizes and product weights saved for these orders, then bill the ${A}.`;
   if (c === 'S|Duties and customs' || (c === 'C|prior_invoice_upward_revision' && DUTY_RE.test(r.ds || ''))) return `Pass import tax bills on to the merchant automatically and bill the ${A}.`;
   if (c === 'S|Duplicate carrier charge') return 'Dispute the duplicate charges with the carrier.';
   if (c.startsWith('S|')) return dir === 'u' ? `Pass this fee on automatically and bill the ${A}.` : `Credit the merchant the ${A} and charge the carrier's final fee going forward.`;
@@ -1844,7 +1864,7 @@ function topCard(r, i, dir, mx, facts) {
   const f = facts?.[topKey(r)], ai = noteFor(dir, r);
   const type = ai?.type || chargeType(r, dir);
   const cause = ai?.cause || (facts ? causeLine(r, dir, f, C) : 'Checking package weights, box sizes and products now.');
-  const fix = ai?.fix || fixLine(r, dir, A);
+  const fix = ai?.fix || fixLine(r, dir, A, f);
   const typeText = /^usps/i.test(type) && C === 'USPS' ? capFirst(type) : `${C}, ${type}`;
   const pa = mi != null ? D.pa[D.M.pa[mi]] : '';
   const active = +r.n30 > 0;

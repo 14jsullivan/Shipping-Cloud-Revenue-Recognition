@@ -8,7 +8,7 @@
   "u": [
    "About $7,500 is prepaid return labels on 926 orders that customers have not used. The carrier only bills a return label when it is used, so this is not a loss yet and is left out of the list.",
    "When customers do use a prepaid return label, the charge to the merchant failed on 214 labels at 64 merchants. The carrier has billed us about $2,100 for them.",
-   "Weights and box sizes set too low at ZERO FOXTROT and Ballerina Farm cost about $3,800 since mid September.",
+   "Labels at ZERO FOXTROT and Ballerina Farm declare boxes far smaller than what ships, so FedEx and USPS re-measured them and billed about $3,800 more since mid September.",
    "Late FedEx import tax bills at District Vision, LA Clippers Team Store and Stoggles were not passed on, about $3,900."
   ],
   "o": [
@@ -18,8 +18,9 @@
  },
  "notes": {
   "u|68c32f42c7e339bbfde5cc2d|FedEx|C|base_invoice_above_purchase_quote": {
-   "cause": "Labels say about 36 ounces, but FedEx billed about 48 ounces on 116 of 133 shipments, all since September 16.",
-   "fix": "Correct the product weights saved in the store, then bill the {amount}."
+   "type": "size corrections on boxes bigger than the label",
+   "cause": "Every label declares the same 17 by 13 by 1 inch mailer, but FedEx measured real boxes, typically 16 by 14 by 4 inches and up to 25 by 21 by 19, and added a size correction to 128 of 133 bills. FedEx's base price matched our quote.",
+   "fix": "Set up the merchant's real box sizes so labels match what ships, then bill the {amount}."
   },
   "u|689a67d5f8907cd382f0497e|FedEx|C|prior_invoice_upward_revision": {
    "cause": "FedEx billed import tax and VAT on international orders after delivery, and none of it was passed on.",
@@ -35,7 +36,7 @@
    "fix": "Correct the saved box size, pass fuel and tax charges on, and bill the {amount}."
   },
   "u|66fb263634259e19afad86c9|USPS|C|base_invoice_above_purchase_quote": {
-   "cause": "Labels say 2.8 pounds in a 12 by 9 by 3 inch box, but USPS billed 8.5 pounds in a 16 by 16 by 8 inch box. The products alone weigh about 5.6 pounds.",
+   "cause": "Labels say 2.8 pounds in a 12 by 9 by 3 inch box, priced as 3 pounds, but USPS billed 8.5 pounds in a 16 by 16 by 8 inch box. The products alone weigh about 5.6 pounds.",
    "fix": "Correct the product weights and box size saved in the store, then bill the {amount}."
   },
   "u|682f9f8e377e4efd2f893a95|FedEx|C|prior_invoice_upward_revision": {

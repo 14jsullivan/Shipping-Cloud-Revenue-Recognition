@@ -135,14 +135,14 @@ function topFacts(sql) {
   const titles = [['F-06-16', 'Blue and Ecru Striped Soam Dress - One Size'], ['DVG004-NB', 'Takeyoshi Altitude Master NB Clear'], ['N-HO-XL', 'Navy Golf Hoodie - Navy / XL'], ['IZ-MAS-3M', 'Zero Waste Mascara - BLK'], ['PP-PROBLUE-7P', 'Pond Pro Blue Pond & Lake Dye']];
   return gks.map((gk, i) => {
     const n = 200 + i * 37, heavy = i % 2 === 0;
-    const facts = { n, heavier: heavy ? Math.round(n * 0.7) : 3, withw: Math.round(n * 0.9), bigger: i % 3 === 0 ? Math.round(n * 0.4) : 2, withd: Math.round(n * 0.6), itemsheavier: Math.round(n * 0.2), withi: Math.round(n * 0.7), withsku: Math.round(n * 0.85), qw: 9.6 + i, bw: heavy ? 24.8 + i : 10 + i, iw: 8 + i, qb: '12x9x1', bb: i % 3 === 0 ? '13x10x2' : '12x9x1' };
+    const facts = { n, remeasured: Math.round(n * (i % 3 === 0 ? 0.9 : 0.2)), withinv: Math.round(n * 0.95), heavier: heavy ? Math.round(n * 0.7) : 3, withw: Math.round(n * 0.9), scale: heavy ? Math.round(n * 0.6) : 3, withaw: Math.round(n * 0.9), bigger: i % 3 === 0 ? Math.round(n * 0.4) : 2, withd: Math.round(n * 0.6), itemsheavier: Math.round(n * 0.2), withi: Math.round(n * 0.7), withsku: Math.round(n * 0.85), qw: 9.6 + i, rq: 10 + i, bw: heavy ? 32 + i : 10 + i, aw: heavy ? 32 + i : 10 + i, iw: 8 + i, qb: '12x9x1', bb: i % 3 === 0 ? '13x10x4' : '12x9x1' };
     const [sku, title] = titles[i % titles.length];
     return { GK: gk, FACTS: JSON.stringify(facts), TOPSKU: sku, TOPTITLE: title, TOPN: String(Math.round(n * 0.4)), RB: (i % 2 ? -120.5 : 35.2).toFixed(2) };
   });
 }
 function line(sql) {
   const under = sql.includes('diagnostic_variance_usd < 0'), sign = under ? -1 : 1;
-  const stats = { n: 15650, heavier: 4639, withw: 5295, bigger: 2133, withd: 5976, itemsheavier: 815, withi: 4694, withsku: 15387, qw: 15.1, bw: 24.8, iw: 12.2, qb: '12x9x1', bb: '13x10x2', lv: sign * 49917.36, rb: -242.59, net: sign * 41020.11 };
+  const stats = { n: 15650, remeasured: 4410, withinv: 4900, heavier: 3639, withw: 5295, scale: 3100, withaw: 5100, bigger: 2133, withd: 5976, itemsheavier: 815, withi: 4694, withsku: 15387, qw: 15.1, rq: 16, bw: 32, aw: 32, iw: 12.2, qb: '12x9x1', bb: '13x10x4', lv: sign * 49917.36, rb: -242.59, net: sign * 41020.11 };
   const charges = [['POSTAGEDELTA AGGREGATED', 9120, -30120], ['Weight', 4120, -11200], ['Dimensions', 2210, -6350], ['Inaccurate Dimensions', 200, -2247]].map(([d, n, v]) => ({ d, n, v: sign * Math.abs(v) }));
   const skus = merchants.slice(0, 18).map((m, i) => ({ m: m.id, sku: i % 4 === 3 ? 'Unknown' : `SKU-${100 + i}${i % 5 === 0 ? ' + GIFT-BOX' : ''}`, t: `${pick(WORDS)} ${pick(['Tee', 'Backpack', 'Hoodie', 'Serum', 'Board Book'])}`, n: 2060 - i * 100, lv: sign * (4539 - i * 220), rb: i % 3 ? 0 : -42.1, qw: 9.6 + i, bw: 14.9 + i * 2, iw: 8 + i, qb: '12x9x1', bb: i % 2 ? '13x10x2' : '12x9x1' }));
   const ships = Array.from({ length: 40 }, (_, i) => ({ m: merchants[i % 20].id, fg: 'fg' + i, trk: '9400111206' + String(21388000 + i * 97), sku: `SKU-${100 + (i % 18)}`, t: 'Product ' + i, lv: sign * (38 - i * 0.7), rb: i % 4 ? 0 : 4.1, qw: 8 + (i % 9), bw: 16 + (i % 13), iw: 7 + (i % 6), qb: '12x9x1', bb: i % 3 ? '13x10x2' : '12x9x1' }));
