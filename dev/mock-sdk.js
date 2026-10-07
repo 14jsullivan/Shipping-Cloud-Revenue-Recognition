@@ -87,7 +87,7 @@ function reasons() {
 function bridge(sql) {
   const under = sql.includes('diagnostic_variance_usd < 0'), k = (sql.length % 7) / 10 + 0.7;
   const comps = under
-    ? [['S|Weight or size correction', -91234, 3120], ['C|base_invoice_above_purchase_quote', -64010, 22011], ['M|merchant_surcharge_recovery-', -41870, 9120], ['M|label_void_reversal-', -38412, 5410], ['S|Package type change', -33120, 8120], ['S|Additional handling', -18110, 1280], ['M|merchant_base_charge_adjustment-', -15715, 6883], ['S|Remote delivery area', -7420, 5310], ['C|usps_unused_label_credit', 27195, 3371], ['M|merchant_surcharge_recovery+', 15227, 4321], ['C|prior_invoice_upward_revision', -11311, 3959], ['S|Address correction', -6120, 410], ['C|post_void_carrier_cost', -2341, 300], ['S|Duties and customs', -1210, 90], ['M|merchant_duplicate_charge-', -197, 2], ['X|unexplained', 1994, 812]]
+    ? [['M|return_label_unused-', -27479, 3926], ['M|return_label_uncharged-', -11945, 1214], ['S|Weight or size correction', -91234, 3120], ['C|base_invoice_above_purchase_quote', -64010, 22011], ['M|merchant_surcharge_recovery-', -41870, 9120], ['M|label_void_reversal-', -38412, 5410], ['S|Package type change', -33120, 8120], ['S|Additional handling', -18110, 1280], ['M|merchant_base_charge_adjustment-', -15715, 6883], ['S|Remote delivery area', -7420, 5310], ['C|usps_unused_label_credit', 27195, 3371], ['M|merchant_surcharge_recovery+', 15227, 4321], ['C|prior_invoice_upward_revision', -11311, 3959], ['S|Address correction', -6120, 410], ['C|post_void_carrier_cost', -2341, 300], ['S|Duties and customs', -1210, 90], ['M|merchant_duplicate_charge-', -197, 2], ['X|unexplained', 1994, 812]]
     : [['C|base_invoice_below_purchase_quote', 237351, 382229], ['M|merchant_surcharge_recovery+', 198954, 120874], ['C|carrier_credit_or_refund', 145950, 26477], ['C|usps_favorable_repricing', 71197, 33160], ['M|merchant_duplicate_charge+', 51038, 5671], ['M|merchant_base_charge_adjustment+', 43011, 31467], ['C|usps_unused_label_credit', 29808, 3949], ['M|usps_pc_postage_fee_revenue+', 24453, 132298], ['S|Weight or size correction', -18120, 2311], ['C|currency', 18813, 4980], ['M|label_void_reversal-', -12100, 1210], ['X|unexplained', -1662, 402]];
   const rows = comps.map(([c, v, n]) => ({ COMP: c, N: String(Math.round(n * k)), V: (v * k).toFixed(2) }));
   rows.push({ COMP: 'T|total', N: String(Math.round((under ? 41000 : 190000) * k)), V: rows.reduce((s, r) => s + +r.V, 0).toFixed(2) });
@@ -120,14 +120,14 @@ function where(sql) {
 
 // Top 10: ranked merchant x carrier x line groups, then their shipment facts and top SKU.
 const TOPMIX = {
-  u: [['USPS', 'S|Package type change', 'Package Type'], ['FedEx', 'C|prior_invoice_upward_revision', 'Customs Duty | Original VAT'], ['USPS', 'M|merchant_surcharge_recovery-', ''], ['UPS', 'C|base_invoice_above_purchase_quote', 'SMALL PACKAGE FREIGHT'], ['USPS', 'S|Weight or size correction', 'POSTAGEDELTA AGGREGATED'], ['USPS', 'M|merchant_base_charge_adjustment-', ''], ['UPS', 'S|Duties and customs', 'Brokerage | Ca Customs Hst'], ['DhlEcs', 'M|label_void_reversal-', ''], ['UPS', 'C|currency', 'Freight Charge | Fuel Surcharge | HST'], ['UPSSurePost', 'S|Oversize package', 'Non-Standard Cube | Shipping Charge Correction UPS Ground Saver - 1 LB or Greater']],
+  u: [['USPS', 'S|Package type change', 'Package Type'], ['FedEx', 'C|prior_invoice_upward_revision', 'Customs Duty | Original VAT'], ['USPS', 'M|merchant_surcharge_recovery-', ''], ['UPS', 'C|base_invoice_above_purchase_quote', 'SMALL PACKAGE FREIGHT'], ['USPS', 'S|Weight or size correction', 'POSTAGEDELTA AGGREGATED'], ['USPS', 'M|return_label_uncharged-', ''], ['UPS', 'S|Duties and customs', 'Brokerage | Ca Customs Hst'], ['DhlEcs', 'M|label_void_reversal-', ''], ['UPS', 'C|currency', 'Freight Charge | Fuel Surcharge | HST'], ['UPSSurePost', 'S|Oversize package', 'Non-Standard Cube | Shipping Charge Correction UPS Ground Saver - 1 LB or Greater']],
   o: [['DhlEcs', 'C|base_invoice_below_purchase_quote', 'Base Charge | Fuel Surcharge'], ['FirstMile', 'M|merchant_surcharge_recovery+', ''], ['USPS', 'C|carrier_credit_or_refund', 'Postage Fee'], ['FedEx', 'M|merchant_surcharge_recovery+', ''], ['USPS', 'M|usps_pc_postage_fee_revenue+', ''], ['FedEx', 'C|base_invoice_below_purchase_quote', 'Discount | Transportation Charge'], ['UPS', 'M|merchant_duplicate_charge+', ''], ['USPS', 'C|usps_unused_label_credit', ''], ['DhlEcs', 'C|base_invoice_below_purchase_quote', 'Base Charge'], ['USPS', 'C|usps_favorable_repricing', '']],
 };
 function topRank(sql) {
   const dir = sql.includes('diagnostic_variance_usd < 0') ? 'u' : 'o', sign = dir === 'u' ? -1 : 1;
   return TOPMIX[dir].map(([car, comp, ds], i) => {
     const v = sign * (22000 / (1 + i * 0.35)), n = Math.round(300 + rnd() * 2000), act = i % 3 !== 1;
-    return { M: merchants[(i * 7 + (dir === 'u' ? 1 : 4)) % merchants.length].id, CAR: car, COMP: comp, N: String(n), V: v.toFixed(2), LR: (v * 1.3).toFixed(2), DS: ds || null, FIRST: '2026-08-1' + i, LAST: act ? '2026-10-0' + (1 + (i % 5)) : '2026-09-0' + (1 + i % 5), V30: act ? (v * 0.08).toFixed(2) : '0', N30: act ? String(Math.round(n * 0.08)) : '0', TOT: (sign * 543004).toFixed(2) };
+    return { M: merchants[(i * 7 + (dir === 'u' ? 1 : 4)) % merchants.length].id, CAR: car, COMP: comp, N: String(n), V: v.toFixed(2), LR: (v * 1.3).toFixed(2), DS: ds || null, FIRST: '2026-08-1' + i, LAST: act ? '2026-10-0' + (1 + (i % 5)) : '2026-09-0' + (1 + i % 5), V30: act ? (v * 0.08).toFixed(2) : '0', N30: act ? String(Math.round(n * 0.08)) : '0', TOT: (sign * 543004).toFixed(2), PEND: dir === 'u' ? '-7479.12' : '0', PENDN: dir === 'u' ? '926' : '0' };
   });
 }
 function topFacts(sql) {
@@ -147,7 +147,12 @@ function line(sql) {
   const skus = merchants.slice(0, 18).map((m, i) => ({ m: m.id, sku: i % 4 === 3 ? 'Unknown' : `SKU-${100 + i}${i % 5 === 0 ? ' + GIFT-BOX' : ''}`, t: `${pick(WORDS)} ${pick(['Tee', 'Backpack', 'Hoodie', 'Serum', 'Board Book'])}`, n: 2060 - i * 100, lv: sign * (4539 - i * 220), rb: i % 3 ? 0 : -42.1, qw: 9.6 + i, bw: 14.9 + i * 2, iw: 8 + i, qb: '12x9x1', bb: i % 2 ? '13x10x2' : '12x9x1' }));
   const ships = Array.from({ length: 40 }, (_, i) => ({ m: merchants[i % 20].id, fg: 'fg' + i, trk: '9400111206' + String(21388000 + i * 97), sku: `SKU-${100 + (i % 18)}`, t: 'Product ' + i, lv: sign * (38 - i * 0.7), rb: i % 4 ? 0 : 4.1, qw: 8 + (i % 9), bw: 16 + (i % 13), iw: 7 + (i % 6), qb: '12x9x1', bb: i % 3 ? '13x10x2' : '12x9x1' }));
   const facts = { ...stats, n: 5000 };
-  return [{ STATS: JSON.stringify({ n: stats.n, lv: stats.lv, rb: stats.rb, net: stats.net }), FACTS: JSON.stringify(facts), CHARGES: JSON.stringify(charges), SKUS: JSON.stringify(skus), SHIPS: JSON.stringify(ships) }];
+  // Labels never charged to the merchant, by what the carrier invoice says happened to them (return label used, not used, shipping label).
+  const label = /comp = 'M\|(return_label|merchant_base_charge_adjustment-)/.test(sql);
+  const life = { unused: { n: 413, v: -3228.7, cb: 0 }, used: { n: 118, v: -745.63, cb: 1242.87 }, ship: { n: 3, v: -15.57, cb: 0 }, late: { n: 9, v: 64.29, cb: 0 } };
+  if (label) ships.forEach((x, i) => Object.assign(x, { mtrk: '920209040453350' + String(426700 + i), mrk: i % 5 ? 'used' : 'unused', mcb: i % 5 ? 8.4 : 0 }));
+  const st = label ? { n: 118, lv: -745.63, rb: 0, net: -1186.9, cb: 1242.87, used: 118 } : { n: stats.n, lv: stats.lv, rb: stats.rb, net: stats.net };
+  return [{ STATS: JSON.stringify(st), FACTS: JSON.stringify(facts), CHARGES: JSON.stringify(label ? [{ d: '(no description)', n: 118, v: -745.63 }] : charges), LIFE: JSON.stringify(life), SKUS: JSON.stringify(skus), SHIPS: JSON.stringify(ships) }];
 }
 
 async function query(sql, opts = {}) {
@@ -196,7 +201,7 @@ function makeStore(key) {
   const s = makeStore('shipping-rev-rec').db.collection('snapshots');
   [['2026-09-28', -585000, 702000], ['2026-10-01', -571000, 699000], ['2026-10-03', -560000, 695000]].forEach(([date, u, o]) => s.create({ date, u, o, un: 150000, on: 690000 }, date));
   mem.files.set('shipping-rev-rec/summary/ai.json', JSON.stringify({ v: 3, window: 60, writtenAt: '2026-10-06', by: 'Claude', scope: 'issues from the last 60 days, every merchant',
-    briefing: { u: ['Labels never charged to three USPS merchants cost about $7,000 and it is still happening.', 'Weights and box sizes set too low at two merchants cost about $3,800 since mid September.'], o: ['Three DHL eCommerce merchants pay about $9,500 above our cost. Confirm these prices are intended.'] },
+    briefing: { u: ['About $7,500 is prepaid return labels customers have not used. The carrier only bills when one is used, so this is not a loss yet.', 'Weights and box sizes set too low at two merchants cost about $3,800 since mid September.'], o: ['Three DHL eCommerce merchants pay about $9,500 above our cost. Confirm these prices are intended.'] },
     notes: { [`u|${merchants[1].id}|USPS|S|Package type change`]: { type: 'packaging fees not passed on', cause: 'Orders ship in a mailer saved as a different package type, so USPS adds a fee we do not charge on.', fix: 'Fix the package type saved for this mailer and bill the {amount}.' }, [`o|${merchants[4].id}|DhlEcs|C|base_invoice_below_purchase_quote`]: { cause: 'The label price is set a little above DHL\'s actual rate.', fix: 'Confirm this extra margin is intended, or lower the price.' } } }));
   const a = makeStore('shipping-rev-rec').db.collection('actions');
   a.create({ status: 'working', owner: 'Avery Lin', note: 'Re-billing UPS corrections for Sept', name: merchants[3].name, updatedAt: '2026-10-04T15:00:00Z', updatedBy: 'Jackie' }, merchants[3].id);

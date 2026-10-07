@@ -22,9 +22,11 @@ Global filters: **Both / Under-billed / Over-billed** (applies to every tab exce
 
 Clicking a line in step 3, or "See the shipments" on a Summary row, opens the shipments behind it:
 
-- **What's happening**: share billed heavier than the label (label weight vs carrier-billed weight), share measured bigger than declared (declared box vs carrier-measured box), share whose items weigh more than the label (store product weights), and SKU match rate, with a one-line likely cause.
-- **Exact carrier charges** as written on the invoice (e.g. `POSTAGEDELTA AGGREGATED`, `Package Type`, `Non-Standard Length`).
-- **By SKU** and **Shipments** tables: label → billed weight, declared → measured box, amount, and how much was passed on to the merchant. Both export to CSV.
+- **What's breaking**, at the top: one sentence of cause and one of fix, in plain words, and the evidence that fits the kind of issue:
+  - **Labels the merchant was never charged for** are split by what the carrier invoice says happened to each label: a prepaid **return label not used yet** (the carrier bills return labels only when a customer uses them, so this is not a loss yet), a **return label used but not charged** to the merchant (real loss; the carrier has billed us), a **shipping label never charged**, and orders where the charge went through later.
+  - **Size-driven charges** (base rate above the label price, weight and size corrections, packaging, oversize, foreign currency bills): share the carrier weighed heavier than the label, measured a bigger box than declared, and whose products alone outweigh the label.
+  - **Other carrier charges**: the charges as written on the carrier invoice (e.g. `POSTAGEDELTA AGGREGATED`, `Customs Duty`).
+- **By product** and **Shipments** tables with only the columns that matter for that issue (weights and boxes for size issues; the uncharged label, its kind and what the carrier billed for label issues). Both export to CSV.
 
 Totals cover every shipment with that line; patterns, SKUs and the shipment list come from the 5,000 largest.
 
@@ -68,7 +70,7 @@ For each group, the share of issue dollars is set against the share of all label
 
 ### Summary and the AI notes
 
-The Summary always covers the last 60 days (Denver time), so the period buttons are hidden on that tab; carrier, merchant and other filters still apply. Each issue is assigned to its biggest line in the direction of its variance (the same lines as step 3), then grouped by merchant, carrier and line. The ten largest groups are ranked in a few seconds; their weights, boxes and top SKU load next. With no filters, results are cached in the store for 4 hours.
+The Summary always covers the last 60 days (Denver time), so the period buttons are hidden on that tab; carrier, merchant and other filters still apply. Each issue is assigned to its biggest line in the direction of its variance (the same lines as step 3), then grouped by merchant, carrier and line. Prepaid return labels customers have not used are left out of the ten and shown as one total underneath, since the carrier has not billed them. The ten largest groups are ranked in a few seconds; their weights, boxes and top SKU load next. With no filters, results are cached in the store for 4 hours.
 
 Fridge has no AI model access at runtime yet, so the page cannot write summaries itself. Every row is written in the page from live data in plain language (no codes, symbols or invoice shorthand; the smoke test checks this and the one-line format). The **What stands out** lines and the per-issue cause and fix were written by Claude from the same 60-day queries plus follow-up checks, and saved to the store at `summary/ai.json` (a copy is in this repo, with `"window": 60`). When an issue has a note there (`type`, `cause`, `fix`), it replaces the generated text; `{amount}`, `{shipments}` and `{last30}` are filled with live numbers. Notes only show for issues still in the top 10. To refresh them, ask Claude to rerun the 60-day queries (`node dev/print-sql.mjs top '{"dir":"u","from":<today-59>,"to":<today>}'` in days since 2025-01-01, and `topfacts`) and rewrite `summary/ai.json`.
 

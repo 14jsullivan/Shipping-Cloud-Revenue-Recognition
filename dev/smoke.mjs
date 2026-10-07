@@ -129,6 +129,12 @@ const run = async (width, height, tag) => {
   await page.click('[data-top="u:0"]');
   await page.waitForSelector('#drawer.on .mtrs', { timeout: 15000 });
   await page.click('[data-close]');
+  // Labels never charged to the merchant explain themselves: return label used, not used yet, or shipping label
+  await page.click('[data-top="u:5"]');
+  await page.waitForSelector('#drawer.on .brk .lf', { timeout: 15000 });
+  if (await page.$('#drawer .mtrs')) errors.push(`[${tag}] Return label drill-down still shows weight and box meters`);
+  await page.click('[data-close]');
+  if (!(await page.$('.pendnote'))) errors.push(`[${tag}] Summary is missing the unused return labels note`);
   await page.click('[data-view="u"]');
   await page.waitForTimeout(500);
   if (await page.$('[data-topdir="o"]')) errors.push(`[${tag}] Under-billed view still shows over-billed issues`);

@@ -1,14 +1,15 @@
 {
- "v": 3,
+ "v": 4,
  "window": 60,
- "writtenAt": "2026-10-06",
+ "writtenAt": "2026-10-07",
  "by": "Claude",
  "scope": "issues from August 8 to October 6, 2026, every merchant",
  "briefing": {
   "u": [
-   "Labels never charged to Izzy Zero Waste Beauty, DKOldies and ro•sham•bo eyewear cost about $7,000 on 887 USPS shipments, and it is still happening.",
+   "About $7,500 is prepaid return labels on 926 orders that customers have not used. The carrier only bills a return label when it is used, so this is not a loss yet and is left out of the list.",
+   "When customers do use a prepaid return label, the charge to the merchant failed on 214 labels at 64 merchants. The carrier has billed us about $2,100 for them.",
    "Weights and box sizes set too low at ZERO FOXTROT and Ballerina Farm cost about $3,800 since mid September.",
-   "FedEx import tax bills at District Vision and LA Clippers Team Store were not passed on, about $3,100."
+   "Late FedEx import tax bills at District Vision, LA Clippers Team Store and Stoggles were not passed on, about $3,900."
   ],
   "o": [
    "DHL eCommerce charges less than our label price at Freckled Poppy, FB County and Worth Collective, about $9,500. Confirm these prices are intended.",
@@ -16,25 +17,13 @@
   ]
  },
  "notes": {
-  "u|67af9012aca81c11b76e4074|USPS|M|merchant_base_charge_adjustment-": {
-   "cause": "The label was bought, but the charge to the merchant never went through. Most orders contain the same mascara refill.",
-   "fix": "Find out why charges are failing on this account and bill the {amount}."
-  },
   "u|68c32f42c7e339bbfde5cc2d|FedEx|C|base_invoice_above_purchase_quote": {
    "cause": "Labels say about 36 ounces, but FedEx billed about 48 ounces on 116 of 133 shipments, all since September 16.",
    "fix": "Correct the product weights saved in the store, then bill the {amount}."
   },
-  "u|67c09ce2151b63cc7a87a22d|USPS|M|merchant_base_charge_adjustment-": {
-   "cause": "The label was bought, but the charge to the merchant never went through.",
-   "fix": "Find out why charges are failing on this account and bill the {amount}."
-  },
   "u|689a67d5f8907cd382f0497e|FedEx|C|prior_invoice_upward_revision": {
    "cause": "FedEx billed import tax and VAT on international orders after delivery, and none of it was passed on.",
    "fix": "Pass import tax bills on to the merchant automatically, or ship with taxes paid up front, and bill the {amount}."
-  },
-  "u|681e4b818452e5637595415b|USPS|M|merchant_base_charge_adjustment-": {
-   "cause": "The label was bought, but the charge to the merchant never went through.",
-   "fix": "Find out why charges are failing on this account and bill the {amount}."
   },
   "u|69a89b9e9a879990e4d1e698|USPS|M|label_void_reversal-": {
    "cause": "We refunded about $6,200 on 713 cancelled labels, but USPS has refunded only $5,100 so far and charged us for 31 of them.",
@@ -101,6 +90,15 @@
    "type": "Canadian bills below the label price",
    "cause": "UPS bills this account in Canadian dollars, and the converted cost came in below our label price. The account is not linked to a merchant in our records.",
    "fix": "Link the account to its merchant, then confirm this margin is intended."
+  },
+  "u|67af9012aca81c11b76e4074|USPS|M|return_label_uncharged-": {
+   "cause": "Izzy packs a prepaid USPS return label in each order so customers can send back empties. Customers used these and USPS billed us, but Izzy was never charged.",
+   "fix": "Charge the merchant automatically when a return label is used, and bill the {amount}."
+  },
+  "u|69e297d21a7e4cefd4d391c5|UPS|C|currency": {
+   "type": "Canadian bills above the label price",
+   "cause": "UPS sent corrected Canadian bills on August 8 that added signature, fuel and sales tax charges above the label price.",
+   "fix": "Pass these charges on to the merchant and bill the {amount}."
   }
  }
 }

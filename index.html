@@ -12,7 +12,7 @@
 <style>
 :root{
   --bg:#F7F6F4;--surface:#FFFFFF;--ink:#2A2A28;--ink2:#5A5955;--muted:#9B9A96;--line:#E4E3DF;--line2:#F0EFED;--black:#141414;
-  --under:#FF4405;--over:#088AB2;--under-ink:#C23300;--over-ink:#066A89;--good:#16A34A;
+  --under:#FF4405;--over:#088AB2;--under-ink:#C23300;--over-ink:#066A89;--good:#16A34A;--pend:#C4C2BC;
   --serif:'Instrument Serif',Georgia,'Times New Roman',serif;
   --sans:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
 }
@@ -132,6 +132,35 @@ table.mx{border-collapse:separate;border-spacing:4px;width:100%;font-size:13px;m
 .st.o b{color:var(--over-ink)}
 .st small{display:block;font-size:12px;color:var(--muted)}
 .ws{font:600 11px/16px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);margin:24px 0 8px}
+.st small.pn{color:var(--ink2);margin-top:2px}
+.pendnote{display:grid;grid-template-columns:12px minmax(0,1fr);gap:12px;margin-top:16px;padding:12px 16px;border-radius:8px;background:var(--bg);font-size:13px;line-height:20px;color:var(--ink2)}
+.pendnote p{margin:0}
+.pendnote b{font-weight:600;color:var(--ink)}
+.sw{display:inline-block;width:12px;height:12px;border-radius:3px;margin-top:4px;background:var(--under)}
+.sw.o{background:var(--over)}
+.sw.pend{background:var(--pend)}
+.brk{border-left:4px solid var(--under)}
+.brk.o{border-left-color:var(--over)}
+.brk.pend{border-left-color:var(--pend)}
+.brk .eyebrow{font:600 11px/16px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--ink2)}
+.brk .big{font:400 22px/30px var(--serif);color:var(--ink);margin:6px 0 0;max-width:860px}
+.brk .fx{margin:10px 0 0;font-size:14px;line-height:20px;color:var(--ink);display:grid;grid-template-columns:44px minmax(0,1fr);gap:8px}
+.brk .fx b{font:600 11px/20px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.lf{margin-top:20px;display:grid;gap:4px}
+.lf-bar{display:flex;height:14px;border-radius:7px;overflow:hidden;background:var(--line2);margin-bottom:8px}
+.lf-bar i{display:block;height:14px}
+.lf-bar i.u{background:var(--under)}
+.lf-bar i.pend{background:var(--pend)}
+.lf-r,.lf-h{display:grid;grid-template-columns:12px minmax(0,1fr) 64px 96px;gap:12px;align-items:start;padding:8px;border-radius:6px}
+.lf-r.on{background:var(--bg)}
+.lf-r b{display:block;font-size:14px;font-weight:600}
+.lf-r small{display:block;font-size:12px;line-height:16px;color:var(--muted)}
+.lf-n,.lf-v{text-align:right;font-variant-numeric:tabular-nums;font-size:14px}
+.lf-v.u{color:var(--under-ink)}
+.lf-v.o{color:var(--over-ink)}
+.lf-v.pend{color:var(--ink2)}
+.lf-h{padding:0 8px;font:600 11px/16px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.lf-h span:nth-child(3),.lf-h span:nth-child(4){text-align:right}
 .sr{display:grid;grid-template-columns:28px minmax(0,1fr) 140px;gap:16px;padding:16px 0;border-top:1px solid var(--line);align-items:start}
 .sr:first-child{border-top:0;padding-top:0}
 .sr .rk{width:28px;height:28px;border-radius:14px;background:var(--bg);display:grid;place-items:center;font:400 17px/1 var(--serif);color:var(--ink)}
@@ -360,7 +389,7 @@ table.t{width:100%;border-collapse:collapse;font-size:13px;line-height:18px}
 #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--black);color:#fff;padding:8px 16px;border-radius:8px;font-size:13px;opacity:0;transition:all .2s;z-index:70;pointer-events:none}
 #toast.on{opacity:1;transform:translateX(-50%)}
 @media (max-width:1100px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.two,.own,.half,.hl,.s3{grid-template-columns:minmax(0,1fr)}}
-@media (max-width:720px){.chrome{position:relative}.wrap{padding:0 16px}.brand .scope,.brand .sep{display:none}.kpis,.k3{grid-template-columns:minmax(0,1fr)}.kpi .val{font-size:36px;line-height:40px}.tabs .wrap{gap:24px}.dw-h,.dw-b{padding-left:16px;padding-right:16px}.drow,.drows .hd,.drows.one .drow,.drows.one .hd{grid-template-columns:minmax(0,40%) minmax(0,1fr);gap:8px}.drow .cnt,.drows .hd>span:last-child{display:none}#fresh{display:none}.brand .app{font-size:22px}.card{padding:16px}.t{font-size:12px}.hl h2{font-size:26px;line-height:32px}.hb{width:64px}.ins{grid-template-columns:minmax(0,1fr)}.cc-r{grid-template-columns:minmax(0,38%) minmax(0,1fr) 44px;gap:8px}.cc-r .amt,.cc-r .cnt,.cc-r.cc-h{display:none}.cc-lg{display:flex}.wf-r{grid-template-columns:minmax(0,1fr) 72px 64px;gap:8px}.wf-r .cnt{display:none}.wf-r .nm span{white-space:normal}.hdr-r{width:100%}.sr{grid-template-columns:minmax(0,1fr)}.sr .rk,.sr .sa{display:none}.mtr{grid-template-columns:minmax(0,1fr) 48px}.mtr .mb{display:none}}
+@media (max-width:720px){.chrome{position:relative}.wrap{padding:0 16px}.brand .scope,.brand .sep{display:none}.kpis,.k3{grid-template-columns:minmax(0,1fr)}.kpi .val{font-size:36px;line-height:40px}.tabs .wrap{gap:24px}.dw-h,.dw-b{padding-left:16px;padding-right:16px}.drow,.drows .hd,.drows.one .drow,.drows.one .hd{grid-template-columns:minmax(0,40%) minmax(0,1fr);gap:8px}.drow .cnt,.drows .hd>span:last-child{display:none}#fresh{display:none}.brand .app{font-size:22px}.card{padding:16px}.t{font-size:12px}.hl h2{font-size:26px;line-height:32px}.hb{width:64px}.ins{grid-template-columns:minmax(0,1fr)}.cc-r{grid-template-columns:minmax(0,38%) minmax(0,1fr) 44px;gap:8px}.cc-r .amt,.cc-r .cnt,.cc-r.cc-h{display:none}.cc-lg{display:flex}.wf-r{grid-template-columns:minmax(0,1fr) 72px 64px;gap:8px}.wf-r .cnt{display:none}.wf-r .nm span{white-space:normal}.hdr-r{width:100%}.sr{grid-template-columns:minmax(0,1fr)}.sr .rk,.sr .sa{display:none}.lf-r,.lf-h{grid-template-columns:12px minmax(0,1fr) 36px 60px;gap:8px;padding:8px 2px}.lf-n,.lf-v{font-size:13px}.lf-h{font-size:10px}.brk .big{font-size:18px;line-height:26px}.mtr{grid-template-columns:minmax(0,1fr) 48px}.mtr .mb{display:none}}
 </style>
 </head>
 <body>
@@ -646,8 +675,13 @@ d as (select d.merchant_id, d.fulfillment_group_id, d.issue_date, d.car, d.v fro
 }
 /* Every revenue event after purchase for the issues in d, and the bridge line it belongs to:
    C| carrier rate and credits, S| carrier surcharge (grouped by REASON), M| merchant billing (with its sign). */
-const SQL_ADJ = `a as (select merchant_id, fulfillment_group_id, revenue_event_type et, coalesce(invoice_cost_event_subcategory, '') sub, coalesce(invoice_cost_reporting_category, '') cat, coalesce(invoice_charge_descriptions, '') ds, revenue_usd r from ${T.ADJ} where (merchant_id, fulfillment_group_id) in (select merchant_id, fulfillment_group_id from d) and revenue_usd <> 0)`;
-const SQL_COMP = `case when et = 'invoice_cost_true_up' then case when cat ilike 'cross-currency%' then 'C|currency' when sub = 'incremental_carrier_charge' then 'S|' || (${REASON}) else 'C|' || sub end else 'M|' || et || iff(r < 0, '-', '+') end`;
+/* Labels the merchant was never charged for (negative base charge events) are split by what the carrier invoice says:
+   a prepaid return label the customer used (carrier billed it), one not used yet (pay on use, nothing billed), or a
+   shipping label. rk is that kind, cb what the carrier billed for the label. */
+const SQL_ADJ = `a0 as (select merchant_id, fulfillment_group_id, revenue_event_type et, coalesce(invoice_cost_event_subcategory, '') sub, coalesce(invoice_cost_reporting_category, '') cat, coalesce(invoice_charge_descriptions, '') ds, revenue_usd r, iff(revenue_event_type = 'merchant_base_charge_adjustment' and revenue_usd < 0, tracking_code, null) trk from ${T.ADJ} where (merchant_id, fulfillment_group_id) in (select merchant_id, fulfillment_group_id from d) and revenue_usd <> 0),
+rl as (select tracking_code, iff(boolor_agg(shipment_type ilike '%return%'), iff(sum(iff(is_invoiced, charge_amount_usd, 0)) > 0, 'used', 'unused'), 'ship') k, sum(iff(is_invoiced, charge_amount_usd, 0)) cb from ${T.INVOICE} where tracking_code in (select trk from a0) group by 1),
+a as (select a0.*, coalesce(rl.k, '') rk, coalesce(rl.cb, 0) cb from a0 left join rl on rl.tracking_code = a0.trk)`;
+const SQL_COMP = `case when et = 'invoice_cost_true_up' then case when cat ilike 'cross-currency%' then 'C|currency' when sub = 'incremental_carrier_charge' then 'S|' || (${REASON}) else 'C|' || sub end else 'M|' || case rk when 'unused' then 'return_label_unused' when 'used' then 'return_label_uncharged' else et end || iff(r < 0, '-', '+') end`;
 const sqlBridge = (sc, dir) => `with ${sqlIssueFgs(sc, dir)},
 ${SQL_ADJ},
 c as (select merchant_id, fulfillment_group_id, r, ${SQL_COMP} comp from a),
@@ -670,19 +704,21 @@ function sqlLine(sc, dir, comp) {
   const ord = dir === 'u' ? 'asc' : 'desc', lit = `'${String(comp).replace(/'/g, "''")}'`;
   return `with ${sqlIssueFgs(sc, dir)},
 ${SQL_ADJ},
-c as (select merchant_id, fulfillment_group_id, et, ds, r, ${SQL_COMP} comp from a),
-f as (select merchant_id, fulfillment_group_id, sum(iff(comp = ${lit}, r, 0)) lv, sum(iff(et ilike 'merchant_surcharge%', r, 0)) rb, sum(r) net from c group by 1, 2 having sum(iff(comp = ${lit}, r, 0)) <> 0),
+c as (select merchant_id, fulfillment_group_id, et, ds, r, trk, rk, cb, ${SQL_COMP} comp from a),
+f as (select merchant_id, fulfillment_group_id, sum(iff(comp = ${lit}, r, 0)) lv, sum(iff(et ilike 'merchant_surcharge%', r, 0)) rb, sum(r) net, max(iff(comp = ${lit}, trk, null)) mtrk, max(iff(comp = ${lit}, rk, null)) mrk, sum(iff(comp = ${lit}, cb, 0)) mcb from c group by 1, 2 having sum(iff(comp = ${lit}, r, 0)) <> 0),
 fx as (select * from f qualify row_number() over (order by abs(lv) desc) <= 5000),
 ${sqlLabelFacts('fx')},
 x as (select fx.*, ${SQL_FACT_COLS} from ${SQL_FACT_JOIN('fx')}),
 ch as (select coalesce(nullif(ds, ''), '(no description)') ds, count(distinct merchant_id || '|' || fulfillment_group_id) n, sum(r) v from c where comp = ${lit} group by 1 qualify row_number() over (order by sum(r) ${ord}) <= 12),
+lc as (select iff(r < 0, coalesce(nullif(rk, ''), 'ship'), 'late') k, count(distinct merchant_id || '|' || fulfillment_group_id) n, sum(r) v, sum(cb) cb from c where et = 'merchant_base_charge_adjustment' group by 1),
 k as (select merchant_id, coalesce(sku, 'Unknown') sku, any_value(title) title, count(*) n, sum(lv) lv, sum(rb) rb, median(qw) qw, median(bw) bw, median(iw) iw, mode(qb) qb, mode(bb) bb from x group by 1, 2 qualify row_number() over (order by sum(lv) ${ord}) <= 25),
 s as (select * from x qualify row_number() over (order by lv ${ord}) <= 60)
-select (select object_construct('n', count(*), 'lv', round(sum(lv), 2), 'rb', round(sum(rb), 2), 'net', round(sum(net), 2)) from f) stats,
+select (select object_construct('n', count(*), 'lv', round(sum(lv), 2), 'rb', round(sum(rb), 2), 'net', round(sum(net), 2), 'cb', round(sum(mcb), 2), 'used', count_if(mcb > 0)) from f) stats,
 (select object_construct(${SQL_FACT_STATS}) from x) facts,
 (select array_agg(object_construct('d', ds, 'n', n, 'v', round(v, 2))) within group (order by v ${ord}) from ch) charges,
+(select object_agg(k, object_construct('n', n, 'v', round(v, 2), 'cb', round(cb, 2))) from lc) life,
 (select array_agg(object_construct('m', merchant_id, 'sku', sku, 't', title, 'n', n, 'lv', round(lv, 2), 'rb', round(rb, 2), 'qw', round(qw, 1), 'bw', round(bw, 1), 'iw', round(iw, 1), 'qb', qb, 'bb', bb)) within group (order by lv ${ord}) from k) skus,
-(select array_agg(object_construct('m', merchant_id, 'fg', fulfillment_group_id, 'trk', trk, 'sku', sku, 't', title, 'lv', round(lv, 2), 'rb', round(rb, 2), 'qw', round(qw, 1), 'bw', round(bw, 1), 'iw', round(iw, 1), 'qb', qb, 'bb', bb)) within group (order by lv ${ord}) from s) ships`;
+(select array_agg(object_construct('m', merchant_id, 'fg', fulfillment_group_id, 'trk', trk, 'sku', sku, 't', title, 'lv', round(lv, 2), 'rb', round(rb, 2), 'qw', round(qw, 1), 'bw', round(bw, 1), 'iw', round(iw, 1), 'qb', qb, 'bb', bb, 'mtrk', mtrk, 'mrk', mrk, 'mcb', round(mcb, 2))) within group (order by lv ${ord}) from s) ships`;
 }
 /* Summary top 10: each issue is assigned to its biggest line in the direction of the variance, then grouped by
    merchant, carrier and line. sqlTopRank ranks the groups (a few seconds); sqlTopFacts then adds the
@@ -691,13 +727,15 @@ select (select object_construct('n', count(*), 'lv', round(sum(lv), 2), 'rb', ro
 const SQL_DOM = (ord) => `c as (select merchant_id, fulfillment_group_id, et, ds, r, ${SQL_COMP} comp from a),
 cs as (select merchant_id, fulfillment_group_id, comp, sum(r) r, max_by(ds, abs(r)) ds from c group by 1, 2, 3),
 dom as (select cs.*, sum(iff(comp ilike 'M|merchant_surcharge%', r, 0)) over (partition by merchant_id, fulfillment_group_id) rbf from cs qualify row_number() over (partition by merchant_id, fulfillment_group_id order by r ${ord}) = 1)`;
+/* Prepaid return labels not used yet are not a loss (the carrier bills on use), so they stay out of the top 10 and come back as one total. */
+const PEND = `coalesce(dom.comp, 'X|unexplained') = 'M|return_label_unused-'`;
 function sqlTopRank(sc, dir, toDay) {
   const ord = dir === 'u' ? 'asc' : 'desc', d30 = `dateadd('day', -30, '${iso(toDay)}'::date)`;
   return `with ${sqlIssueFgs(sc, dir)},
 ${SQL_ADJ},
 ${SQL_DOM(ord)},
-g as (select d.merchant_id m, d.car, coalesce(dom.comp, 'X|unexplained') comp, count(*) n, sum(d.v) v, sum(coalesce(dom.r, 0)) lr, mode(nullif(dom.ds, '')) ds, min(d.issue_date) first, max(d.issue_date) last, sum(iff(d.issue_date > ${d30}, d.v, 0)) v30, count_if(d.issue_date > ${d30}) n30, sum(sum(d.v)) over () tot from d left join dom on dom.merchant_id = d.merchant_id and dom.fulfillment_group_id = d.fulfillment_group_id group by 1, 2, 3 qualify row_number() over (order by sum(d.v) ${ord}) <= 10)
-select m, car, comp, n, round(v, 2) v, round(lr, 2) lr, ds, to_char(first, 'YYYY-MM-DD') first, to_char(last, 'YYYY-MM-DD') last, round(v30, 2) v30, n30, round(tot, 2) tot from g order by v ${ord}`;
+g as (select d.merchant_id m, d.car, coalesce(dom.comp, 'X|unexplained') comp, count(*) n, sum(d.v) v, sum(coalesce(dom.r, 0)) lr, mode(nullif(dom.ds, '')) ds, min(d.issue_date) first, max(d.issue_date) last, sum(iff(d.issue_date > ${d30}, d.v, 0)) v30, count_if(d.issue_date > ${d30}) n30, sum(sum(d.v)) over () tot, sum(iff(${PEND}, sum(d.v), 0)) over () pend, sum(iff(${PEND}, count(*), 0)) over () pendn from d left join dom on dom.merchant_id = d.merchant_id and dom.fulfillment_group_id = d.fulfillment_group_id group by 1, 2, 3 qualify not ${PEND} and row_number() over (partition by ${PEND} order by sum(d.v) ${ord}) <= 10)
+select m, car, comp, n, round(v, 2) v, round(lr, 2) lr, ds, to_char(first, 'YYYY-MM-DD') first, to_char(last, 'YYYY-MM-DD') last, round(v30, 2) v30, n30, round(tot, 2) tot, round(pend, 2) pend, pendn from g order by v ${ord}`;
 }
 function sqlTopFacts(sc, dir, groups) {
   const ord = dir === 'u' ? 'asc' : 'desc', q = (x) => `'${String(x).replace(/'/g, "''")}'`;
@@ -1316,7 +1354,7 @@ const COMP = {
   'C|ups_return_to_sender_carrier_credit': 'Return-to-sender credit', 'C|currency': 'Currency difference',
   'M|merchant_surcharge_recovery+': 'Surcharge re-billed to merchant', 'M|merchant_surcharge_recovery-': 'Surcharge re-bill reversed',
   'M|merchant_surcharge_refund-': 'Surcharge refunded to merchant', 'M|merchant_base_charge_adjustment+': 'Merchant charged above quote',
-  'M|merchant_base_charge_adjustment-': 'Merchant charged below quote', 'M|merchant_duplicate_charge+': 'Merchant charged twice',
+  'M|merchant_base_charge_adjustment-': 'Merchant never charged for label', 'M|return_label_uncharged-': 'Used return label not charged', 'M|return_label_unused-': 'Return label not used yet', 'M|merchant_duplicate_charge+': 'Merchant charged twice',
   'M|merchant_duplicate_charge-': 'Duplicate charge refunded', 'M|merchant_label_charge_refund-': 'Label charge refunded',
   'M|used_voided_label_recharge+': 'Voided label re-charged', 'M|label_void_reversal-': 'Label voided and refunded',
   'M|label_void_reversal+': 'Label void undone', 'M|usps_pc_postage_fee_revenue+': 'USPS postage fee', 'X|unexplained': 'Not itemized',
@@ -1577,13 +1615,6 @@ const shift = (a, b, bad) => `<span class="sh">${a} <span class="arw">→</span>
 const pctOf = (a, b) => (b ? Math.round((a / b) * 100) : 0);
 const merchantName = (id) => { const i = S.data.M.idx.get(id); return i == null ? 'Merchant ' + String(id).slice(-6) : S.data.M.name[i]; };
 
-function likelyCause(f, lv, rb) {
-  if (f && +f.withw >= 5 && f.heavier / f.withw >= 0.5) return 'Labels understate the weight. Check the product and box weights the merchant uses, and re-bill the difference.';
-  if (f && +f.withd >= 5 && f.bigger / f.withd >= 0.3) return 'The declared box is smaller than what ships. Update the box size for these SKUs and re-bill the difference.';
-  if (Math.abs(rb) < Math.abs(lv) * 0.05) return 'The carrier charge was never passed on to the merchant. Re-bill it.';
-  return '';
-}
-
 /* ----- Line drill-down: the shipments behind one bridge line or top 10 issue ----- */
 function showDrawer() { $('#drawer').classList.add('on'); $('#drawer').setAttribute('aria-hidden', 'false'); $('#scrim').classList.add('on'); }
 function openLine(spec) {
@@ -1592,47 +1623,88 @@ function openLine(spec) {
   $('#drawer').classList.add('wide');
   renderDrawer(); showDrawer();
   cachedSf(sqlLine(spec.sc, spec.dir, spec.comp))
-    .then((rows) => { if (S.drawer !== dw) return; const r = rows[0] || {}; const fa = parseMaybe(r.facts) || {}; dw.res = { stats: { ...fa, fn: +fa.n || 0, ...(parseMaybe(r.stats) || {}) }, charges: parseMaybe(r.charges) || [], skus: parseMaybe(r.skus) || [], ships: parseMaybe(r.ships) || [] }; renderDrawer(true); })
+    .then((rows) => { if (S.drawer !== dw) return; const r = rows[0] || {}; const fa = parseMaybe(r.facts) || {}; dw.res = { stats: { ...fa, fn: +fa.n || 0, ...(parseMaybe(r.stats) || {}) }, charges: parseMaybe(r.charges) || [], life: parseMaybe(r.life) || {}, skus: parseMaybe(r.skus) || [], ships: parseMaybe(r.ships) || [] }; renderDrawer(true); })
     .catch((e) => { if (S.drawer !== dw) return; dw.err = msg(e); renderDrawer(true); });
+}
+/* What kind of evidence explains a line: labels the merchant was never charged for (split by return label used,
+   not used, or shipping label), package size (weights and boxes), carrier invoice lines, or merchant billing only. */
+const LABEL_FAM = ['M|merchant_base_charge_adjustment-', 'M|return_label_uncharged-', 'M|return_label_unused-'];
+function lineFamily(comp, dir, ds) {
+  if (LABEL_FAM.includes(comp)) return 'label';
+  if (SIZED({ comp, ds }, dir)) return 'size';
+  return comp[0] === 'M' || comp[0] === 'X' ? 'merchant' : 'carrier';
+}
+/* The labels never charged to the merchant on these orders, by what the carrier invoice says happened to them. */
+function lifeBlock(life, comp, C) {
+  const rows = [
+    ['unused', 'M|return_label_unused-', 'Return label not used yet', `Not a loss yet. ${C} only bills a prepaid return label when a customer uses it.`, 'pend'],
+    ['used', 'M|return_label_uncharged-', 'Return label used, merchant not charged', (x) => `${C} billed us ${money(+x.cb)} for these. Real loss.`, 'u'],
+    ['ship', 'M|merchant_base_charge_adjustment-', 'Shipping label never charged', 'The charge to the merchant never went through. Real loss.', 'u'],
+  ].filter(([k]) => life[k] && +life[k].n);
+  const tot = rows.reduce((t, [k]) => t + Math.abs(+life[k].v), 0) || 1;
+  const bar = rows.map(([k, , , , cls]) => `<i class="${cls}" style="width:${((Math.abs(+life[k].v) / tot) * 100).toFixed(1)}%"></i>`).join('');
+  const late = life.late && +life.late.n ? `<div class="lf-r"><span class="sw o"></span><div><b>Charged to the merchant later</b><small>On ${cnt(+life.late.n)} of these orders the charge went through later.</small></div><span class="lf-n">${cnt(+life.late.n)}</span><span class="lf-v o">${money(+life.late.v, true)}</span></div>` : '';
+  return `<div class="lf"><div class="lf-bar">${bar}</div><div class="lf-h"><span></span><span></span><span>Orders</span><span>Not charged</span></div>${rows.map(([k, cmp, name, sub, cls]) => `<div class="lf-r${cmp === comp ? ' on' : ''}"><span class="sw ${cls}"></span><div><b>${name}</b><small>${typeof sub === 'function' ? sub(life[k]) : sub}</small></div><span class="lf-n">${cnt(+life[k].n)}</span><span class="lf-v ${cls}">${money(+life[k].v, true)}</span></div>`).join('')}${late}</div>`;
 }
 function renderLineDrawer(keepScroll) {
   const dw = S.drawer, sp = dw.spec, under = sp.dir === 'u', c = under ? 'u' : 'o', saved = $('#drawer').scrollTop;
-  const [from, to] = [sp.sc.from, sp.sc.to];
-  const chips = [['', under ? 'Under-billed' : 'Over-billed'], ['Carrier', sp.carrier || 'All carriers'], sp.merchant ? ['Merchant', sp.merchant] : null, sp.type ? ['Issue', sp.type] : null, ['Period', `${pLabel(from, 'day', true)} – ${pLabel(to, 'day', true)}`]].filter(Boolean);
+  const [from, to] = [sp.sc.from, sp.sc.to], C = sp.carrier && sp.carrier !== 'All carriers' ? sp.carrier : 'The carrier';
+  const ds = dw.res?.charges?.[0]?.d || sp.ds || '', fam = lineFamily(sp.comp, sp.dir, ds);
+  const title = capFirst(chargeType({ comp: sp.comp, ds }, sp.dir));
+  const chips = [['', under ? 'Under-billed' : 'Over-billed'], ['Carrier', sp.carrier || 'All carriers'], sp.merchant ? ['Merchant', sp.merchant] : null, ['Period', `${pLabel(from, 'day', true)} – ${pLabel(to, 'day', true)}`]].filter(Boolean);
   let body;
   if (dw.err) body = `<div class="card"><div class="empty">Couldn't load the shipments. ${esc(dw.err)}</div></div>`;
-  else if (!dw.res) body = `<div class="card"><div class="loading">Matching shipments to carrier invoices and SKUs. This takes about 20 seconds…</div></div>`;
+  else if (!dw.res) body = `<div class="card"><div class="loading">Matching shipments to carrier invoices and products. This takes about 20 seconds…</div></div>`;
   else {
-    const { stats: f, charges, skus, ships } = dw.res, lv = +f.lv || 0, rb = +f.rb || 0, net = +f.net || 0;
+    const { stats: f, charges, life, skus, ships } = dw.res, lv = +f.lv || 0, rb = +f.rb || 0, net = +f.net || 0, n = +f.n || 0;
+    const top = skus.find((x) => x.sku && x.sku !== 'Unknown');
+    const rr = { comp: sp.comp, ds, n, v: lv }, fo = { facts: f, topsku: top?.sku, toptitle: top?.t, topn: top?.n };
+    const cause = causeLine(rr, sp.dir, fo, C), fix = fixLine(rr, sp.dir, dollars(lv));
     const meter = (label, a, b, sub) => (+b >= 5 ? `<div class="mtr"><div class="ml"><b>${label}</b><small>${sub}</small></div><span class="mb"><i class="${c}" style="width:${pctOf(a, b)}%"></i></span><span class="mp">${pctOf(a, b)}%</span></div>` : '');
-    const cause = likelyCause(f, lv, rb);
-    const pattern = [
-      meter('Billed heavier than the label', f.heavier, f.withw, `Median ${fmtW(f.qw)} on the label, ${fmtW(f.bw)} billed · ${cnt(f.withw)} shipments with both weights`),
-      meter('Measured bigger than declared', f.bigger, f.withd, `Most common box ${fmtBox(f.qb)} declared, ${fmtBox(f.bb)} measured · ${cnt(f.withd)} with both sizes`),
-      meter('Items heavier than the label', f.itemsheavier, f.withi, `Median item weight ${fmtW(f.iw)} from the store's product data`),
-      meter('Matched to a SKU', f.withsku, f.fn, `${cnt(f.withsku)} of ${cnt(f.fn)} shipments`),
-    ].join('');
+    const meters = fam === 'size' ? [
+      meter('Carrier weighed it heavier than the label', f.heavier, f.withw, `Typical label ${plainW(f.qw)}, carrier weighed ${plainW(f.bw)}. ${cnt(f.withw)} shipments have both weights.`),
+      meter('Carrier measured a bigger box than declared', f.bigger, f.withd, `Most common box ${f.qb ? plainBox(f.qb) : 'unknown'} declared, ${f.bb ? plainBox(f.bb) : 'unknown'} measured. ${cnt(f.withd)} shipments have both sizes.`),
+      meter('Products alone weigh more than the label', f.itemsheavier, f.withi, `Typical product weight ${plainW(f.iw)}, from the store's product data.`),
+    ].join('') : '';
+    const visual = fam === 'label' ? lifeBlock(life, sp.comp, C) : meters ? `<div class="mtrs">${meters}</div>` : '';
+    const brk = `<div class="card brk ${sp.comp === 'M|return_label_unused-' ? 'pend' : c}"><div class="eyebrow">What's breaking</div><p class="big">${esc(cause || 'No single pattern stands out on these shipments.')}</p><p class="fx"><b>Fix</b>${esc(fix)}</p>${visual}${fam === 'size' && f.fn < f.n ? `<div class="sub mt">Patterns from the ${cnt(f.fn)} largest of ${cnt(f.n)} shipments.</div>` : ''}</div>`;
+    const k3 = fam === 'label'
+      ? `${kpi('Not charged to merchant', c, money(lv, true), `${cnt(n)} orders`)}${kpi(`${C === 'The carrier' ? 'Carrier' : C} has billed us`, '', money(+f.cb || 0), `${cnt(+f.used || 0)} of ${cnt(n)} labels used so far`)}${kpi('Real loss so far', '', sp.comp === 'M|return_label_unused-' ? '$0' : money(lv, true), sp.comp === 'M|return_label_unused-' ? 'Nothing billed until a label is used' : 'Billed to us, never charged to the merchant')}`
+      : sp.comp[0] === 'S'
+        ? `${kpi(under ? 'Not collected' : 'Collected beyond plan', c, money(lv, true), `${cnt(n)} shipments`)}${kpi('Passed on to merchant', '', money(rb, true), 'Fees charged to the merchant, net of reversals')}${kpi(under ? 'Still not billed' : 'Net extra', '', money(net, true), 'Every charge on these shipments')}`
+        : `${kpi(under ? 'Not collected' : 'Collected beyond plan', c, money(lv, true), `${cnt(n)} shipments`)}${kpi('Per shipment', '', money(n ? lv / n : 0, true), 'Average')}${kpi(under ? 'Still not billed' : 'Net extra', '', money(net, true), 'Every charge on these shipments')}`;
     const chItems = charges.map((x) => ({ key: x.d, name: cap(prettyCharge(x.d) || x.d), sub: x.d, u: under ? +x.v : 0, o: under ? 0 : +x.v, right: cnt(+x.n), rightLabel: 'Shipments' }));
+    const showCharges = (fam === 'size' || fam === 'carrier') && chItems.length && !(chItems.length === 1 && charges[0].d === '(no description)');
     const passed = (r) => (+r.rb ? `<small>${money(+r.rb, true)} passed on</small>` : '');
     const wcell = (r) => (r.qw || r.bw ? shift(fmtW(r.qw), fmtW(r.bw), worse(+r.qw, +r.bw)) : '—');
     const bcell = (r) => (r.qb || r.bb ? shift(fmtBox(r.qb), fmtBox(r.bb), worse(boxVol(r.qb), boxVol(r.bb))) : '—');
-    const tbl = dw.ltab === 'ships'
-      ? `<table class="t ln"><thead><tr><th>Shipment</th><th>SKU</th><th>Weight: label → billed</th><th>Box: declared → measured</th><th class="n">Amount</th></tr></thead><tbody>${ships.map((r) => `<tr><td><code>${esc(r.trk || '—')}</code><small>${esc(merchantName(r.m))}</small></td><td class="sk">${esc(r.sku || '—')}<small>${esc(r.t && r.t !== r.sku ? r.t : '')}</small></td><td>${wcell(r)}</td><td>${bcell(r)}</td><td class="n ${c}">${money(+r.lv, true)}${passed(r)}</td></tr>`).join('')}</tbody></table>`
-      : `<table class="t ln"><thead><tr><th>SKU</th><th class="n">Shipments</th><th>Weight: label → billed</th><th>Box: declared → measured</th><th class="n">Amount</th></tr></thead><tbody>${skus.map((r) => { const mi = S.data.M.idx.get(r.m); return `<tr${mi != null ? ` class="click" data-act="merchant" data-key="${mi}"` : ''}><td><b class="nm">${esc(r.sku || '—')}</b><small>${esc(r.t && r.t !== r.sku ? r.t + ' · ' : '')}${esc(merchantName(r.m))}</small></td><td class="n">${cnt(+r.n)}</td><td>${wcell(r)}</td><td>${bcell(r)}</td><td class="n ${c}">${money(+r.lv, true)}${passed(r)}</td></tr>`; }).join('')}</tbody></table>`;
-    body = `<div class="grid k3">${kpi(under ? 'This charge' : 'This line', c, money(lv, true), `${cnt(f.n)} shipments`)}${kpi('Passed on to merchant', '', money(rb, true), 'Surcharges re-billed, net of reversals')}${kpi(under ? 'Still not billed' : 'Net extra', '', money(net, true), 'All lines on these shipments')}</div>
-      <div class="card"><h2>What's happening</h2>${f.fn < f.n ? `<div class="sub">Patterns from the ${cnt(f.fn)} largest of ${cnt(f.n)} shipments.</div>` : ''}${cause ? `<p class="lede mt">${esc(cause)}</p>` : ''}${pattern ? `<div class="mtrs">${pattern}</div>` : '<div class="empty">No weight or size data on these shipments.</div>'}</div>
-      ${chItems.length ? `<div class="card"><h2>Exact carrier charges</h2><div class="sub" style="margin-bottom:8px">As written on the carrier invoice.</div>${drows(chItems, { oneSided: true, attr: () => '' })}</div>` : ''}
-      <div class="card"><div class="card-h"><div><h2>${dw.ltab === 'ships' ? 'Shipments' : 'By SKU'}</h2><div class="sub">${dw.ltab === 'ships' ? `Largest ${cnt(ships.length)} by amount.` : `Top ${cnt(skus.length)} SKUs or SKU combinations by amount. Click one for the merchant.`} Orange means the carrier found more than the label said.</div></div>
-        <div class="hdr-r">${seg('ltab', dw.ltab, [['sku', 'By SKU'], ['ships', 'Shipments']])}<button class="btn ghost" data-export="line">Export CSV</button></div></div><div class="scroll" style="max-height:560px">${tbl}</div></div>`;
+    const kind = (r) => ({ used: 'Return label, used', unused: 'Return label, not used yet', ship: 'Shipping label' })[r.mrk] || 'Shipping label';
+    const prod = (r) => `${esc(r.sku || '—')}<small>${esc(r.t && r.t !== r.sku ? r.t : '')}</small>`;
+    let tbl;
+    if (dw.ltab === 'ships') {
+      tbl = fam === 'label'
+        ? `<table class="t ln"><thead><tr><th>Order shipping label</th><th>Label not charged</th><th>Product</th><th class="n">${esc(C === 'The carrier' ? 'Carrier' : C)} billed us</th><th class="n">Not charged</th></tr></thead><tbody>${ships.map((r) => `<tr><td><code>${esc(r.trk || '—')}</code><small>${esc(merchantName(r.m))}</small></td><td><code>${esc(r.mtrk || '—')}</code><small>${esc(kind(r))}</small></td><td class="sk">${prod(r)}</td><td class="n">${+r.mcb ? money(+r.mcb) : '<span class="muted">Not yet</span>'}</td><td class="n ${c}">${money(+r.lv, true)}</td></tr>`).join('')}</tbody></table>`
+        : fam === 'size'
+          ? `<table class="t ln"><thead><tr><th>Shipment</th><th>Product</th><th>Weight: label → carrier</th><th>Box: declared → measured</th><th class="n">Amount</th></tr></thead><tbody>${ships.map((r) => `<tr><td><code>${esc(r.trk || '—')}</code><small>${esc(merchantName(r.m))}</small></td><td class="sk">${prod(r)}</td><td>${wcell(r)}</td><td>${bcell(r)}</td><td class="n ${c}">${money(+r.lv, true)}${passed(r)}</td></tr>`).join('')}</tbody></table>`
+          : `<table class="t ln"><thead><tr><th>Shipment</th><th>Product</th><th class="n">Amount</th></tr></thead><tbody>${ships.map((r) => `<tr><td><code>${esc(r.trk || '—')}</code><small>${esc(merchantName(r.m))}</small></td><td class="sk">${prod(r)}</td><td class="n ${c}">${money(+r.lv, true)}${passed(r)}</td></tr>`).join('')}</tbody></table>`;
+    } else {
+      const row = (r) => { const mi = S.data.M.idx.get(r.m); return `<tr${mi != null ? ` class="click" data-act="merchant" data-key="${mi}"` : ''}><td><b class="nm">${esc(r.sku || '—')}</b><small>${esc(r.t && r.t !== r.sku ? r.t + ', ' : '')}${esc(merchantName(r.m))}</small></td><td class="n">${cnt(+r.n)}</td>${fam === 'size' ? `<td>${wcell(r)}</td><td>${bcell(r)}</td>` : ''}<td class="n ${c}">${money(+r.lv, true)}${passed(r)}</td></tr>`; };
+      tbl = `<table class="t ln"><thead><tr><th>Product</th><th class="n">Shipments</th>${fam === 'size' ? '<th>Weight: label → carrier</th><th>Box: declared → measured</th>' : ''}<th class="n">Amount</th></tr></thead><tbody>${skus.map(row).join('')}</tbody></table>`;
+    }
+    const tsub = dw.ltab === 'ships' ? `Largest ${cnt(ships.length)} by amount.` : `Top ${cnt(skus.length)} products or product combinations by amount. Click one for the merchant.`;
+    body = `${brk}<div class="grid k3">${k3}</div>
+      ${showCharges ? `<div class="card"><h2>Charges on the carrier invoice</h2><div class="sub" style="margin-bottom:8px">As the carrier wrote them.</div>${drows(chItems, { oneSided: true, attr: () => '' })}</div>` : ''}
+      <div class="card"><div class="card-h"><div><h2>${dw.ltab === 'ships' ? 'Shipments' : 'By product'}</h2><div class="sub">${tsub}${fam === 'size' ? ' Orange means the carrier found more than the label said.' : ''}</div></div>
+        <div class="hdr-r">${seg('ltab', dw.ltab, [['sku', 'By product'], ['ships', 'Shipments']])}<button class="btn ghost" data-export="line">Export CSV</button></div></div><div class="scroll" style="max-height:560px">${tbl}</div></div>`;
   }
-  $('#drawer').innerHTML = `<div class="dw-h"><div class="eyebrow">${esc(sp.group || 'Line item')}</div><h1>${esc(sp.name)}</h1><div class="owners">${chips.map(([k, v]) => `<span>${k ? `<em>${esc(k)}</em>` : ''}${esc(v)}</span>`).join('')}</div><button class="icon-btn x" data-close aria-label="Close">✕</button></div><div class="dw-b">${body}</div>`;
+  $('#drawer').innerHTML = `<div class="dw-h"><div class="eyebrow">${esc(sp.group || 'Line item')}</div><h1>${esc(title)}</h1><div class="owners">${chips.map(([k, v]) => `<span>${k ? `<em>${esc(k)}</em>` : ''}${esc(v)}</span>`).join('')}</div><button class="icon-btn x" data-close aria-label="Close">✕</button></div><div class="dw-b">${body}</div>`;
   if (keepScroll) $('#drawer').scrollTop = saved;
 }
 function exportLine() {
   const dw = S.drawer, r = dw?.res; if (!r) return;
-  const slug = dw.spec.name.replace(/[^A-Za-z0-9]+/g, '-').toLowerCase();
-  if (dw.ltab === 'ships') download(`${slug}-shipments.csv`, [['merchant', 'tracking', 'sku', 'product', 'label_weight_oz', 'billed_weight_oz', 'item_weight_oz', 'box_declared', 'box_measured', 'amount', 'passed_on'], ...r.ships.map((x) => [merchantName(x.m), x.trk, x.sku, x.t, x.qw, x.bw, x.iw, x.qb, x.bb, x.lv, x.rb])]);
-  else download(`${slug}-by-sku.csv`, [['merchant', 'sku', 'product', 'shipments', 'label_weight_oz', 'billed_weight_oz', 'item_weight_oz', 'box_declared', 'box_measured', 'amount', 'passed_on'], ...r.skus.map((x) => [merchantName(x.m), x.sku, x.t, x.n, x.qw, x.bw, x.iw, x.qb, x.bb, x.lv, x.rb])]);
+  const slug = capFirst(chargeType({ comp: dw.spec.comp, ds: r.charges?.[0]?.d || '' }, dw.spec.dir)).replace(/[^A-Za-z0-9]+/g, '-').toLowerCase();
+  if (dw.ltab === 'ships') download(`${slug}-shipments.csv`, [['merchant', 'tracking', 'sku', 'product', 'label_weight_oz', 'billed_weight_oz', 'item_weight_oz', 'box_declared', 'box_measured', 'amount', 'passed_on', 'uncharged_label', 'uncharged_label_kind', 'carrier_billed_uncharged_label'], ...r.ships.map((x) => [merchantName(x.m), x.trk, x.sku, x.t, x.qw, x.bw, x.iw, x.qb, x.bb, x.lv, x.rb, x.mtrk || '', x.mrk || '', x.mcb || ''])]);
+  else download(`${slug}-by-product.csv`, [['merchant', 'sku', 'product', 'shipments', 'label_weight_oz', 'billed_weight_oz', 'item_weight_oz', 'box_declared', 'box_measured', 'amount', 'passed_on'], ...r.skus.map((x) => [merchantName(x.m), x.sku, x.t, x.n, x.qw, x.bw, x.iw, x.qb, x.bb, x.lv, x.rb])]);
 }
 
 /* ----- Summary: last 60 days ----- */
@@ -1688,7 +1760,9 @@ function chargeType(r, dir) {
     'C|post_void_carrier_cost': 'charges on cancelled labels',
     'C|ups_return_to_sender_carrier_cost': 'return to sender fees not passed on',
     'M|merchant_surcharge_recovery-': 'fee charges reversed back to the merchant',
-    'M|merchant_base_charge_adjustment-': 'labels never charged to the merchant',
+    'M|merchant_base_charge_adjustment-': 'shipping labels never charged to the merchant',
+    'M|return_label_uncharged-': 'used return labels not charged to the merchant',
+    'M|return_label_unused-': 'prepaid return labels not used yet',
     'M|label_void_reversal-': 'refunds on cancelled labels',
     'M|merchant_label_charge_refund-': 'label charge refunds',
     'M|merchant_surcharge_refund-': 'fee refunds to the merchant',
@@ -1716,7 +1790,9 @@ function causeLine(r, dir, f, C) {
     if (b) return `Boxes are declared as ${plainBox(x.qb)}, but ${C} measured ${plainBox(x.bb)} on ${cnt(x.bigger)} of ${cnt(x.withd)} shipments.`;
   }
   const base = ({
-    'M|merchant_base_charge_adjustment-': 'The label was bought, but the charge to the merchant never went through.',
+    'M|merchant_base_charge_adjustment-': 'The shipping label was bought, but the charge to the merchant never went through.',
+    'M|return_label_uncharged-': `The merchant packs a prepaid return label in each order. Customers used these and ${C} billed us, but the merchant was never charged.`,
+    'M|return_label_unused-': `The merchant packs a prepaid return label in each order. Customers have not used these, so ${C} has not billed us. This is not a loss yet.`,
     'C|base_invoice_above_purchase_quote': `${C} priced a heavier or bigger package than the label described.`,
     'C|prior_invoice_upward_revision': DUTY_RE.test(r.ds || '') ? `${C} billed import taxes on international orders after delivery.` : `${C} sent higher bills after delivery.`,
     'C|currency': dir === 'u' ? `${C} bills in another currency and adds foreign tax and fuel charges.` : `${C} bills in another currency, and the converted cost came in below the label price.`,
@@ -1729,7 +1805,7 @@ function causeLine(r, dir, f, C) {
     'M|usps_pc_postage_fee_revenue+': 'The account\'s pricing adds a small postage fee to every label.',
     'M|merchant_duplicate_charge+': 'The merchant was charged twice for the same labels.',
   })[r.comp] || (r.comp.startsWith('S|') ? `${C} charged this fee and it was not passed on to the merchant.` : '');
-  const prod = f?.topsku && n && top / n >= 0.4 ? ` Mostly one product: ${cleanText(f.toptitle || f.topsku)}, in ${cnt(top)} of ${cnt(n)}.` : '';
+  const prod = f?.topsku && n && top <= n && top / n >= 0.4 ? ` Mostly one product: ${cleanText(f.toptitle || f.topsku)}, in ${cnt(top)} of ${cnt(n)}.` : '';
   return (base + prod).trim();
 }
 function fixLine(r, dir, A) {
@@ -1741,6 +1817,8 @@ function fixLine(r, dir, A) {
   if (c.startsWith('S|')) return dir === 'u' ? `Pass this fee on automatically and bill the ${A}.` : `Credit the merchant the ${A} and charge the carrier's final fee going forward.`;
   return ({
     'M|merchant_base_charge_adjustment-': `Find out why charges are failing on this account and bill the ${A}.`,
+    'M|return_label_uncharged-': `Charge the merchant automatically when a return label is used, and bill the ${A}.`,
+    'M|return_label_unused-': 'No action now. Make sure the merchant is charged automatically if a label is used.',
     'C|prior_invoice_upward_revision': `Pass late carrier bills on automatically and bill the ${A}.`,
     'C|currency': dir === 'u' ? 'Pass foreign tax and fuel charges on, and price these labels in the carrier\'s currency.' : 'Confirm this margin is intended, or price these labels in the carrier\'s currency.',
     'M|label_void_reversal-': 'Make sure the carrier refunds come in, and charge for any cancelled label that was used.',
@@ -1785,7 +1863,7 @@ function viewTop() {
   const dirs = ['u', 'o'].filter((d) => S.show[d]), ai = S.ai?.window === SUMMARY_DAYS ? S.ai : null;
   const [a, b] = summaryRange(), t = agg({ range: [a, b] }).tot;
   const tile = (d) => d === 'u'
-    ? `<div class="st u"><span>Not collected</span><b>${dollars(t.u)}</b><small>${cnt(t.un)} shipments at ${cnt(t.mu.size)} merchants</small></div>`
+    ? `<div class="st u"><span>Not collected</span><b>${dollars(t.u)}</b><small>${cnt(t.un)} shipments at ${cnt(t.mu.size)} merchants</small><small class="pn" data-pend></small></div>`
     : `<div class="st o"><span>Collected beyond plan</span><b>${dollars(t.o)}</b><small>${cnt(t.on)} shipments at ${cnt(t.mo.size)} merchants</small></div>`;
   let h = `<div class="card sumhead"><div class="card-h"><div><h2>Last 60 days</h2><div class="sub">${esc(fullDate(iso(a)))} to ${esc(fullDate(iso(b)))}${anyFilter() ? ', with your filters applied' : ''}. Under-billed is money we did not collect. Over-billed is money collected beyond plan, which is extra margin or owed back to a merchant.</div></div></div>
     <div class="sts">${dirs.map(tile).join('')}</div>`;
@@ -1827,14 +1905,18 @@ function renderTopBody(dir) {
   if (!el || !T) return;
   if (!T.rank.length) { el.innerHTML = '<div class="empty">No issues match.</div>'; return; }
   const mx = Math.max(...T.rank.map((r) => Math.abs(+r.v)));
-  el.innerHTML = T.rank.map((r, i) => topCard(r, i, dir, mx, T.facts)).join('');
+  const pend = Math.abs(+T.rank[0]?.pend || 0), pn = +T.rank[0]?.pendn || 0;
+  el.innerHTML = T.rank.map((r, i) => topCard(r, i, dir, mx, T.facts)).join('')
+    + (dir === 'u' && pend >= 1 ? `<div class="pendnote"><span class="sw pend"></span><p><b>Left out of this list: ${dollars(pend)} of prepaid return labels on ${cnt(pn)} orders that customers have not used.</b> The carrier only bills a return label when it is used, so this is not a loss yet. If a customer uses one, the merchant should be charged then.</p></div>` : '');
+  const tn = $('[data-pend]');
+  if (tn && dir === 'u') tn.textContent = pend >= 1 ? `Includes ${dollars(pend)} of unused return labels, not a loss yet` : '';
 }
 function openTopLine(dir, i) {
   const r = S.top[dir]?.rank?.[i]; if (!r) return;
   const sc = scopeSql(false, summaryRange()), car = safeLit(r.car), mid = safeId(r.m);
   if (!car || !mid) return;
   const sc2 = { ...sc, where: sc.where + ` and merchant_id = '${mid}' and ${dimExpr('carriers')} = ${car}` };
-  openLine({ comp: r.comp, name: r.comp.startsWith('S|') && r.ds ? cap(prettyCharge(r.ds)) : compName(r.comp), group: COMP_GROUP[r.comp[0]] || 'Line item', dir, sc: sc2, carrier: CARRIERS[r.car] || r.car, merchant: merchantName(r.m) });
+  openLine({ comp: r.comp, ds: r.ds || '', name: compName(r.comp), group: COMP_GROUP[r.comp[0]] || 'Line item', dir, sc: sc2, carrier: CARRIERS[r.car] || r.car, merchant: merchantName(r.m) });
 }
 
 /* ----- Owners ----- */
