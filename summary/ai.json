@@ -1,205 +1,106 @@
 {
-  "v": 2,
-  "writtenAt": "2026-10-06",
-  "by": "Claude",
-  "scope": "all billing data to date",
-  "briefing": {
-    "u": [
-      "The single biggest cause is a billing error in spring 2025. Between May 14 and June 7, 2025, our system credited merchants for extra carrier fees instead of charging them, about 15,000 times across 137 merchants. That one error accounts for about $116,000, roughly a fifth of all the money we have not collected. The billing team should confirm what happened, and we should decide whether to correct those merchant balances or write the loss off.",
-      "Before mid May 2025 we had no way to pass extra carrier fees on to merchants at all. USPS packaging fees from early 2025 were never collected, about $40,000 at Easy Clothes North America, Primo Golf Apparel, Wig Studio 1 and ENRFORCE alone. USPS has charged almost none of these fees since July 2025, so this is an old backlog rather than a growing problem.",
-      "Three problems are still costing us money every month and should be fixed first: import taxes on District Vision's international FedEx orders, Izzy Zero Waste Beauty being charged less than its label price, and oversized boxes at Pond Pro Canada. Together they cost about $4,400 in the last 30 days."
-    ],
-    "o": [
-      "Freckled Poppy is the largest over-billed account. DHL eCommerce charges us slightly less than our label price on almost every Freckled Poppy order, about $17,000 so far and still growing. This is extra margin rather than an error, but the price may be set higher than intended.",
-      "Freckled Poppy, RESA and Girls Crew were charged about $38,000 more for extra carrier fees than the carriers finally billed us, between August 2025 and January 2026. These merchants are likely owed credits.",
-      "A small USPS postage fee on By Alexa Rae and Camp Snap labels adds about $1,100 a month across roughly 93,000 labels. This comes from how those accounts are priced, and should be confirmed as intended."
-    ]
+ "v": 3,
+ "window": 60,
+ "writtenAt": "2026-10-06",
+ "by": "Claude",
+ "scope": "issues from August 8 to October 6, 2026, every merchant",
+ "briefing": {
+  "u": [
+   "Labels never charged to Izzy Zero Waste Beauty, DKOldies and ro•sham•bo eyewear cost about $7,000 on 887 USPS shipments, and it is still happening.",
+   "Weights and box sizes set too low at ZERO FOXTROT and Ballerina Farm cost about $3,800 since mid September.",
+   "FedEx import tax bills at District Vision and LA Clippers Team Store were not passed on, about $3,100."
+  ],
+  "o": [
+   "DHL eCommerce charges less than our label price at Freckled Poppy, FB County and Worth Collective, about $9,500. Confirm these prices are intended.",
+   "Pond Pro Canada and one unlinked UPS account were charged about $7,300 more in UPS fees than UPS billed, and may be owed credits."
+  ]
+ },
+ "notes": {
+  "u|67af9012aca81c11b76e4074|USPS|M|merchant_base_charge_adjustment-": {
+   "cause": "The label was bought, but the charge to the merchant never went through. Most orders contain the same mascara refill.",
+   "fix": "Find out why charges are failing on this account and bill the {amount}."
   },
-  "notes": {
-    "u|689a67d5f8907cd382f0497e|FedEx|C|prior_invoice_upward_revision": {
-      "headline": "FedEx import tax bills on international orders are only partly passed on",
-      "what": "District Vision ships many orders overseas with FedEx. When those packages cross a border, the destination country charges import taxes such as customs duty and VAT. FedEx pays these taxes and bills us weeks later. Since October 2025, these late bills have left {amount} unpaid across {shipments} shipments.",
-      "why": "We do pass some of these late tax bills on to District Vision, about $28,000 so far, but not all of them, so part of each bill stays with us. The labels also understate weight on most of these shipments, about 1 pound on the label versus 3.6 pounds measured by FedEx, which widens the gap. This is still happening, with {last30} in the last 30 days.",
-      "fix": [
-        "Make sure every late import tax bill from FedEx is charged to District Vision automatically, not just some of them.",
-        "Bill District Vision for the {amount} still outstanding.",
-        "Ask District Vision to correct the package weights in their store, and consider shipping international orders with import taxes paid up front so the full cost is known at checkout."
-      ]
-    },
-    "u|656cb9c5293f8600072136f7|USPS|M|merchant_surcharge_recovery-": {
-      "headline": "A billing error credited Easy Clothes for USPS fees instead of charging them",
-      "what": "Between May 14 and June 7, 2025, USPS charged us extra fees on {shipments} Easy Clothes North America shipments. Our system was supposed to charge those fees to the merchant. Instead, it added the same amount to the merchant's balance as a credit. We paid the fee and also gave the merchant money back, losing {amount}.",
-      "why": "This was not specific to Easy Clothes. In the same three weeks, every extra fee charge to merchants went the wrong way: about 15,000 charges at 137 merchants, worth about $65,000, were posted as credits instead of charges. From mid June 2025 the charges went the right way again, and nothing new has happened at this merchant since.",
-      "fix": [
-        "Confirm with the billing team that fee charges posted between May 14 and June 7, 2025 were credited by mistake.",
-        "Decide as a company whether to correct the affected merchant balances or write the loss off. At Easy Clothes, this error is worth {amount}.",
-        "Add a check that stops any fee charge to a merchant from posting as a credit."
-      ]
-    },
-    "u|656cb9c5293f8600072136f7|USPS|S|Package type change": {
-      "headline": "USPS packaging fees on Easy Clothes orders were never collected",
-      "what": "USPS charges an extra packaging fee when a package does not match the package type chosen on the label. Between April and September 2025, mostly in May, USPS charged this fee on {shipments} Easy Clothes North America shipments, almost all sent in the same small 7 by 6 inch mailer. None of the {amount} was collected from the merchant.",
-      "why": "Two things lined up. Before mid May 2025 we had no way to pass these fees on to merchants. Then, from May 14 to June 7, the billing error credited merchants for these fees instead of charging them. USPS has charged almost none of these fees since July 2025, so the mailer setting appears to be fixed, but the backlog was never recovered.",
-      "fix": [
-        "Confirm the package type saved for Easy Clothes' 7 by 6 inch mailer is now correct.",
-        "Decide whether to bill Easy Clothes for the {amount} backlog or write it off. Together with the billing error above, Easy Clothes accounts for about $32,000 of money not collected."
-      ]
-    },
-    "u|64dfde8b64583e00077c6515|USPS|S|Package type change": {
-      "headline": "USPS packaging fees on Primo Golf Apparel orders were never collected",
-      "what": "USPS charges an extra packaging fee when a package does not match the package type chosen on the label. Between February and September 2025, USPS charged this fee on {shipments} Primo Golf Apparel shipments, most of them sent in a flat 12 by 12 inch mailer. None of the {amount} was collected from the merchant.",
-      "why": "Many of these fees were charged before mid May 2025, when we had no way to pass carrier fees on to merchants. Fees charged between May 14 and June 7, 2025 were caught in the billing error that credited merchants instead of charging them. USPS has charged almost none of these fees since July 2025.",
-      "fix": [
-        "Confirm the package type saved for this mailer is now correct.",
-        "Decide whether to bill Primo Golf Apparel for the {amount} backlog or write it off."
-      ]
-    },
-    "u|67af9012aca81c11b76e4074|USPS|M|merchant_base_charge_adjustment-": {
-      "headline": "Izzy Zero Waste Beauty is being charged less than its label price",
-      "what": "When a merchant buys a label, we show a price and charge the merchant that price. Since February 2026, Izzy Zero Waste Beauty has been charged less than the label price on {shipments} USPS shipments, {amount} in total. USPS billed us about what we expected, so the gap is on the merchant's side.",
-      "why": "When the carrier bill is right but the merchant charge is low, the cause is almost always the account's pricing: a discount, an outdated price list, or a manual override. Many of these are small single orders of the Zero Waste Mascara, product code IZ-MAS-3M, which appears in 557 of the shipments. This is still happening, with {last30} in the last 30 days.",
-      "fix": [
-        "Review Izzy Zero Waste Beauty's price list, discounts and any manual price overrides.",
-        "Correct the pricing so new labels are charged in full.",
-        "Decide whether to bill the {amount} already missed."
-      ]
-    },
-    "u|656a2bbd0433410007cb4c80|USPS|S|Package type change": {
-      "headline": "USPS packaging fees on Wig Studio 1 orders were never collected",
-      "what": "USPS charges an extra packaging fee when a package does not match the package type chosen on the label. Between February and August 2025, USPS charged this fee on {shipments} Wig Studio 1 shipments, mostly sent in a 14 by 8 by 4 inch box. None of the {amount} was collected from the merchant.",
-      "why": "Many of these fees were charged before mid May 2025, when we had no way to pass carrier fees on to merchants. Fees charged between May 14 and June 7, 2025 were caught in the billing error that credited merchants instead of charging them. USPS has charged almost none of these fees since July 2025.",
-      "fix": [
-        "Confirm the package type saved for this box is now correct.",
-        "Decide whether to bill Wig Studio 1 for the {amount} backlog or write it off."
-      ]
-    },
-    "u|6883e61304f6da0728099ad3|UPS|C|base_invoice_above_purchase_quote": {
-      "headline": "UPS billed Jon Hart Fulfillment's heavy parcels far above the label price",
-      "what": "Between August 2025 and July 2026, UPS charged more than our label price on {shipments} Jon Hart Fulfillment shipments, {amount} in total. UPS billed these at its rate for very heavy parcels.",
-      "why": "The labels were bought with weights that were far too low. Where we can compare, the label said about 15 pounds and UPS weighed about 59 pounds, so the label price was based on a much lighter package. No new cases have appeared since July 2026.",
-      "fix": [
-        "Have Jon Hart Fulfillment correct the weights they enter when buying labels for these heavy parcels.",
-        "Bill the {amount} difference.",
-        "Make sure UPS weight corrections are charged to merchants automatically."
-      ]
-    },
-    "u|65bc29da0404ff0007372bab|USPS|S|Package type change": {
-      "headline": "USPS packaging fees on ENRFORCE orders were never collected",
-      "what": "USPS charges an extra packaging fee when a package does not match the package type chosen on the label. Between March and August 2025, USPS charged this fee on {shipments} ENRFORCE shipments, mostly sent in a 12 by 9 by 1 inch mailer. None of the {amount} was collected from the merchant.",
-      "why": "Many of these fees were charged before mid May 2025, when we had no way to pass carrier fees on to merchants. Fees charged between May 14 and June 7, 2025 were caught in the billing error that credited merchants instead of charging them. USPS has charged almost none of these fees since July 2025.",
-      "fix": [
-        "Confirm the package type saved for this mailer is now correct.",
-        "Decide whether to bill ENRFORCE for the {amount} backlog or write it off."
-      ]
-    },
-    "u|66f4509e60239d968c4edc61|FedEx|M|merchant_surcharge_recovery-": {
-      "headline": "A billing error credited WESTON JON BOUCHÉR for FedEx fees instead of charging them",
-      "what": "Between May 22 and June 5, 2025, our system was supposed to charge WESTON JON BOUCHÉR for extra FedEx fees on {shipments} shipments. Instead, it added the money to the merchant's balance as a credit, {amount} in total, which is more than the FedEx fees themselves.",
-      "why": "This is the same billing error that hit 137 merchants between May 14 and June 7, 2025, when fee charges were posted as credits instead of charges. Nothing new has happened at this merchant since.",
-      "fix": [
-        "Include this merchant in the company decision on the May and June 2025 billing error.",
-        "Correct the merchant's balance or write off the {amount}."
-      ]
-    },
-    "u|69726ff1809a5cc0e538c8cd|UPS|C|currency": {
-      "headline": "Pond Pro Canada's UPS bills are well above the label price, and still growing",
-      "what": "Pond Pro Canada ships from Canada with UPS, and UPS bills those shipments in Canadian dollars. Since July 2026, the final bills, converted to US dollars, came in {amount} above our label price across {shipments} shipments. This is still happening, with {last30} in the last 30 days.",
-      "why": "There are two causes. First, the boxes are much bigger than declared: the label says 8 by 8 by 6 inches, but UPS measured about 19 by 13 by 13 inches on every shipment it measured, and bigger boxes cost more to ship. Second, the final UPS bills include Canadian sales tax and fuel charges that our label price does not cover.",
-      "fix": [
-        "Correct the box size saved for Pond Pro Canada's products so labels are priced on the real box.",
-        "Make sure Canadian sales tax and fuel charges from UPS are charged to the merchant.",
-        "Bill the {amount} difference."
-      ]
-    },
-    "o|680c0c18e723d27391ccf6b1|DhlEcs|C|base_invoice_below_purchase_quote": {
-      "headline": "DHL eCommerce charges us less than our label price on nearly every Freckled Poppy order",
-      "what": "Since February 2026, DHL eCommerce has billed us slightly less than the price we charged Freckled Poppy on almost every shipment, about 37 cents each. Across {shipments} shipments that adds up to {amount}, and it is still happening, with {last30} in the last 30 days.",
-      "why": "Freckled Poppy pays our label price, which is set a little above DHL's actual rate for this account. This is extra margin for us, not a mistake on any single shipment.",
-      "fix": [
-        "Decide whether this extra margin is intended.",
-        "If it is not, lower the DHL eCommerce price for Freckled Poppy to match DHL's actual rate."
-      ]
-    },
-    "o|680c0c18e723d27391ccf6b1|FirstMile|M|merchant_surcharge_recovery+": {
-      "headline": "Freckled Poppy was charged more for FirstMile fees than FirstMile billed us",
-      "what": "Between November 2025 and January 2026, we charged Freckled Poppy for extra FirstMile fees on {shipments} shipments. The total we charged came out {amount} higher than what FirstMile finally billed us for those fees.",
-      "why": "FirstMile weighed most of these packages as heavier than the label said, about 1.6 pounds on the label versus 2 pounds measured, so a fee was justified. But the amount we charged the merchant was higher than FirstMile's final fee, most likely because FirstMile reduced part of it after we had already billed the merchant.",
-      "fix": [
-        "Credit Freckled Poppy the {amount} difference, or confirm with finance that it should be kept.",
-        "Charge merchants the carrier's final fee rather than the first estimate."
-      ]
-    },
-    "o|680bec096d1576ec2acc85b9|USPS|C|carrier_credit_or_refund": {
-      "headline": "USPS refunded postage on Washington Park orders, and we kept the refund",
-      "what": "Between May 2025 and July 2026, USPS refunded part of the postage on {shipments} Washington Park shipments after the merchant had already paid in full. We received {amount} in refunds and did not pass them back.",
-      "why": "USPS issues these refunds after the fact, for example when postage was overcharged. Our system records the refund for us but does not credit the merchant.",
-      "fix": [
-        "Decide whether these refunds belong to Washington Park.",
-        "If they do, credit the {amount}. If not, record it as extra margin so it stops showing as a problem."
-      ]
-    },
-    "o|66d7b1a82e64762396a5f621|FedEx|M|merchant_surcharge_recovery+": {
-      "headline": "RESA was charged more for FedEx fees than FedEx billed us",
-      "what": "From August to November 2025, we charged RESA for extra FedEx fees on {shipments} shipments, mostly for packages that weighed more than the label said. The total we charged came out {amount} higher than what FedEx finally billed us.",
-      "why": "The labels did understate weight, about 11 ounces on the label versus 1.5 pounds measured by FedEx, so a fee was justified. But the merchant was charged more than FedEx's final amount.",
-      "fix": [
-        "Credit RESA the {amount} difference, or confirm it should be kept.",
-        "Charge merchants the carrier's final fee rather than the first estimate."
-      ]
-    },
-    "o|68a50505c0d7094cbd96cd7c|FirstMile|M|merchant_surcharge_recovery+": {
-      "headline": "Girls Crew was charged more for FirstMile fees than FirstMile billed us",
-      "what": "From October 2025 to January 2026, we charged Girls Crew for extra FirstMile weight fees on {shipments} small shipments of about 4 ounces each. The total came out {amount} higher than what FirstMile finally billed us.",
-      "why": "FirstMile weighed most of these packages slightly heavier than the label, about 4 ounces on the label versus 5 ounces measured. The fee we charged the merchant was larger than FirstMile's final fee.",
-      "fix": [
-        "Credit Girls Crew the {amount} difference, or confirm it should be kept.",
-        "Charge merchants the carrier's final fee rather than the first estimate."
-      ]
-    },
-    "o|66d7b1a82e64762396a5f621|FedEx|C|base_invoice_below_purchase_quote": {
-      "headline": "FedEx gave discounts on RESA shipments after the label price was set",
-      "what": "Between July 2025 and June 2026, FedEx billed us less than our label price on {shipments} RESA shipments, {amount} in total, because FedEx applied discounts after the labels were bought.",
-      "why": "RESA paid the full label price, and the FedEx discount came later. The difference is extra margin for us.",
-      "fix": [
-        "Decide whether to keep this margin or share the discount with RESA.",
-        "If FedEx discounts on this account are routine, lower the label price."
-      ]
-    },
-    "o|686ff7dbbbd350fe657b0f13|USPS|M|usps_pc_postage_fee_revenue+": {
-      "headline": "A small USPS postage fee adds up across By Alexa Rae's labels",
-      "what": "Every By Alexa Rae USPS label carries a small postage fee on top of the label price, about 17 cents. Across {shipments} labels since June 2026 it adds up to {amount}, and it is still happening.",
-      "why": "This comes from how USPS labels are priced for this account, not from a mistake on individual shipments.",
-      "fix": [
-        "Confirm the fee is intended and shown in the merchant's pricing.",
-        "If it is not, remove it from the account's price."
-      ]
-    },
-    "o|683f75e117015f88cc6f1c16|USPS|M|usps_pc_postage_fee_revenue+": {
-      "headline": "A small USPS postage fee adds up across Camp Snap's labels",
-      "what": "Camp Snap pays the same small USPS postage fee as By Alexa Rae, about 16 cents a label. Across {shipments} labels since June 2026 it adds up to {amount}, and it is still happening.",
-      "why": "Like By Alexa Rae, this comes from the account's USPS pricing. Separately, the products in most Camp Snap boxes weigh more than the label says, about 14 ounces of product versus 8 ounces on the label. USPS has not charged extra for that yet, but it is a risk of future weight fees.",
-      "fix": [
-        "Confirm the postage fee is intended.",
-        "Ask Camp Snap to correct the product weights in their store before USPS starts charging weight fees."
-      ]
-    },
-    "o|6893ae2b2ca596af5928b677|DhlEcs|C|base_invoice_below_purchase_quote": {
-      "headline": "DHL eCommerce charges us less than our label price on FB County orders",
-      "what": "Since March 2026, DHL eCommerce has billed us less than the price we charged FB County on {shipments} shipments, about 83 cents each, {amount} in total. It is still happening, with {last30} in the last 30 days.",
-      "why": "FB County pays our label price, which is set above DHL's actual rate for these shipments, which typically weigh about 2 pounds. This is extra margin, not a billing mistake.",
-      "fix": [
-        "Decide whether this extra margin is intended.",
-        "If it is not, lower the DHL eCommerce price for FB County to match DHL's actual rate."
-      ]
-    },
-    "o|666a12e530718f30eda584d7|USPS|C|carrier_credit_or_refund": {
-      "headline": "USPS refunded postage on Little Stocking Company orders, and we kept the refund",
-      "what": "Since April 2025, USPS has refunded part of the postage on {shipments} Little Stocking Company shipments after the merchant had paid in full, {amount} in total. It is still happening.",
-      "why": "These are larger parcels. Where we can compare, the label said about 5.6 pounds and USPS later billed about 4 pounds, then refunded the difference. We kept the refund rather than passing it back.",
-      "fix": [
-        "Decide whether these refunds belong to Little Stocking Company.",
-        "If they do, credit the {amount}. If not, record it as extra margin."
-      ]
-    }
+  "u|68c32f42c7e339bbfde5cc2d|FedEx|C|base_invoice_above_purchase_quote": {
+   "cause": "Labels say about 36 ounces, but FedEx billed about 48 ounces on 116 of 133 shipments, all since September 16.",
+   "fix": "Correct the product weights saved in the store, then bill the {amount}."
+  },
+  "u|67c09ce2151b63cc7a87a22d|USPS|M|merchant_base_charge_adjustment-": {
+   "cause": "The label was bought, but the charge to the merchant never went through.",
+   "fix": "Find out why charges are failing on this account and bill the {amount}."
+  },
+  "u|689a67d5f8907cd382f0497e|FedEx|C|prior_invoice_upward_revision": {
+   "cause": "FedEx billed import tax and VAT on international orders after delivery, and none of it was passed on.",
+   "fix": "Pass import tax bills on to the merchant automatically, or ship with taxes paid up front, and bill the {amount}."
+  },
+  "u|681e4b818452e5637595415b|USPS|M|merchant_base_charge_adjustment-": {
+   "cause": "The label was bought, but the charge to the merchant never went through.",
+   "fix": "Find out why charges are failing on this account and bill the {amount}."
+  },
+  "u|69a89b9e9a879990e4d1e698|USPS|M|label_void_reversal-": {
+   "cause": "We refunded about $6,200 on 713 cancelled labels, but USPS has refunded only $5,100 so far and charged us for 31 of them.",
+   "fix": "Claim the missing USPS refunds and charge the merchant for the 31 labels that shipped."
+  },
+  "u|69726ff1809a5cc0e538c8cd|UPS|C|currency": {
+   "type": "Canadian bills above the label price",
+   "cause": "Boxes are declared as 12 by 12 by 18 inches, but UPS measured 19 by 13 by 13 inches on every shipment we can check, and UPS adds fuel and sales tax.",
+   "fix": "Correct the saved box size, pass fuel and tax charges on, and bill the {amount}."
+  },
+  "u|66fb263634259e19afad86c9|USPS|C|base_invoice_above_purchase_quote": {
+   "cause": "Labels say 2.8 pounds in a 12 by 9 by 3 inch box, but USPS billed 8.5 pounds in a 16 by 16 by 8 inch box. The products alone weigh about 5.6 pounds.",
+   "fix": "Correct the product weights and box size saved in the store, then bill the {amount}."
+  },
+  "u|682f9f8e377e4efd2f893a95|FedEx|C|prior_invoice_upward_revision": {
+   "cause": "FedEx billed import tax and VAT on international orders after delivery, and none of it was passed on.",
+   "fix": "Pass import tax bills on to the merchant automatically, or ship with taxes paid up front, and bill the {amount}."
+  },
+  "u|65bc29da0404ff0007372bab|USPS|S|Duplicate carrier charge": {
+   "type": "USPS billed the same labels twice",
+   "cause": "USPS charged these labels a second time on its monthly bill.",
+   "fix": "Dispute the {amount} in duplicate charges with USPS."
+  },
+  "o|680c0c18e723d27391ccf6b1|DhlEcs|C|base_invoice_below_purchase_quote": {
+   "cause": "Our DHL eCommerce label price for this merchant is set above DHL's actual rate.",
+   "fix": "Confirm this margin is intended, or lower the price."
+  },
+  "o|69726ff1809a5cc0e538c8cd|UPS|M|merchant_surcharge_recovery+": {
+   "type": "fees charged above what UPS finally billed",
+   "cause": "The merchant was charged the first UPS fee amount, and UPS later billed less.",
+   "fix": "Credit the {amount} and charge the final UPS fee going forward."
+  },
+  "o|666a12e530718f30eda584d7|USPS|C|carrier_credit_or_refund": {
+   "type": "USPS postage refunds kept",
+   "cause": "USPS refunded postage fees after the merchant had paid in full. Most of it came in by September 9.",
+   "fix": "Decide whether to credit the merchant the {amount}."
+  },
+  "o|6994933d9b91fa4177693cc2|UPS|M|merchant_surcharge_recovery+": {
+   "type": "fees charged above what UPS finally billed",
+   "cause": "This account is not linked to a merchant in our records. It was charged the first UPS fee amount, and UPS later billed less.",
+   "fix": "Credit the {amount} and charge the final UPS fee going forward."
+  },
+  "o|686ff7dbbbd350fe657b0f13|USPS|M|usps_pc_postage_fee_revenue+": {
+   "cause": "The account's pricing adds a postage fee of about 17 cents to every USPS label.",
+   "fix": "Confirm the fee is intended and shown in the merchant's pricing."
+  },
+  "o|666a12e530718f30eda584d7|USPS|M|usps_pc_postage_fee_revenue+": {
+   "cause": "The account's pricing adds a postage fee of about 23 cents to every USPS label.",
+   "fix": "Confirm the fee is intended and shown in the merchant's pricing."
+  },
+  "o|6504dd2835617a00070e27bf|USPS|C|base_invoice_below_purchase_quote": {
+   "cause": "USPS billed less than our label price on these shipments, all between September 9 and 26.",
+   "fix": "Confirm the label price is intended, or lower it."
+  },
+  "o|6893ae2b2ca596af5928b677|DhlEcs|C|base_invoice_below_purchase_quote": {
+   "cause": "Our DHL eCommerce label price for this merchant is set above DHL's actual rate.",
+   "fix": "Confirm this margin is intended, or lower the price."
+  },
+  "o|6516f362556b6900062cdccd|DhlEcs|C|base_invoice_below_purchase_quote": {
+   "cause": "Our DHL eCommerce label price for this merchant is set above DHL's actual rate.",
+   "fix": "Confirm this margin is intended, or lower the price."
+  },
+  "o|6994933d9b91fa4177693cc2|UPS|C|currency": {
+   "type": "Canadian bills below the label price",
+   "cause": "UPS bills this account in Canadian dollars, and the converted cost came in below our label price. The account is not linked to a merchant in our records.",
+   "fix": "Link the account to its merchant, then confirm this margin is intended."
   }
+ }
 }

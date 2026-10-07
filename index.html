@@ -123,33 +123,30 @@ table.mx{border-collapse:separate;border-spacing:4px;width:100%;font-size:13px;m
 .bl li{padding:8px 12px;border-left:3px solid var(--under);background:var(--bg);border-radius:0 6px 6px 0;font-size:14px;line-height:20px}
 .bl li.o{border-left-color:var(--over)}
 .tops{display:grid}
-.intro p{margin:8px 0 0;font-size:14px;line-height:22px;color:var(--ink2);max-width:920px}
-.intro b{font-weight:600}
-.intro b.u{color:var(--under-ink)}
-.intro b.o{color:var(--over-ink)}
-.bgroups{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px}
-.bgroup h4,.story h4{font:600 11px/16px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);margin:0 0 8px}
-.tc{display:grid;grid-template-columns:32px minmax(0,1fr);gap:16px;padding:24px 0;border-top:1px solid var(--line)}
-.tc:first-child{border-top:0;padding-top:0}
-.tc .rk{width:32px;height:32px;border-radius:16px;background:var(--bg);display:grid;place-items:center;font:400 20px/1 var(--serif);color:var(--ink)}
-.tc .th{display:grid;grid-template-columns:minmax(0,1fr) 200px;gap:24px;align-items:start}
-.tc .mn{font:400 28px/34px var(--serif);margin:0;letter-spacing:-.01em;color:var(--ink);text-transform:none}
-.tc .hd{font-size:15px;line-height:22px;font-weight:600;color:var(--ink);margin:4px 0 0}
-.tc .stat{display:inline-block;margin-top:12px;padding:6px 12px;border-radius:6px;background:var(--line2);font-size:13px;line-height:18px;color:var(--ink2)}
-.tc .stat.u{background:rgba(255,68,5,.08);color:var(--under-ink)}
-.tc .stat.o{background:rgba(8,138,178,.08);color:var(--over-ink)}
-.story{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:16px}
-.story p{margin:0;font-size:14px;line-height:22px;color:var(--ink)}
-.story ol{margin:0;padding-left:20px;font-size:14px;line-height:22px;color:var(--ink)}
-.story li+li{margin-top:6px}
-.tc .tf{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:16px;font-size:12px;color:var(--muted)}
-.tc .tf .grow{flex:1}
-.tc .tf .by{font-style:italic}
-.tc .ta{text-align:right}
-.tc .ta b{display:block;font:400 32px/40px var(--serif);white-space:nowrap}
-.tc .ta b.u{color:var(--under-ink)}
-.tc .ta b.o{color:var(--over-ink)}
-.tc .ta small{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+.sts{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:16px}
+.st{padding:16px;border-radius:8px;background:var(--bg);border-left:4px solid var(--under)}
+.st.o{border-left-color:var(--over)}
+.st span{display:block;font:600 11px/16px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--ink2)}
+.st b{display:block;font:400 36px/44px var(--serif);margin-top:4px}
+.st.u b{color:var(--under-ink)}
+.st.o b{color:var(--over-ink)}
+.st small{display:block;font-size:12px;color:var(--muted)}
+.ws{font:600 11px/16px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);margin:24px 0 8px}
+.sr{display:grid;grid-template-columns:28px minmax(0,1fr) 140px;gap:16px;padding:16px 0;border-top:1px solid var(--line);align-items:start}
+.sr:first-child{border-top:0;padding-top:0}
+.sr .rk{width:28px;height:28px;border-radius:14px;background:var(--bg);display:grid;place-items:center;font:400 17px/1 var(--serif);color:var(--ink)}
+.sr .line{margin:2px 0 0;font-size:16px;line-height:24px;color:var(--ink)}
+.sr .line b{font-weight:600}
+.sr .amt.u{color:var(--under-ink)}
+.sr .amt.o{color:var(--over-ink)}
+.sr .cf{margin:6px 0 0;font-size:14px;line-height:20px;color:var(--ink2);display:grid;grid-template-columns:44px minmax(0,1fr);gap:8px}
+.sr .cf span{font:600 11px/20px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.sr .tf{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:10px;font-size:12px;color:var(--muted)}
+.sr .tf .grow{flex:1}
+.sr .tf .by{font-style:italic}
+.sr .tf .live.u{color:var(--under-ink)}
+.sr .tf .live.o{color:var(--over-ink)}
+.sr .sa{padding-top:8px}
 .tbar{display:block;height:6px;border-radius:3px;background:var(--line2);margin-top:6px;overflow:hidden}
 .tbar i{display:block;height:6px;border-radius:3px;margin-left:auto}
 .tbar i.u{background:var(--under)}
@@ -362,8 +359,8 @@ table.t{width:100%;border-collapse:collapse;font-size:13px;line-height:18px}
 #tip .r span{display:inline-flex;gap:8px;align-items:center;color:#C8C7C2}
 #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--black);color:#fff;padding:8px 16px;border-radius:8px;font-size:13px;opacity:0;transition:all .2s;z-index:70;pointer-events:none}
 #toast.on{opacity:1;transform:translateX(-50%)}
-@media (max-width:1100px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.two,.own,.half,.hl,.s3,.story{grid-template-columns:minmax(0,1fr)}}
-@media (max-width:720px){.chrome{position:relative}.wrap{padding:0 16px}.brand .scope,.brand .sep{display:none}.kpis,.k3{grid-template-columns:minmax(0,1fr)}.kpi .val{font-size:36px;line-height:40px}.tabs .wrap{gap:24px}.dw-h,.dw-b{padding-left:16px;padding-right:16px}.drow,.drows .hd,.drows.one .drow,.drows.one .hd{grid-template-columns:minmax(0,40%) minmax(0,1fr);gap:8px}.drow .cnt,.drows .hd>span:last-child{display:none}#fresh{display:none}.brand .app{font-size:22px}.card{padding:16px}.t{font-size:12px}.hl h2{font-size:26px;line-height:32px}.hb{width:64px}.ins{grid-template-columns:minmax(0,1fr)}.cc-r{grid-template-columns:minmax(0,38%) minmax(0,1fr) 44px;gap:8px}.cc-r .amt,.cc-r .cnt,.cc-r.cc-h{display:none}.cc-lg{display:flex}.wf-r{grid-template-columns:minmax(0,1fr) 72px 64px;gap:8px}.wf-r .cnt{display:none}.wf-r .nm span{white-space:normal}.hdr-r{width:100%}.tc{grid-template-columns:minmax(0,1fr)}.tc .rk{display:none}.tc .th{grid-template-columns:minmax(0,1fr)}.tc .ta{text-align:left}.tc .tbar i{margin-left:0}.tc .mn{font-size:24px;line-height:30px}.mtr{grid-template-columns:minmax(0,1fr) 48px}.mtr .mb{display:none}}
+@media (max-width:1100px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.two,.own,.half,.hl,.s3{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:720px){.chrome{position:relative}.wrap{padding:0 16px}.brand .scope,.brand .sep{display:none}.kpis,.k3{grid-template-columns:minmax(0,1fr)}.kpi .val{font-size:36px;line-height:40px}.tabs .wrap{gap:24px}.dw-h,.dw-b{padding-left:16px;padding-right:16px}.drow,.drows .hd,.drows.one .drow,.drows.one .hd{grid-template-columns:minmax(0,40%) minmax(0,1fr);gap:8px}.drow .cnt,.drows .hd>span:last-child{display:none}#fresh{display:none}.brand .app{font-size:22px}.card{padding:16px}.t{font-size:12px}.hl h2{font-size:26px;line-height:32px}.hb{width:64px}.ins{grid-template-columns:minmax(0,1fr)}.cc-r{grid-template-columns:minmax(0,38%) minmax(0,1fr) 44px;gap:8px}.cc-r .amt,.cc-r .cnt,.cc-r.cc-h{display:none}.cc-lg{display:flex}.wf-r{grid-template-columns:minmax(0,1fr) 72px 64px;gap:8px}.wf-r .cnt{display:none}.wf-r .nm span{white-space:normal}.hdr-r{width:100%}.sr{grid-template-columns:minmax(0,1fr)}.sr .rk,.sr .sa{display:none}.mtr{grid-template-columns:minmax(0,1fr) 48px}.mtr .mb{display:none}}
 </style>
 </head>
 <body>
@@ -378,7 +375,7 @@ table.t{width:100%;border-collapse:collapse;font-size:13px;line-height:18px}
     <div class="fresh"><span id="fresh">Connecting…</span><button id="refresh" class="icon-btn" title="Refresh from Snowflake" aria-label="Refresh"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M13.5 8a5.5 5.5 0 1 1-1.6-3.9"/><path d="M13.5 2.5v3h-3"/></svg></button></div>
   </div><div class="prog"><i id="prog"></i></div></header>
   <nav class="tabs"><div class="wrap">
-    <button data-tab="top">Top 10</button>
+    <button data-tab="top">Summary</button>
     <button data-tab="issues" class="on">Issues</button>
     <button data-tab="owners">Owners</button>
     <button data-tab="recon">Reconcile</button>
@@ -687,7 +684,7 @@ select (select object_construct('n', count(*), 'lv', round(sum(lv), 2), 'rb', ro
 (select array_agg(object_construct('m', merchant_id, 'sku', sku, 't', title, 'n', n, 'lv', round(lv, 2), 'rb', round(rb, 2), 'qw', round(qw, 1), 'bw', round(bw, 1), 'iw', round(iw, 1), 'qb', qb, 'bb', bb)) within group (order by lv ${ord}) from k) skus,
 (select array_agg(object_construct('m', merchant_id, 'fg', fulfillment_group_id, 'trk', trk, 'sku', sku, 't', title, 'lv', round(lv, 2), 'rb', round(rb, 2), 'qw', round(qw, 1), 'bw', round(bw, 1), 'iw', round(iw, 1), 'qb', qb, 'bb', bb)) within group (order by lv ${ord}) from s) ships`;
 }
-/* Top 10: each issue is assigned to its biggest line in the direction of the variance, then grouped by
+/* Summary top 10: each issue is assigned to its biggest line in the direction of the variance, then grouped by
    merchant, carrier and line. sqlTopRank ranks the groups (a few seconds); sqlTopFacts then adds the
    shipment facts and top SKU for just those groups, from their 3,000 largest shipments each (the SKU lookup
    scans a large table, about 10s). */
@@ -780,7 +777,7 @@ function buildData(raw) {
   const addM = (id, name, pa, se, ae, pend, rvw, pn, rn) => {
     let i = M.idx.get(id);
     if (i != null) return i;
-    i = M.id.length; M.idx.set(id, i); M.id.push(id); M.name.push(name || id);
+    i = M.id.length; M.idx.set(id, i); M.id.push(id); M.name.push(/^unattributed\b/i.test(name || '') || !name ? `Unidentified merchant, account ending ${String(id).slice(-6)}` : name);
     M.pa.push(paD.get(String(pa || '').trim() || 'Unassigned')); M.se.push(seD.get(String(se || '').trim() || 'Unassigned'));
     M.ae.push(String(ae || '').trim()); M.pend.push(+pend || 0); M.rvw.push(+rvw || 0); M.pendN.push(+pn || 0); M.rvwN.push(+rn || 0);
     return i;
@@ -1077,14 +1074,17 @@ function renderBar() {
   const presets = [['30d', '30D'], ['90d', '90D'], ['ytd', 'YTD'], ['12m', '12M'], ['all', 'All']];
   const grains = [['day', 'Day'], ['month', 'Month'], ['quarter', 'Quarter'], ['year', 'Year']];
   let h = S.tab === 'recon' ? '' : `<div class="seg dirseg">${[['both', 'Both'], ['u', 'Under-billed'], ['o', 'Over-billed']].map(([k, l]) => `<button data-view="${k}" class="${S.view === k ? 'on' : ''}">${k !== 'both' ? `<i class="dot ${k}"></i>` : ''}${l}</button>`).join('')}</div><span class="vsep"></span>`;
-  h += `<div class="seg">${presets.map(([k, l]) => `<button data-preset="${k}" class="${r.from == null && r.preset === k ? 'on' : ''}">${l}</button>`).join('')}</div>`;
-  if (S.tab !== 'top') h += `<div class="seg">${grains.map(([k, l]) => `<button data-grain="${k}" class="${S.grain === k ? 'on' : ''}">${l}</button>`).join('')}</div>`;
+  if (S.tab === 'top') h += '<span class="note">Last 60 days</span>';
+  else {
+    h += `<div class="seg">${presets.map(([k, l]) => `<button data-preset="${k}" class="${r.from == null && r.preset === k ? 'on' : ''}">${l}</button>`).join('')}</div>`;
+    h += `<div class="seg">${grains.map(([k, l]) => `<button data-grain="${k}" class="${S.grain === k ? 'on' : ''}">${l}</button>`).join('')}</div>`;
+  }
   if (S.tab === 'recon') h += `<span class="vsep"></span><span class="note">Company totals. Filters don't apply here.</span>`;
   else if (S.data) {
     h += '<span class="vsep"></span>' + DIMS.map((dm) => { const n = S.f[dm.key].size; return `<button class="dd${n ? ' on' : ''}" data-dd="${dm.key}">${dm.label}${n ? `<b>${n}</b>` : ''}<span class="car">▼</span></button>`; }).join('');
   }
   const chips = [];
-  if (r.from != null) chips.push(`<span class="chip"><em>Period</em>${esc(rangeLabel())}<button data-rm="range" aria-label="Clear period">✕</button></span>`);
+  if (r.from != null && S.tab !== 'top') chips.push(`<span class="chip"><em>Period</em>${esc(rangeLabel())}<button data-rm="range" aria-label="Clear period">✕</button></span>`);
   if (S.data && S.tab !== 'recon') for (const dm of DIMS) for (const k of S.f[dm.key]) chips.push(`<span class="chip"><em>${dm.label}</em>${esc(dimName(dm.key, k))}<button data-rm="${dm.key}:${k}" aria-label="Remove">✕</button></span>`);
   if (chips.length > 1) chips.push('<button class="linkbtn" data-clear>Clear all</button>');
   h += `<div class="chips">${chips.join('')}</div>`;
@@ -1291,8 +1291,8 @@ function step3(X) {
     <div><h3>What moved the money</h3><div id="bridge" class="minh"><div class="loading">Loading line items…</div></div></div></div></div>`;
 }
 /* Snowflake scope for the current selection: period, carrier, issue type and global filters. */
-function scopeSql(useDx = true) {
-  const D = S.data, f = S.f, dx = useDx ? S.dx : { carrier: null, type: null }, [from, to] = rangeDays();
+function scopeSql(useDx = true, range = null) {
+  const D = S.data, f = S.f, dx = useDx ? S.dx : { carrier: null, type: null }, [from, to] = range || rangeDays();
   let where = ` and issue_date between '${iso(from)}' and '${iso(to)}'`, mids = null, carRaw = null, orgs = null, dsts = null;
   const ms = merchantScope();
   if (ms) {
@@ -1635,28 +1635,20 @@ function exportLine() {
   else download(`${slug}-by-sku.csv`, [['merchant', 'sku', 'product', 'shipments', 'label_weight_oz', 'billed_weight_oz', 'item_weight_oz', 'box_declared', 'box_measured', 'amount', 'passed_on'], ...r.skus.map((x) => [merchantName(x.m), x.sku, x.t, x.n, x.qw, x.bw, x.iw, x.qb, x.bb, x.lv, x.rb])]);
 }
 
-/* ----- Top 10 ----- */
-const isDefaultScope = () => S.range.from == null && S.range.preset === 'all' && !anyFilter();
-const TOP_CACHE = 'cache/top-v1.json';
+/* ----- Summary: last 60 days ----- */
+const isDefaultScope = () => !anyFilter();
+const TOP_CACHE = 'cache/top-v2.json';
 let topStore = null;
 async function topStoreLoad() { if (topStore) return topStore; try { topStore = await fileJson(TOP_CACHE); } catch { topStore = {}; } return topStore || (topStore = {}); }
 function topKey(r) { return `${r.m}|${r.car}|${r.comp}`; }
-/* One sentence per issue, written from the data: who, which carrier, what charge, how much. */
-/* Plain-language Top 10. Every card answers three questions: what happened, why it is happening, how to fix it.
-   Text is written from live data here; when summary/ai.json has a note for the same issue, that write-up is
-   used instead, with live amounts filled in. No codes, symbols or invoice shorthand reach the page. */
+/* Plain-language text is written from live data here; when summary/ai.json has a note for the same issue
+   (and the same 60-day window), that write-up is used instead, with live amounts filled in. */
 const MONTHS_FULL = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const ymd = (s) => String(s || '').split('-').map(Number);
 const fullDate = (s) => { const [y, m, d] = ymd(s); return m ? `${MONTHS_FULL[m - 1]} ${d}, ${y}` : 'an unknown date'; };
-const monthYear = (s) => { const [y, m] = ymd(s); return m ? `${MONTHS_FULL[m - 1]} ${y}` : 'an unknown month'; };
-const span = (a, b) => { const [ya, ma] = ymd(a), [yb] = ymd(b); return monthYear(a) === monthYear(b) ? `in ${monthYear(a)}` : ya === yb ? `between ${MONTHS_FULL[ma - 1]} and ${monthYear(b)}` : `between ${monthYear(a)} and ${monthYear(b)}`; };
 const dollars = (v) => { const a = Math.abs(+v || 0); return '$' + (a >= 1000 ? Math.round(a / 100) * 100 : Math.round(a)).toLocaleString('en-US'); };
 const plainW = (oz) => (+oz >= 16 ? `${+(+oz / 16).toFixed(1)} pounds` : `${Math.max(1, Math.round(+oz))} ounces`);
 const plainBox = (b) => { const p = String(b || '').split('x').map(Number); return p[2] > 0 ? `${p[0]} by ${p[1]} by ${p[2]} inches` : `${p[0]} by ${p[1]} inches`; };
-function fracWords(a, b) {
-  const r = b ? a / b : 0;
-  return r >= 0.95 ? 'almost all' : r >= 0.85 ? 'about 9 in 10' : r >= 0.7 ? 'about 3 in 4' : r >= 0.6 ? 'about 2 in 3' : r >= 0.45 ? 'about half' : r >= 0.3 ? 'about 1 in 3' : r >= 0.2 ? 'about 1 in 4' : 'a small share';
-}
 /* Extra carrier fees, by the step 3 surcharge group: a plain name, and what makes the carrier charge it. */
 const PLAIN_FEE = {
   'Weight or size correction': ['weight and size correction fees', 'the carrier weighed or measured a package and found it heavier or bigger than the label said'],
@@ -1676,129 +1668,137 @@ const PLAIN_FEE = {
   'Base rate above quote': ['base shipping and fuel charges', 'the carrier bills more for basic shipping or fuel than the label price assumed'],
   'Other carrier charges': ['other carrier fees', 'the carrier adds fees that were not in the label price'],
 };
-/* Every other kind of line: a headline, what happened, and the fix. Tokens: {C} carrier, {M} merchant, {A} amount, {N} shipments, {W} when. */
-const PLAIN_LINE = {
-  'C|base_invoice_above_purchase_quote': ['{C} charged more than the label price for basic shipping', 'When a label is bought, we quote the merchant a price based on the weight and size entered. {W}, {C} billed more than that price on {N} {M} shipments, {A} in total.', 'The carrier price was based on a heavier or bigger package than the label described.', ['Check the weight and size entered when this merchant buys labels.', 'Bill the merchant for the {A} difference.']],
-  'C|prior_invoice_upward_revision': ['{C} sent higher bills weeks after delivery', '{W}, {C} sent corrected bills after delivery that raised the price on {N} {M} shipments. {A} of those increases was never charged to the merchant.', 'Late corrections from the carrier are not being passed on to the merchant in full.', ['Make sure late carrier corrections are charged to the merchant automatically.', 'Bill the merchant for the {A} outstanding.']],
-  'C|post_void_carrier_cost': ['{C} charged us for labels the merchant cancelled', '{W}, {M} cancelled {N} labels, but {C} still charged us for them, {A} in total.', 'Cancelled labels were used anyway, or the carrier did not process the cancellation.', ['Ask {C} to refund labels that were never used.', 'Charge the merchant for cancelled labels that were used.']],
-  'C|currency': ['{C} bills in another currency, and the cost came in above the label price', '{W}, {C} billed {N} {M} shipments in another currency. After converting to US dollars, the cost was {A} above the label price.', 'Exchange rates and foreign taxes or fuel charges on these bills are not covered by the label price.', ['Price this merchant\'s labels with a currency buffer, or in the currency the carrier bills in.', 'Bill the {A} difference.']],
-  'C|ups_return_to_sender_carrier_cost': ['{C} return to sender fees were not passed on', '{W}, {C} sent {N} {M} packages back to the sender and charged return fees, {A} in total.', 'Return fees are not being charged to the merchant.', ['Charge return to sender fees to the merchant automatically.', 'Bill the {A} backlog.']],
-  'M|merchant_surcharge_recovery-': ['Fee charges to {M} were reversed', '{W}, we charged {M} for extra {C} fees on {N} shipments, and those charges were then reversed. The merchant got {A} back.', 'Fee charges going the wrong way usually point to a billing system error rather than a decision about this merchant.', ['Find out why these fee charges were reversed.', 'If it was a mistake, charge the {A} again. If not, write it off.']],
-  'M|merchant_base_charge_adjustment-': ['{M} is being charged less than its quoted label price', 'When a label is bought, we quote a price and charge the merchant that price. {W}, {M} was charged less than the quoted price on {N} {C} shipments, {A} in total.', 'When the carrier bill is right but the merchant charge is low, the cause is usually the account\'s pricing: a discount, an outdated price list or a manual override.', ['Review this merchant\'s price list, discounts and price overrides.', 'Correct the pricing so new labels are charged in full.', 'Decide whether to bill the {A} already missed.']],
-  'M|label_void_reversal-': ['{M} cancelled labels and got full refunds', '{W}, {M} cancelled {N} {C} labels and was refunded in full, so we lost the {A} margin we expected on them.', 'Cancelled labels earn nothing. A high share of cancellations at one merchant usually points to a workflow problem at the merchant.', ['Check whether these labels were really unused.', 'If cancellations are routine, discuss the workflow with the merchant.']],
-  'M|merchant_label_charge_refund-': ['{M} was refunded for labels', '{W}, {M} was refunded for {N} {C} labels, {A} in total.', 'Refunds were issued on labels the carrier still billed us for.', ['Review why these refunds were issued.', 'Recover the {A} if the refunds were not owed.']],
-  'M|merchant_surcharge_refund-': ['Extra carrier fees were refunded to {M}', '{W}, we refunded {N} extra {C} fees to {M}, {A} in total, while {C} still charged us.', 'Fee refunds were issued without a matching refund from the carrier.', ['Review why these fees were refunded.', 'Recover the {A} if the refunds were not owed.']],
-  'X|unexplained': ['{M} has a gap with no single cause', '{W}, {N} {M} shipments on {C} came out {A} different from plan, without one clear charge behind it.', 'The difference is spread across many small items.', ['Open the shipments to review them one by one.']],
-  'C|base_invoice_below_purchase_quote': ['{C} charges us less than the label price for {M}', '{W}, {C} billed us less than the price we quoted {M} on {N} shipments, {A} in total.', '{M} pays our label price, which is set above {C}\'s actual rate for these shipments. This is extra margin, not a mistake on any single shipment.', ['Decide whether this extra margin is intended.', 'If it is not, lower the {C} price for {M} to match the actual rate.']],
-  'C|carrier_credit_or_refund': ['{C} refunded us after the merchant had paid', '{W}, {C} gave us refunds on {N} {M} shipments after the merchant had already paid in full, {A} in total.', 'Carrier refunds are recorded for us but not passed back to the merchant.', ['Decide whether these refunds belong to the merchant.', 'If they do, credit the {A}. If not, record it as extra margin.']],
-  'C|usps_favorable_repricing': ['USPS lowered the price after the label was bought', '{W}, USPS re-priced {N} {M} labels lower after purchase, {A} in total.', 'The merchant paid the original price and the reduction stayed with us.', ['Decide whether to pass these reductions on to the merchant.']],
-  'C|usps_unused_label_credit': ['USPS refunded unused labels that the merchant paid for', '{W}, USPS refunded us for {N} unused {M} labels, {A} in total, while the merchant still paid for them.', 'Refunds for unused labels are not being passed back to the merchant.', ['Credit the merchant for labels they paid for but never used.']],
-  'M|merchant_surcharge_recovery+': ['{M} was charged more for {C} fees than {C} billed us', '{W}, we charged {M} for extra {C} fees on {N} shipments. The total came out {A} higher than what {C} finally billed us for those fees.', 'The merchant was charged the carrier\'s first fee amount, and the carrier later reduced or refunded part of it.', ['Credit the merchant the {A} difference, or confirm it should be kept.', 'Charge merchants the carrier\'s final fee rather than the first estimate.']],
-  'M|merchant_duplicate_charge+': ['{M} was charged twice for the same labels', '{W}, {M} was charged twice on {N} {C} labels, {A} in total.', 'A duplicate charge was created for labels that were already paid.', ['Refund the {A} in duplicate charges.', 'Find and fix the cause of the duplicate charges.']],
-  'M|merchant_base_charge_adjustment+': ['{M} was charged more than its quoted label price', '{W}, {M} was charged more than the quoted price on {N} {C} shipments, {A} in total.', 'The account\'s pricing charges more than the quote shown when labels are bought.', ['Review the merchant\'s pricing.', 'Refund the difference if it was not agreed.']],
-  'M|usps_pc_postage_fee_revenue+': ['A small USPS postage fee adds up across {M}\'s labels', 'Every {M} USPS label carries a small postage fee on top of the label price. Across {N} labels, {W_LOWER}, it adds up to {A}.', 'This comes from how USPS labels are priced for this account, not from a mistake on individual shipments.', ['Confirm the fee is intended and shown in the merchant\'s pricing.', 'If it is not, remove it from the account\'s price.']],
-  'M|used_voided_label_recharge+': ['{M} was charged again for labels it had cancelled', '{W}, {M} cancelled {N} {C} labels, used them anyway, and was charged again, {A} in total.', 'Cancelled labels were used to ship.', ['Confirm the charges are correct and remind the merchant not to use cancelled labels.']],
-};
-/* Product names and codes come straight from store catalogs: keep letters, numbers and simple punctuation only. */
+/* Summary tab: the last 60 days only. Each issue is one line in the form
+   "Brand, carrier, type of charge, on N shipments, costing $X", then one sentence of cause and one of fix. */
+const SUMMARY_DAYS = 60;
+const summaryRange = () => { const t = todayIdx(); return [t - SUMMARY_DAYS + 1, t]; };
+const DUTY_RE = /duty|vat|customs|gst|hst|brokerage/i;
+/* The type of charge, in a few plain words. */
+function chargeType(r, dir) {
+  const c = r.comp;
+  if (c.startsWith('S|')) {
+    const fee = (PLAIN_FEE[c.slice(2)] || ['extra carrier fees'])[0];
+    if (c === 'S|Duplicate carrier charge') return 'duplicate carrier charges';
+    return dir === 'u' ? `${fee} not passed on` : `${fee} later reduced by the carrier`;
+  }
+  if (c === 'C|currency') return `foreign currency bills ${dir === 'u' ? 'above' : 'below'} the label price`;
+  if (c === 'C|prior_invoice_upward_revision') return DUTY_RE.test(r.ds || '') ? 'late import tax and customs bills not passed on' : 'late carrier bill increases not passed on';
+  return ({
+    'C|base_invoice_above_purchase_quote': 'base shipping billed above the label price',
+    'C|post_void_carrier_cost': 'charges on cancelled labels',
+    'C|ups_return_to_sender_carrier_cost': 'return to sender fees not passed on',
+    'M|merchant_surcharge_recovery-': 'fee charges reversed back to the merchant',
+    'M|merchant_base_charge_adjustment-': 'labels never charged to the merchant',
+    'M|label_void_reversal-': 'refunds on cancelled labels',
+    'M|merchant_label_charge_refund-': 'label charge refunds',
+    'M|merchant_surcharge_refund-': 'fee refunds to the merchant',
+    'X|unexplained': 'differences with no single cause',
+    'C|base_invoice_below_purchase_quote': 'base shipping billed below the label price',
+    'C|carrier_credit_or_refund': 'carrier refunds kept',
+    'C|usps_favorable_repricing': 'USPS price reductions kept',
+    'C|usps_unused_label_credit': 'unused label refunds kept',
+    'M|merchant_surcharge_recovery+': 'fees charged above the carrier\'s final bill',
+    'M|merchant_duplicate_charge+': 'duplicate label charges',
+    'M|merchant_base_charge_adjustment+': 'label charges above the label price',
+    'M|usps_pc_postage_fee_revenue+': 'a postage fee on every label',
+    'M|used_voided_label_recharge+': 'charges on cancelled labels that were used',
+  })[c] || compName(c).toLowerCase();
+}
+/* Weight and box findings only explain charges that depend on package size. */
+const SIZED = (r, dir) => dir === 'u' && (['S|Weight or size correction', 'S|Package type change', 'S|Additional handling', 'S|Oversize package', 'S|Base rate above quote', 'C|base_invoice_above_purchase_quote', 'C|currency'].includes(r.comp) || (r.comp === 'C|prior_invoice_upward_revision' && !DUTY_RE.test(r.ds || '')));
+/* One sentence on the cause: the strongest measured fact, else the usual cause for that kind of charge. */
+function causeLine(r, dir, f, C) {
+  const x = f?.facts || {}, n = +x.n || +r.n, top = +f?.topn || 0;
+  if (SIZED(r, dir)) {
+    const w = +x.withw >= 5 && x.heavier / x.withw >= 0.4, b = +x.withd >= 5 && x.bigger / x.withd >= 0.25 && x.qb && x.bb;
+    if (w && b) return `Labels say about ${plainW(x.qw)} in a ${plainBox(x.qb)} box, but ${C} measured about ${plainW(x.bw)} in a ${plainBox(x.bb)} box.`;
+    if (w) return `Labels say about ${plainW(x.qw)}, but ${C} weighed about ${plainW(x.bw)} on ${cnt(x.heavier)} of ${cnt(x.withw)} shipments.`;
+    if (b) return `Boxes are declared as ${plainBox(x.qb)}, but ${C} measured ${plainBox(x.bb)} on ${cnt(x.bigger)} of ${cnt(x.withd)} shipments.`;
+  }
+  const base = ({
+    'M|merchant_base_charge_adjustment-': 'The label was bought, but the charge to the merchant never went through.',
+    'C|base_invoice_above_purchase_quote': `${C} priced a heavier or bigger package than the label described.`,
+    'C|prior_invoice_upward_revision': DUTY_RE.test(r.ds || '') ? `${C} billed import taxes on international orders after delivery.` : `${C} sent higher bills after delivery.`,
+    'C|currency': dir === 'u' ? `${C} bills in another currency and adds foreign tax and fuel charges.` : `${C} bills in another currency, and the converted cost came in below the label price.`,
+    'M|label_void_reversal-': 'The merchant was refunded for cancelled labels before the carrier refunded us.',
+    'M|merchant_surcharge_recovery-': 'Fee charges to the merchant were reversed.',
+    'C|post_void_carrier_cost': `${C} charged for labels the merchant cancelled.`,
+    'C|base_invoice_below_purchase_quote': `The label price is set above ${C}'s actual rate.`,
+    'C|carrier_credit_or_refund': `${C} refunded us after the merchant had paid in full.`,
+    'M|merchant_surcharge_recovery+': `${C} lowered its fee after we had charged the merchant.`,
+    'M|usps_pc_postage_fee_revenue+': 'The account\'s pricing adds a small postage fee to every label.',
+    'M|merchant_duplicate_charge+': 'The merchant was charged twice for the same labels.',
+  })[r.comp] || (r.comp.startsWith('S|') ? `${C} charged this fee and it was not passed on to the merchant.` : '');
+  const prod = f?.topsku && n && top / n >= 0.4 ? ` Mostly one product: ${cleanText(f.toptitle || f.topsku)}, in ${cnt(top)} of ${cnt(n)}.` : '';
+  return (base + prod).trim();
+}
+function fixLine(r, dir, A) {
+  const c = r.comp;
+  if (c === 'S|Package type change') return `Fix the package type saved for this box and bill the ${A}.`;
+  if (c === 'S|Weight or size correction' || c === 'C|base_invoice_above_purchase_quote') return `Correct the product weights and box sizes, then bill the ${A}.`;
+  if (c === 'S|Duties and customs' || (c === 'C|prior_invoice_upward_revision' && DUTY_RE.test(r.ds || ''))) return `Pass import tax bills on to the merchant automatically and bill the ${A}.`;
+  if (c === 'S|Duplicate carrier charge') return 'Dispute the duplicate charges with the carrier.';
+  if (c.startsWith('S|')) return dir === 'u' ? `Pass this fee on automatically and bill the ${A}.` : `Credit the merchant the ${A} and charge the carrier's final fee going forward.`;
+  return ({
+    'M|merchant_base_charge_adjustment-': `Find out why charges are failing on this account and bill the ${A}.`,
+    'C|prior_invoice_upward_revision': `Pass late carrier bills on automatically and bill the ${A}.`,
+    'C|currency': dir === 'u' ? 'Pass foreign tax and fuel charges on, and price these labels in the carrier\'s currency.' : 'Confirm this margin is intended, or price these labels in the carrier\'s currency.',
+    'M|label_void_reversal-': 'Make sure the carrier refunds come in, and charge for any cancelled label that was used.',
+    'M|merchant_surcharge_recovery-': `Confirm why the charges were reversed, and recharge the ${A} if it was a mistake.`,
+    'C|post_void_carrier_cost': 'Ask the carrier to refund unused labels, and charge the merchant for any that shipped.',
+    'C|base_invoice_below_purchase_quote': 'Confirm this extra margin is intended, or lower the price.',
+    'C|carrier_credit_or_refund': `Decide whether to credit the merchant the ${A}.`,
+    'M|merchant_surcharge_recovery+': `Credit the merchant the ${A} and charge the carrier's final fee going forward.`,
+    'M|usps_pc_postage_fee_revenue+': 'Confirm the fee is intended and shown in the merchant\'s pricing.',
+    'M|merchant_duplicate_charge+': `Refund the ${A} in duplicate charges.`,
+  })[c] || 'Open the shipments to review them.';
+}
 const cleanText = (t) => { let x = String(t || '').replace(/ \+ /g, ' and ').replace(/ - /g, ', ').replace(/[^\p{L}\p{N} ,.'&-]/gu, ' ').replace(/\s+/g, ' ').trim(); if (x.length > 70) x = x.slice(0, 70).replace(/[ ,][^ ,]*$/, '') + '...'; return x; };
 const capFirst = (t) => String(t).replace(/^./, (x) => x.toUpperCase());
-/* The "why" sentences the shipment data supports: weight, box, product weight, top product, what was passed on, and timing. */
-function diagnose(r, dir, f, C) {
-  const out = [], x = f?.facts || {};
-  /* Weight and box findings explain carrier charges going up, so they only apply to under-billing and to fee over-charges. */
-  const sized = dir === 'u' || r.comp.startsWith('S|') || r.comp === 'M|merchant_surcharge_recovery+';
-  if (sized && +x.withw >= 5 && x.heavier / x.withw >= 0.4) out.push(`On ${fracWords(x.heavier, x.withw)} of the shipments we can check, ${C} weighed the package and found it heavier than the label said, about ${plainW(x.qw)} on the label versus ${plainW(x.bw)} measured. That usually means the product or box weights saved in the merchant's store are too low.`);
-  if (sized && +x.withd >= 5 && x.bigger / x.withd >= 0.25 && x.qb && x.bb) out.push(`On ${fracWords(x.bigger, x.withd)} of the shipments we can check, the box was bigger than declared, ${plainBox(x.qb)} on the label versus ${plainBox(x.bb)} measured. That usually means the box size saved for these products is wrong.`);
-  if (sized && +x.withi >= 5 && x.itemsheavier / x.withi >= 0.3) out.push(`In ${fracWords(x.itemsheavier, x.withi)} of these boxes, the products alone weigh more than the label says, about ${plainW(x.iw)} of product, so the label weight is set too low.`);
-  const n = +x.n || +r.n, top = +f?.topn || 0;
-  if (f?.topsku && n && top / n >= 0.1) {
-    const prod = `${cleanText(f.toptitle || f.topsku)}, product code ${cleanText(f.topsku)}`;
-    out.push(top / n >= 0.25 ? `${top / n >= 0.5 ? 'Most' : 'Many'} of these shipments contain the same product: ${prod}, in ${cnt(top)} of ${cnt(n)}.` : `The most common product is ${prod}, in ${cnt(top)} of ${cnt(n)} shipments.`);
-  }
-  if (dir === 'u' && f && r.comp.startsWith('S|')) {
-    const rb = +f.rb || 0, lr = Math.abs(+r.lr || +r.v);
-    out.push(Math.abs(rb) < lr * 0.05 ? 'None of these fees were passed on to the merchant.' : rb > 0 ? `We passed ${dollars(rb)} of these fees on to the merchant, which covers only part of the cost.` : 'Fees we had charged to the merchant were later reversed, which made the gap bigger.');
-  }
-  return out;
-}
-function recency(r, dir) {
-  if (+r.n30 > 0) return `This is still happening, with ${dollars(r.v30)} in the last 30 days.`;
-  return dir === 'u' ? `No new cases since ${fullDate(r.last)}, but the money was never recovered.` : `No new cases since ${fullDate(r.last)}.`;
-}
-function storyFor(r, dir, f, name) {
-  const C = CARRIERS[r.car] || r.car, A = dollars(r.v), N = cnt(+r.n), W = capFirst(span(r.first, r.last));
-  const fill = (t) => String(t).replace(/\{C\}/g, C).replace(/\{M\}/g, name).replace(/\{A\}/g, A).replace(/\{N\}/g, N).replace(/\{W_LOWER\}/g, span(r.first, r.last)).replace(/\{W\}/g, W);
-  let headline, what, whyBase, fix;
-  if (r.comp.startsWith('S|')) {
-    const [fee, cause] = PLAIN_FEE[r.comp.slice(2)] || ['extra carrier fees', 'the carrier adds fees that were not in the label price'];
-    const pkg = r.comp === 'S|Package type change' && f?.facts?.qb ? ` Most went out in the same ${plainBox(f.facts.qb)} package.` : '';
-    if (dir === 'u') {
-      headline = `${C} ${fee} were not charged to the merchant`;
-      what = `${C} charges ${fee} when ${cause}. ${W}, ${C} charged these fees on ${N} ${name} shipments.${pkg} We paid ${A} more than we collected from the merchant.`;
-      whyBase = 'These fees are not being passed on to the merchant automatically.';
-      const first = r.comp === 'S|Weight or size correction' ? 'Correct the product weights and box sizes saved in the merchant\'s store so labels are priced correctly.'
-        : r.comp === 'S|Package type change' ? 'Correct the package type saved for the box or mailer these orders ship in.'
-        : r.comp === 'S|Duties and customs' ? 'Charge import taxes and customs fees to the merchant automatically on international orders, or ship them with taxes paid up front.'
-        : 'Make sure these fees are charged to the merchant automatically.';
-      fix = [first, `Bill the merchant for the ${A} not yet collected, or decide to write it off.`];
-    } else {
-      headline = `${C} lowered ${fee} after we had charged the merchant`;
-      what = `${W}, we charged ${name} for ${fee} on ${N} ${C} shipments, but ${C} later reduced or refunded them. The merchant paid ${A} more than our final cost.`;
-      whyBase = 'The merchant was charged the carrier\'s first fee amount, not the final one.';
-      fix = [`Credit the merchant the ${A} difference, or confirm it should be kept.`, 'Charge merchants the carrier\'s final fee rather than the first estimate.'];
-    }
-  } else {
-    const t = PLAIN_LINE[r.comp];
-    if (t) { headline = fill(t[0]); what = fill(t[1]); whyBase = fill(t[2]); fix = t[3].map(fill); }
-    else { headline = `${compName(r.comp)} at ${C}`; what = `${W}, ${N} ${name} shipments on ${C} came out ${A} ${dir === 'u' ? 'below' : 'above'} plan.`; whyBase = ''; fix = ['Open the shipments to review them.']; }
-  }
-  const facts = diagnose(r, dir, f, C), causal = facts.some((s) => /weighed|bigger than declared|products alone/.test(s));
-  const why = [...(r.comp.startsWith('S|') && causal ? [] : [whyBase]), ...facts, recency(r, dir)].filter(Boolean).join(' ');
-  return { headline: capFirst(headline), what, why, fix };
-}
 function noteFor(dir, r) {
-  const n = S.ai?.notes?.[`${dir}|${topKey(r)}`];
-  if (!n) return null;
+  const n = S.ai?.window === SUMMARY_DAYS ? S.ai?.notes?.[`${dir}|${topKey(r)}`] : null;
+  if (!n || typeof n !== 'object') return null;
   const fill = (t) => String(t).replace(/\{amount\}/g, dollars(r.v)).replace(/\{shipments\}/g, cnt(+r.n)).replace(/\{last30\}/g, dollars(r.v30));
-  if (typeof n === 'string') return { what: fill(n) };
-  return { headline: n.headline && fill(n.headline), what: n.what && fill(n.what), why: n.why && fill(n.why), fix: (n.fix || []).map(fill) };
+  return { type: n.type && fill(n.type), cause: n.cause && fill(n.cause), fix: n.fix && fill(n.fix) };
 }
 function topCard(r, i, dir, mx, facts) {
-  const D = S.data, mi = D.M.idx.get(r.m), name = merchantName(r.m), car = CARRIERS[r.car] || r.car, v = +r.v;
-  const f = facts?.[topKey(r)], live = storyFor(r, dir, f, name), ai = noteFor(dir, r);
-  const st = { headline: ai?.headline || live.headline, what: ai?.what || live.what, why: ai?.why || (facts ? live.why : `${recency(r, dir)} Checking package weights, box sizes and products now.`), fix: ai?.fix?.length ? ai.fix : live.fix };
-  const active = +r.n30 > 0, share = +r.tot ? Math.round((v / +r.tot) * 100) : 0;
-  const who = (role, n) => (!n || n === 'Unassigned' ? `No ${role.toLowerCase()} assigned.` : /self serve/i.test(n) ? 'Self serve account.' : `${role} ${n}.`);
-  const owners = mi != null ? `${who('Product analyst', D.pa[D.M.pa[mi]])} ${who('Sales engineer', D.se[D.M.se[mi]])}` : '';
-  return `<div class="tc ${dir}">
+  const D = S.data, mi = D.M.idx.get(r.m), name = merchantName(r.m), C = r.car === 'Unknown' ? 'carrier unknown' : CARRIERS[r.car] || r.car, v = +r.v, A = dollars(v);
+  const f = facts?.[topKey(r)], ai = noteFor(dir, r);
+  const type = ai?.type || chargeType(r, dir);
+  const cause = ai?.cause || (facts ? causeLine(r, dir, f, C) : 'Checking package weights, box sizes and products now.');
+  const fix = ai?.fix || fixLine(r, dir, A);
+  const typeText = /^usps/i.test(type) && C === 'USPS' ? capFirst(type) : `${C}, ${type}`;
+  const pa = mi != null ? D.pa[D.M.pa[mi]] : '';
+  const active = +r.n30 > 0;
+  return `<div class="sr ${dir}">
     <div class="rk">${i + 1}</div>
-    <div class="tb">
-      <div class="th"><div><h3 class="mn">${esc(name)}</h3><p class="hd">${esc(st.headline)}</p></div>
-        <div class="ta"><b class="${dir}">${dollars(v)}</b><small>${dir === 'u' ? 'not collected' : 'collected beyond plan'}</small><span class="tbar"><i class="${dir}" style="width:${Math.max(2, (Math.abs(v) / mx) * 100).toFixed(1)}%"></i></span><small>${share} percent of all ${dir === 'u' ? 'under' : 'over'}-billing</small></div></div>
-      <div class="stat ${active ? dir : ''}">${active ? `Still happening. ${dollars(r.v30)} in the last 30 days.` : `No longer happening. Last seen ${fullDate(r.last)}.`} Carrier: ${esc(car)}. ${cnt(+r.n)} shipments.</div>
-      <div class="story">
-        <div><h4>What happened</h4><p>${esc(st.what)}</p></div>
-        <div><h4>Why it is happening</h4><p>${esc(st.why)}</p></div>
-        <div><h4>How to fix it</h4><ol>${st.fix.map((x) => `<li>${esc(x)}</li>`).join('')}</ol></div>
-      </div>
-      <div class="tf"><span>${esc(owners)} Fix status:</span>${mi != null ? statusPill(D.M.id[mi]) : ''}<span class="grow"></span>${ai ? '<span class="by">Explanation written by Claude</span>' : ''}${mi != null ? `<button class="linkbtn" data-act="merchant" data-key="${mi}">Merchant detail</button>` : ''}<button class="btn ghost sm" data-top="${dir}:${i}">See the shipments</button></div>
+    <div class="sb">
+      <p class="line"><b>${esc(name)}</b>, ${esc(typeText)}, on ${cnt(+r.n)} shipments, ${dir === 'u' ? 'costing' : 'collecting'} <b class="amt ${dir}">${A}</b>${dir === 'u' ? '' : ' more than planned'}.</p>
+      <p class="cf"><span>Cause</span>${esc(cause)}</p>
+      <p class="cf"><span>Fix</span>${esc(fix)}</p>
+      <div class="tf"><span class="${active ? 'live ' + dir : ''}">${active ? `Still happening, ${dollars(r.v30)} in the last 30 days` : `Last seen ${fullDate(r.last)}`}</span>${pa && pa !== 'Unassigned' ? `<span>Product analyst ${esc(pa)}</span>` : ''}${mi != null ? statusPill(D.M.id[mi]) : ''}<span class="grow"></span>${ai ? '<span class="by">Written by Claude</span>' : ''}<button class="linkbtn" data-top="${dir}:${i}">See the shipments</button></div>
     </div>
+    <div class="sa"><span class="tbar"><i class="${dir}" style="width:${Math.max(3, (Math.abs(v) / mx) * 100).toFixed(1)}%"></i></span></div>
   </div>`;
 }
 function viewTop() {
-  const dirs = ['u', 'o'].filter((d) => S.show[d]), ai = S.ai;
-  let h = `<div class="card intro"><h2>The biggest billing problems, explained</h2><p>Every label has a planned margin: the price we charge the merchant minus what the carrier charges us. <b class="u">Under-billed</b> means we collected less than planned, so it is money we lost. <b class="o">Over-billed</b> means we collected more than planned, which is either extra margin or money we owe back to a merchant. Below are the ten largest problems of each kind, what caused them and how to fix them.</p></div>`;
+  const dirs = ['u', 'o'].filter((d) => S.show[d]), ai = S.ai?.window === SUMMARY_DAYS ? S.ai : null;
+  const [a, b] = summaryRange(), t = agg({ range: [a, b] }).tot;
+  const tile = (d) => d === 'u'
+    ? `<div class="st u"><span>Not collected</span><b>${dollars(t.u)}</b><small>${cnt(t.un)} shipments at ${cnt(t.mu.size)} merchants</small></div>`
+    : `<div class="st o"><span>Collected beyond plan</span><b>${dollars(t.o)}</b><small>${cnt(t.on)} shipments at ${cnt(t.mo.size)} merchants</small></div>`;
+  let h = `<div class="card sumhead"><div class="card-h"><div><h2>Last 60 days</h2><div class="sub">${esc(fullDate(iso(a)))} to ${esc(fullDate(iso(b)))}${anyFilter() ? ', with your filters applied' : ''}. Under-billed is money we did not collect. Over-billed is money collected beyond plan, which is extra margin or owed back to a merchant.</div></div></div>
+    <div class="sts">${dirs.map(tile).join('')}</div>`;
   if (ai?.briefing) {
-    const block = (d) => (ai.briefing[d] || []).length ? `<div class="bgroup ${d}"><h4>${d === 'u' ? 'Money we did not collect' : 'Money we collected beyond plan'}</h4><ul class="bl">${ai.briefing[d].map((t) => `<li class="${d}">${esc(t)}</li>`).join('')}</ul></div>` : '';
-    const body = dirs.map(block).join('');
-    if (body) h += `<div class="card brief mt"><div class="card-h"><div><h2>The big picture</h2><div class="sub">Summary written by Claude on ${esc(fullDate(ai.writtenAt))} from all billing data to date. The dollar amounts in the cards below update live.</div></div></div><div class="bgroups">${body}</div></div>`;
+    const bul = dirs.flatMap((d) => (ai.briefing[d] || []).map((x) => `<li class="${d}">${esc(x)}</li>`)).join('');
+    if (bul) h += `<h4 class="ws">What stands out</h4><ul class="bl">${bul}</ul><div class="sub mt">Written by Claude on ${esc(fullDate(ai.writtenAt))}. Amounts in the lists below update live.</div>`;
   }
-  const scope = isDefaultScope() ? 'Covers all time and every merchant.' : `Covers ${rangeLabel()}${anyFilter() ? ', with your filters applied' : ''}.`;
-  for (const d of dirs) h += `<div class="card mt"><div class="card-h"><div><h2>${d === 'u' ? 'Ten largest under-billing problems' : 'Ten largest over-billing problems'}</h2><div class="sub">Grouped by merchant, carrier and type of charge. ${esc(scope)} Each shipment is counted once, under its largest charge.</div></div></div><div class="tops" data-topdir="${d}"><div class="loading">Finding the largest problems…</div></div></div>`;
+  h += '</div>';
+  for (const d of dirs) h += `<div class="card mt"><div class="card-h"><div><h2>${d === 'u' ? 'Top 10 under-billing issues' : 'Top 10 over-billing issues'}</h2><div class="sub">By brand, carrier and type of charge. Each shipment is counted once, under its largest charge.</div></div></div><div class="tops" data-topdir="${d}"><div class="loading">Finding the largest issues…</div></div></div>`;
   return h;
 }
 async function loadTop() {
-  const [, to] = rangeDays(), sc = scopeSql(false), def = isDefaultScope();
+  const rg = summaryRange(), to = rg[1], sc = scopeSql(false, rg), def = isDefaultScope();
   await Promise.all(['u', 'o'].filter((d) => S.show[d]).map(async (dir) => {
     const el = $(`[data-topdir="${dir}"]`); if (!el) return;
     const rankSql = sqlTopRank(sc, dir, to);
@@ -1831,7 +1831,7 @@ function renderTopBody(dir) {
 }
 function openTopLine(dir, i) {
   const r = S.top[dir]?.rank?.[i]; if (!r) return;
-  const sc = scopeSql(false), car = safeLit(r.car), mid = safeId(r.m);
+  const sc = scopeSql(false, summaryRange()), car = safeLit(r.car), mid = safeId(r.m);
   if (!car || !mid) return;
   const sc2 = { ...sc, where: sc.where + ` and merchant_id = '${mid}' and ${dimExpr('carriers')} = ${car}` };
   openLine({ comp: r.comp, name: r.comp.startsWith('S|') && r.ds ? cap(prettyCharge(r.ds)) : compName(r.comp), group: COMP_GROUP[r.comp[0]] || 'Line item', dir, sc: sc2, carrier: CARRIERS[r.car] || r.car, merchant: merchantName(r.m) });

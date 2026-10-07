@@ -112,14 +112,19 @@ const run = async (width, height, tag) => {
     await page.waitForTimeout(400);
     await page.click('[data-close]');
   }
-  // Top 10 with written summaries, its drill-down, and the direction switch on every tab
+  // Summary: last 60 days, one line per issue, its drill-down, and the direction switch on every tab
   await page.click('[data-tab="top"]');
-  await page.waitForSelector('.tc .story', { timeout: 20000 });
+  await page.waitForSelector('.sr .line', { timeout: 20000 });
   await page.waitForFunction(() => !document.body.innerText.includes('Checking package weights'), null, { timeout: 20000 });
-  if (!(await page.$('.brief li')) || !(await page.$('.tc .by'))) errors.push(`[${tag}] Top 10 is missing the AI briefing or notes`);
-  // Plain language only: no symbols, arrows, separators or invoice codes in the Top 10 text
-  const odd = await page.evaluate(() => [...document.querySelectorAll('.tc .hd, .tc .story, .tc .stat, .brief li')].map((e) => e.innerText).filter((t) => /[·×→|+—]|[A-Z]{5,}_|\$-?\d+(\.\d)?K\b/.test(t)));
-  if (odd.length) errors.push(`[${tag}] Top 10 text has symbols or codes: ${odd[0].slice(0, 120)}`);
+  if (!(await page.$('.sumhead .st')) || !(await page.$('.bl li')) || !(await page.$('.sr .by'))) errors.push(`[${tag}] Summary is missing its totals, AI briefing or notes`);
+  if (await page.$('#bar [data-preset]')) errors.push(`[${tag}] Summary still shows period presets`);
+  // One line per issue in the form "Brand, carrier, type, on N shipments, costing $X."
+  const lines = await page.evaluate(() => [...document.querySelectorAll('.sr .line')].map((e) => e.innerText));
+  const bad = lines.filter((t) => !/, on [\d,]+ shipments, (costing|collecting) \$[\d,]+/.test(t));
+  if (!lines.length || bad.length) errors.push(`[${tag}] Summary line is not in brand, carrier, type, shipments, cost form: ${(bad[0] || '').slice(0, 120)}`);
+  // Plain language only: no symbols, arrows, separators or invoice codes
+  const odd = await page.evaluate(() => [...document.querySelectorAll('.sr .line, .sr .cf, .sr .tf, .bl li')].map((e) => e.innerText).filter((t) => /[·×→|+—]|[A-Z]{5,}_|\$-?\d+(\.\d)?K\b/.test(t)));
+  if (odd.length) errors.push(`[${tag}] Summary text has symbols or codes: ${odd[0].slice(0, 120)}`);
   await shot('top');
   await page.click('[data-top="u:0"]');
   await page.waitForSelector('#drawer.on .mtrs', { timeout: 15000 });
