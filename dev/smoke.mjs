@@ -143,6 +143,20 @@ const run = async (width, height, tag) => {
   await page.waitForSelector('#where .cc', { timeout: 15000 });
   await shot('issues-under');
   await page.click('[data-view="both"]');
+  // Export shipments (PLD): both directions, last 30 days, downloads one CSV row per shipment with pass-through status
+  if (tag === 'desktop') {
+    await page.click('[data-tab="issues"]');
+    await page.click('[data-pld]');
+    await page.waitForSelector('#drawer.on [data-pld-run]');
+    await page.click('[data-pld-dir="b"]');
+    const [dl] = await Promise.all([page.waitForEvent('download', { timeout: 60000 }), page.click('[data-pld-run]')]);
+    const csv = await new Promise((res, rej) => { let t = ''; dl.createReadStream().then((st) => { st.on('data', (c) => (t += c)); st.on('end', () => res(t)); st.on('error', rej); }); });
+    const lines = csv.split('\n'), head = lines[0];
+    if (lines.length < 100 || !/Passed on to merchant\?/.test(head) || !/Why not passed on/.test(head)) errors.push(`[${tag}] Shipment export is missing rows or columns`);
+    if (/undefined/.test(csv)) errors.push(`[${tag}] Shipment export has undefined values`);
+    await shot('export');
+    await page.click('[data-close]');
+  }
   for (const tab of ['owners', 'recon', 'progress']) {
     await page.click(`[data-tab="${tab}"]`);
     await page.waitForTimeout(500);

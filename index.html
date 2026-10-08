@@ -123,6 +123,22 @@ table.mx{border-collapse:separate;border-spacing:4px;width:100%;font-size:13px;m
 .bl li{padding:8px 12px;border-left:3px solid var(--under);background:var(--bg);border-radius:0 6px 6px 0;font-size:14px;line-height:20px}
 .bl li.o{border-left-color:var(--over)}
 .tops{display:grid}
+.pld{display:grid;gap:18px}
+.pf{display:grid;grid-template-columns:110px minmax(0,1fr);gap:16px;align-items:start}
+.pl{font:600 11px/32px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--ink2)}
+.pdates{display:flex;gap:8px;align-items:center;margin-top:10px;font-size:13px;color:var(--ink2)}
+.pdates input,.chk input[type=number]{font:inherit;font-size:13px;padding:5px 8px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink)}
+.chk input[type=number]{width:80px;margin-left:6px;line-height:20px;height:32px;box-sizing:border-box}
+.chk{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:14px;line-height:32px;color:var(--ink)}
+.chk small{flex-basis:100%;margin:-8px 0 0 22px;font-size:12px;line-height:16px;color:var(--muted)}
+.pgo{display:flex;align-items:center;gap:16px;padding-top:4px;border-top:1px solid var(--line2)}
+.pgo .btn{margin-top:14px}
+.pmsg{margin-top:14px;font-size:13px;color:var(--ink2)}
+.pmsg.err{color:var(--under-ink)}
+.plist{margin:0;padding-left:18px;font-size:14px;line-height:21px;color:var(--ink)}
+.plist li+li{margin-top:6px}
+.plist b{font-weight:600}
+.pldbtn{margin-left:auto}
 .sts{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:16px}
 .st{padding:16px;border-radius:8px;background:var(--bg);border-left:4px solid var(--under)}
 .st.o{border-left-color:var(--over)}
@@ -144,13 +160,14 @@ table.mx{border-collapse:separate;border-spacing:4px;width:100%;font-size:13px;m
 .brk.pend{border-left-color:var(--pend)}
 .brk .eyebrow{font:600 11px/16px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--ink2)}
 .brk .big{font:400 22px/30px var(--serif);color:var(--ink);margin:6px 0 0;max-width:860px}
-.brk .fx{margin:10px 0 0;font-size:14px;line-height:20px;color:var(--ink);display:grid;grid-template-columns:44px minmax(0,1fr);gap:8px}
+.brk .fx{margin:10px 0 0;font-size:14px;line-height:20px;color:var(--ink);display:grid;grid-template-columns:52px minmax(0,1fr);gap:8px}
 .brk .fx b{font:600 11px/20px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .lf{margin-top:20px;display:grid;gap:4px}
 .lf-bar{display:flex;height:14px;border-radius:7px;overflow:hidden;background:var(--line2);margin-bottom:8px}
 .lf-bar i{display:block;height:14px}
 .lf-bar i.u{background:var(--under)}
 .lf-bar i.pend{background:var(--pend)}
+.lf-bar i.o{background:var(--over)}
 .lf-r,.lf-h{display:grid;grid-template-columns:12px minmax(0,1fr) 64px 96px;gap:12px;align-items:start;padding:8px;border-radius:6px}
 .lf-r.on{background:var(--bg)}
 .lf-r b{display:block;font-size:14px;font-weight:600}
@@ -678,7 +695,7 @@ d as (select d.merchant_id, d.fulfillment_group_id, d.issue_date, d.car, d.v fro
 /* Labels the merchant was never charged for (negative base charge events) are split by what the carrier invoice says:
    a prepaid return label the customer used (carrier billed it), one not used yet (pay on use, nothing billed), or a
    shipping label. rk is that kind, cb what the carrier billed for the label. */
-const SQL_ADJ = `a0 as (select merchant_id, fulfillment_group_id, revenue_event_type et, coalesce(invoice_cost_event_subcategory, '') sub, coalesce(invoice_cost_reporting_category, '') cat, coalesce(invoice_charge_descriptions, '') ds, revenue_usd r, iff(revenue_event_type = 'merchant_base_charge_adjustment' and revenue_usd < 0, tracking_code, null) trk from ${T.ADJ} where (merchant_id, fulfillment_group_id) in (select merchant_id, fulfillment_group_id from d) and revenue_usd <> 0),
+const SQL_ADJ = `a0 as (select merchant_id, fulfillment_group_id, revenue_event_type et, coalesce(invoice_cost_event_subcategory, '') sub, coalesce(invoice_cost_reporting_category, '') cat, coalesce(invoice_charge_descriptions, '') ds, revenue_usd r, revenue_event_at at, iff(revenue_event_type = 'merchant_base_charge_adjustment' and revenue_usd < 0, tracking_code, null) trk from ${T.ADJ} where (merchant_id, fulfillment_group_id) in (select merchant_id, fulfillment_group_id from d) and revenue_usd <> 0),
 rl as (select tracking_code, iff(boolor_agg(shipment_type ilike '%return%'), iff(sum(iff(is_invoiced, charge_amount_usd, 0)) > 0, 'used', 'unused'), 'ship') k, sum(iff(is_invoiced, charge_amount_usd, 0)) cb from ${T.INVOICE} where tracking_code in (select trk from a0) group by 1),
 a as (select a0.*, coalesce(rl.k, '') rk, coalesce(rl.cb, 0) cb from a0 left join rl on rl.tracking_code = a0.trk)`;
 const SQL_COMP = `case when et = 'invoice_cost_true_up' then case when cat ilike 'cross-currency%' then 'C|currency' when sub = 'incremental_carrier_charge' then 'S|' || (${REASON}) else 'C|' || sub end else 'M|' || case rk when 'unused' then 'return_label_unused' when 'used' then 'return_label_uncharged' else et end || iff(r < 0, '-', '+') end`;
@@ -695,9 +712,11 @@ union all select 'T|total', count(*), round(sum(v), 2) from d`;
    pounds; whole ounces under a pound on USPS and DHL eCommerce) and dimensions up to whole inches, so the label is
    compared at its rated weight (rq) and rounded-up box volume (dv), never at its raw value. */
 const box = (l, w, h) => `iff(${l} > 0 and ${w} > 0, round(${l}) || 'x' || round(${w}) || 'x' || round(coalesce(${h}, 0)), null)`;
-const sqlLabelFacts = (src) => `lab as (select merchant_id, fulfillment_group_id, tracking_code, carrier, quoted_weight_in_oz qw, quoted_length_in_inches ql, quoted_width_in_inches qd, quoted_height_in_inches qh from ${T.SHIP} where (merchant_id, fulfillment_group_id) in (select merchant_id, fulfillment_group_id from ${src}) qualify row_number() over (partition by merchant_id, fulfillment_group_id order by quoted_weight_in_oz desc nulls last, tracking_code) = 1),
-inv as (select tracking_code, max(billed_weight_in_pounds) * 16 bw, max(actual_weight_in_pounds) * 16 aw, max(try_to_double(billed_length_in_inches::string)) bl, max(try_to_double(billed_width_in_inches::string)) bd, max(try_to_double(billed_height_in_inches::string)) bh, max(iff(charge_description ilike any ('%discrepancy%', '%correction%', '%postagedelta%', '%weight%', '%dimension%', '%census%') and not charge_description ilike '%address%', 1, 0)) rm from ${T.INVOICE} where tracking_code in (select tracking_code from lab) and coalesce(is_invoiced, true) group by 1),
-it as (select fulfillment_tracking_number trk, coalesce(nullif(listagg(distinct nullif(sku, ''), ' + ') within group (order by nullif(sku, '')), ''), max_by(name, quantity)) sku, max_by(name, quantity) title, sum(grams * quantity) / 28.3495 iw from ${T.ITEMS} where fulfillment_tracking_number in (select tracking_code from lab) group by 1)`;
+const SQL_ITEMS = `it as (select fulfillment_tracking_number trk, coalesce(nullif(listagg(distinct nullif(sku, ''), ' + ') within group (order by nullif(sku, '')), ''), max_by(name, quantity)) sku, max_by(name, quantity) title, sum(grams * quantity) / 28.3495 iw from ${T.ITEMS} where fulfillment_tracking_number in (select tracking_code from lab) group by 1)`;
+const SQL_NO_ITEMS = 'it as (select null::string trk, null::string sku, null::string title, null::float iw limit 0)';
+const sqlLabelFacts = (src, { items = true, more = false } = {}) => `lab as (select merchant_id, fulfillment_group_id, tracking_code, carrier,${more ? ' shipment_id, label_provider, label_purchased_at,' : ''} quoted_weight_in_oz qw, quoted_length_in_inches ql, quoted_width_in_inches qd, quoted_height_in_inches qh from ${T.SHIP} where (merchant_id, fulfillment_group_id) in (select merchant_id, fulfillment_group_id from ${src}) qualify row_number() over (partition by merchant_id, fulfillment_group_id order by quoted_weight_in_oz desc nulls last, tracking_code) = 1),
+inv as (select tracking_code, max(billed_weight_in_pounds) * 16 bw, max(actual_weight_in_pounds) * 16 aw, max(try_to_double(billed_length_in_inches::string)) bl, max(try_to_double(billed_width_in_inches::string)) bd, max(try_to_double(billed_height_in_inches::string)) bh, max(iff(charge_description ilike any ('%discrepancy%', '%correction%', '%postagedelta%', '%weight%', '%dimension%', '%census%') and not charge_description ilike '%address%', 1, 0)) rm${more ? `, any_value(service) svc, max(usps_zone) zone, max(iff(charge_description in (${FEDEX_UNRECOGNIZED.map((x) => `'${x}'`).join(', ')}), 1, 0)) unrec, listagg(distinct charge_description, ' | ') within group (order by charge_description) descs` : ''} from ${T.INVOICE} where tracking_code in (select tracking_code from lab) and coalesce(is_invoiced, true) group by 1),
+${items ? SQL_ITEMS : SQL_NO_ITEMS}`;
 const SQL_RQ = `case when not lab.qw > 0 then null when lab.carrier ilike 'fedex%' or lab.carrier ilike 'ups%' or lab.qw > 16 then ceil(round(lab.qw / 16, 4)) * 16 else ceil(round(lab.qw, 2)) end`;
 const SQL_FACT_COLS = `lab.tracking_code trk, nullif(lab.qw, 0) qw, ${SQL_RQ} rq, lab.ql, lab.qd, lab.qh, inv.bw, inv.aw, inv.rm, inv.bl, inv.bd, inv.bh, it.sku, it.title, it.iw, ${box('lab.ql', 'lab.qd', 'lab.qh')} qb, ${box('inv.bl', 'inv.bd', 'inv.bh')} bb, iff(lab.ql > 0 and lab.qd > 0, ceil(lab.ql) * ceil(lab.qd) * greatest(ceil(coalesce(lab.qh, 0)), 1), null) dv, iff(inv.bl > 0 and inv.bd > 0, inv.bl * inv.bd * greatest(coalesce(inv.bh, 0), 1), null) bv`;
 const SQL_FACT_JOIN = (src) => `${src} join lab on lab.merchant_id = ${src}.merchant_id and lab.fulfillment_group_id = ${src}.fulfillment_group_id left join inv on inv.tracking_code = lab.tracking_code left join it on it.trk = lab.tracking_code`;
@@ -705,14 +724,14 @@ const SQL_FACT_STATS = `'n', count(*), 'remeasured', count_if(rm = 1), 'withinv'
 /* Drill-down for one bridge line (comp): totals over every shipment with that line, and the patterns, SKUs and
    shipment list from the 5,000 largest (the lookups behind them scan large tables). */
 function sqlLine(sc, dir, comp) {
-  const ord = dir === 'u' ? 'asc' : 'desc', lit = `'${String(comp).replace(/'/g, "''")}'`;
+  const ord = dir === 'u' ? 'asc' : 'desc', lit = `'${String(comp).replace(/'/g, "''")}'`, carrierLine = dir === 'u' && /^[CS]\|/.test(comp);
   return `with ${sqlIssueFgs(sc, dir)},
 ${SQL_ADJ},
-c as (select merchant_id, fulfillment_group_id, et, ds, r, trk, rk, cb, ${SQL_COMP} comp from a),
-f as (select merchant_id, fulfillment_group_id, sum(iff(comp = ${lit}, r, 0)) lv, sum(iff(et ilike 'merchant_surcharge%', r, 0)) rb, sum(r) net, max(iff(comp = ${lit}, trk, null)) mtrk, max(iff(comp = ${lit}, rk, null)) mrk, sum(iff(comp = ${lit}, cb, 0)) mcb from c group by 1, 2 having sum(iff(comp = ${lit}, r, 0)) <> 0),
+c as (select merchant_id, fulfillment_group_id, et, sub, at, ds, r, trk, rk, cb, ${SQL_COMP} comp from a),
+f as (select merchant_id, fulfillment_group_id, sum(iff(comp = ${lit}, r, 0)) lv, sum(iff(et ilike 'merchant_surcharge%', r, 0)) rb, sum(r) net, ${SQL_PT_COLS}, max(iff(comp = ${lit}, trk, null)) mtrk, max(iff(comp = ${lit}, rk, null)) mrk, sum(iff(comp = ${lit}, cb, 0)) mcb from c group by 1, 2 having sum(iff(comp = ${lit}, r, 0)) <> 0),
 fx as (select * from f qualify row_number() over (order by abs(lv) desc) <= 5000),
-${sqlLabelFacts('fx')},
-x as (select fx.*, ${SQL_FACT_COLS} from ${SQL_FACT_JOIN('fx')}),
+${sqlLabelFacts('fx', { more: true })},
+x as (select fx.*, ${SQL_FACT_COLS}, ${carrierLine ? sqlPassOn({ comp: lit, cu: 'fx.cu', passed: 'fx.passed', car: 'lab.carrier', unrec: 'inv.unrec', topsub: 'fx.topsub', lastc: 'fx.lastc' }) : `''`} ps from ${SQL_FACT_JOIN('fx')}),
 ch as (select coalesce(nullif(ds, ''), '(no description)') ds, count(distinct merchant_id || '|' || fulfillment_group_id) n, sum(r) v from c where comp = ${lit} group by 1 qualify row_number() over (order by sum(r) ${ord}) <= 12),
 lc as (select iff(r < 0, coalesce(nullif(rk, ''), 'ship'), 'late') k, count(distinct merchant_id || '|' || fulfillment_group_id) n, sum(r) v, sum(cb) cb from c where et = 'merchant_base_charge_adjustment' group by 1),
 k as (select merchant_id, coalesce(sku, 'Unknown') sku, any_value(title) title, count(*) n, sum(lv) lv, sum(rb) rb, median(qw) qw, median(rq) rq, median(bw) bw, median(aw) aw, median(iw) iw, mode(qb) qb, coalesce(mode(iff(bv > dv * 1.1, bb, null)), mode(bb)) bb from x group by 1, 2 qualify row_number() over (order by sum(lv) ${ord}) <= 25),
@@ -721,6 +740,7 @@ select (select object_construct('n', count(*), 'lv', round(sum(lv), 2), 'rb', ro
 (select object_construct(${SQL_FACT_STATS}) from x) facts,
 (select array_agg(object_construct('d', ds, 'n', n, 'v', round(v, 2))) within group (order by v ${ord}) from ch) charges,
 (select object_agg(k, object_construct('n', n, 'v', round(v, 2), 'cb', round(cb, 2))) from lc) life,
+(select object_agg(ps, object_construct('n', n, 'v', round(v, 2))) from (select ps, count(*) n, sum(lv) v from x where ps <> '' group by 1)) passon,
 (select array_agg(object_construct('m', merchant_id, 'sku', sku, 't', title, 'n', n, 'lv', round(lv, 2), 'rb', round(rb, 2), 'qw', round(qw, 1), 'rq', round(rq, 1), 'bw', round(bw, 1), 'aw', round(aw, 1), 'iw', round(iw, 1), 'qb', qb, 'bb', bb)) within group (order by lv ${ord}) from k) skus,
 (select array_agg(object_construct('m', merchant_id, 'fg', fulfillment_group_id, 'trk', trk, 'sku', sku, 't', title, 'lv', round(lv, 2), 'rb', round(rb, 2), 'qw', round(qw, 1), 'rq', round(rq, 1), 'bw', round(bw, 1), 'aw', round(aw, 1), 'rm', rm, 'iw', round(iw, 1), 'qb', qb, 'bb', bb, 'mtrk', mtrk, 'mrk', mrk, 'mcb', round(mcb, 2))) within group (order by lv ${ord}) from s) ships`;
 }
@@ -756,6 +776,32 @@ e as (select gk, object_construct(${SQL_FACT_STATS}) facts from x group by 1),
 sk as (select gk, sku, any_value(title) title, count(*) n from x where sku is not null group by 1, 2 qualify row_number() over (partition by gk order by count(*) desc) = 1),
 rb as (select gk, sum(rbf) rb from t0 group by 1)
 select rb.gk, e.facts, sk.sku topsku, sk.title toptitle, sk.n topn, round(rb.rb, 2) rb from rb left join e on e.gk = rb.gk left join sk on sk.gk = rb.gk`;
+}
+/* FedEx charge names on carrier bills that Redo's surcharge billing job does not recognize (missing from the FedEx
+   list in redo/fulfillment/service/src/surcharges/surcharge-mapping.ts as of October 2026). One unrecognized line
+   parks the whole shipment's surcharge in the retry queue, so nothing on that bill is charged to the merchant. */
+const FEDEX_UNRECOGNIZED = ['Weight and Dimension Discrepancy', 'Dimension Discrepancy', 'Weight Discrepancy', 'Credit - Weight and Dimension Discrepancy', 'Credit - Dimension Discrepancy', 'Credit - Weight Discrepancy', 'Unitemized Adjustment', 'Insurance'];
+/* Shipment-level export (PLD): one row per shipment with an issue. Large exports are split into parts by a hash of
+   the shipment id; each part returns one row holding its shipments as a JSON array. ps is the pass-through status of
+   carrier charges added after purchase (under-billed only): whether they were charged to the merchant and, if not, why. */
+const sqlPldCount = (sc, dir, min) => `select count(*) n from ${T.DIAG} where diagnostic_status = 'issue' and diagnostic_variance_usd ${dir === 'u' ? '<' : '>'} 0${sc.where}${min > 0 ? ` and abs(diagnostic_variance_usd) >= ${+min}` : ''}`;
+/* Pass-through status of carrier charges added after purchase, checked in order: passed on in full or in part,
+   otherwise the first known reason it could not be (see PLD_STATUS for the plain-language meaning). */
+const sqlPassOn = ({ comp, cu, passed, car, unrec, topsub, lastc }) => `case when coalesce(${cu}, 0) < 0.005 then 'nocharge' when ${passed} >= ${cu} - 0.01 then 'full' when ${passed} > 0.005 then 'part' when ${car} ilike 'fedex%' and ${unrec} = 1 then 'fxunrec' when ${comp} = 'S|Duplicate carrier charge' then 'dup' when ${topsub} = 'post_void_carrier_cost' then 'void' when ${topsub} = 'ups_return_to_sender_carrier_cost' then 'rts' when ${topsub} = 'base_invoice_above_purchase_quote' and ${car} ilike 'usps%' then 'uspsbase' when datediff('day', ${lastc}, current_date) <= 7 then 'recent' when ${topsub} = 'base_invoice_above_purchase_quote' then 'base' when ${topsub} = 'prior_invoice_upward_revision' then 'late' else 'none' end`;
+const SQL_PT_COLS = `sum(iff(et = 'invoice_cost_true_up' and r < 0, -r, 0)) cu, sum(iff(et = 'merchant_surcharge_recovery', r, 0)) passed, max(iff(et = 'invoice_cost_true_up' and r < 0, at, null)) lastc, max_by(iff(et = 'invoice_cost_true_up' and r < 0, sub, null), iff(et = 'invoice_cost_true_up' and r < 0, -r, 0)) topsub`;
+function sqlPld(sc, dir, { items = false, part = 0, parts = 1, min = 0 } = {}) {
+  const ord = dir === 'u' ? 'asc' : 'desc';
+  const sc2 = { ...sc, where: sc.where + (parts > 1 ? ` and mod(abs(hash(fulfillment_group_id)), ${parts | 0}) = ${part | 0}` : '') + (min > 0 ? ` and abs(diagnostic_variance_usd) >= ${+min}` : '') };
+  const ps = dir === 'u' ? `case when dom.comp = 'M|return_label_unused-' then 'pend' when dom.comp like 'M|%' then 'merch' else ${sqlPassOn({ comp: 'dom.comp', cu: 'pt.cu', passed: 'pt.passed', car: 'd.car', unrec: 'inv.unrec', topsub: 'pt.topsub', lastc: 'pt.lastc' })} end` : `''`;
+  return `with ${sqlIssueFgs(sc2, dir)},
+${SQL_ADJ},
+${SQL_DOM(ord)},
+pt as (select merchant_id, fulfillment_group_id, ${SQL_PT_COLS} from a group by 1, 2),
+dg as (select merchant_id, fulfillment_group_id, any_value(label_count) lc, any_value(try_parse_json(origin_countries)[0]::string) org, any_value(try_parse_json(destination_countries)[0]::string) dst, sum(expected_spread_usd) es, sum(current_spread_usd) cs, sum(net_billed_to_merchant_usd) nb, sum(invoiced_amount_usd) ia from ${T.DIAG} where diagnostic_status = 'issue' and (merchant_id, fulfillment_group_id) in (select merchant_id, fulfillment_group_id from d) group by 1, 2),
+sh as (select merchant_id, fulfillment_group_id, sum(expected_merchant_charge_usd) emc, sum(expected_carrier_cost_usd) ecc from ${T.SHIP} where (merchant_id, fulfillment_group_id) in (select merchant_id, fulfillment_group_id from d) group by 1, 2),
+${sqlLabelFacts('d', { items, more: true })},
+x as (select d.issue_date, d.merchant_id, d.fulfillment_group_id, d.car, d.v, dom.comp, dom.r dr, dom.ds dds, dg.lc, dg.org, dg.dst, dg.es, dg.cs, dg.nb, dg.ia, sh.emc, sh.ecc, pt.cu, pt.passed, ${ps} ps, lab.tracking_code trk, lab.shipment_id sid, lab.label_provider lp, lab.label_purchased_at pa, inv.svc, inv.zone, nullif(lab.qw, 0) qw, ${SQL_RQ} rq, inv.bw, inv.aw, ${box('lab.ql', 'lab.qd', 'lab.qh')} qb, ${box('inv.bl', 'inv.bd', 'inv.bh')} bb, inv.rm, inv.descs, it.sku, it.title from d left join dom on dom.merchant_id = d.merchant_id and dom.fulfillment_group_id = d.fulfillment_group_id left join pt on pt.merchant_id = d.merchant_id and pt.fulfillment_group_id = d.fulfillment_group_id left join dg on dg.merchant_id = d.merchant_id and dg.fulfillment_group_id = d.fulfillment_group_id left join sh on sh.merchant_id = d.merchant_id and sh.fulfillment_group_id = d.fulfillment_group_id left join lab on lab.merchant_id = d.merchant_id and lab.fulfillment_group_id = d.fulfillment_group_id left join inv on inv.tracking_code = lab.tracking_code left join it on it.trk = lab.tracking_code)
+select count(*) n, to_json(array_agg(array_construct(to_char(issue_date, 'YYYY-MM-DD'), merchant_id, fulfillment_group_id, car, round(v, 2), coalesce(comp, 'X|unexplained'), round(dr, 2), dds, lc, org, dst, round(es, 2), round(cs, 2), round(nb, 2), round(ia, 2), round(emc, 2), round(ecc, 2), round(cu, 2), round(passed, 2), ps, trk, sid, lp, to_char(pa, 'YYYY-MM-DD'), svc, zone, round(qw, 1), round(rq, 1), round(bw, 1), round(aw, 1), qb, bb, rm, descs, sku, title)) within group (order by issue_date, merchant_id, fulfillment_group_id)) pld from x`;
 }
 /* Step 4: issue dollars by label attribute next to a hash sample of every label bought in the same window
    (at least 28 days). One row per bucket, top 40 per dimension, plus the grand total. */
@@ -1130,6 +1176,7 @@ function renderBar() {
   if (S.data && S.tab !== 'recon') for (const dm of DIMS) for (const k of S.f[dm.key]) chips.push(`<span class="chip"><em>${dm.label}</em>${esc(dimName(dm.key, k))}<button data-rm="${dm.key}:${k}" aria-label="Remove">✕</button></span>`);
   if (chips.length > 1) chips.push('<button class="linkbtn" data-clear>Clear all</button>');
   h += `<div class="chips">${chips.join('')}</div>`;
+  if (S.tab !== 'recon' && S.data) h += '<button class="btn ghost sm pldbtn" data-pld>Export shipments</button>';
   $('#bar').innerHTML = h;
 }
 function renderView() {
@@ -1627,7 +1674,7 @@ function openLine(spec) {
   $('#drawer').classList.add('wide');
   renderDrawer(); showDrawer();
   cachedSf(sqlLine(spec.sc, spec.dir, spec.comp))
-    .then((rows) => { if (S.drawer !== dw) return; const r = rows[0] || {}; const fa = parseMaybe(r.facts) || {}; dw.res = { stats: { ...fa, fn: +fa.n || 0, ...(parseMaybe(r.stats) || {}) }, charges: parseMaybe(r.charges) || [], life: parseMaybe(r.life) || {}, skus: parseMaybe(r.skus) || [], ships: parseMaybe(r.ships) || [] }; renderDrawer(true); })
+    .then((rows) => { if (S.drawer !== dw) return; const r = rows[0] || {}; const fa = parseMaybe(r.facts) || {}; dw.res = { stats: { ...fa, fn: +fa.n || 0, ...(parseMaybe(r.stats) || {}) }, charges: parseMaybe(r.charges) || [], life: parseMaybe(r.life) || {}, passon: parseMaybe(r.passon) || {}, skus: parseMaybe(r.skus) || [], ships: parseMaybe(r.ships) || [] }; renderDrawer(true); })
     .catch((e) => { if (S.drawer !== dw) return; dw.err = msg(e); renderDrawer(true); });
 }
 /* What kind of evidence explains a line: labels the merchant was never charged for (split by return label used,
@@ -1672,7 +1719,14 @@ function renderLineDrawer(keepScroll) {
       meter('Products alone weigh more than the label', f.itemsheavier, f.withi, `Typical product weight ${plainW(f.iw)}, from the store's product data, against ${plainW(f.rq)} on the label after rounding up.`),
     ].join('') : '';
     const visual = fam === 'label' ? lifeBlock(life, sp.comp, C) : meters ? `<div class="mtrs">${meters}</div>` : '';
-    const brk = `<div class="card brk ${sp.comp === 'M|return_label_unused-' ? 'pend' : c}"><div class="eyebrow">What's breaking</div><p class="big">${esc(cause || 'No single pattern stands out on these shipments.')}</p><p class="fx"><b>Fix</b>${esc(fix)}</p>${visual}${fam === 'size' && f.fn < f.n ? `<div class="sub mt">Patterns from the ${cnt(f.fn)} largest of ${cnt(f.n)} shipments.</div>` : ''}</div>`;
+    const po = dw.res.passon || {}, poKeys = PASSON_ORDER.filter((k) => po[k] && +po[k].n);
+    const poTot = poKeys.reduce((t, k) => t + +po[k].n, 0), poPassed = (+po.full?.n || 0) + (+po.part?.n || 0);
+    const poTop = poKeys.filter((k) => !['full', 'part', 'nocharge'].includes(k)).sort((a, b) => +po[b].n - +po[a].n)[0];
+    const billed = poTot ? (poPassed === poTot ? `Passed on to the merchant on all ${cnt(poTot)} shipments.` : `${poPassed ? `Passed on for ${cnt(poPassed)} of ${cnt(poTot)} shipments.` : `Not passed on for any of the ${cnt(poTot)} shipments.`}${poTop ? ` Main reason: ${PLD_STATUS[poTop][1]}` : ''}`) : '';
+    const poCard = poTot ? `<div class="card"><h2>Passed on to the merchant?</h2><div class="sub">Carrier charges added after the label was bought, and whether surcharge billing charged them to the merchant${f.fn < f.n ? `. From the ${cnt(f.fn)} largest shipments` : ''}.</div>
+      <div class="lf"><div class="lf-bar">${poKeys.map((k) => `<i class="${PASSON_TONE[k]}" style="width:${((+po[k].n / poTot) * 100).toFixed(1)}%"></i>`).join('')}</div><div class="lf-h"><span></span><span></span><span>Shipments</span><span>Amount</span></div>
+      ${poKeys.map((k) => `<div class="lf-r${k === poTop ? ' on' : ''}"><span class="sw ${PASSON_TONE[k]}"></span><div><b>${PASSON_NAME[k]}</b><small>${esc(PLD_STATUS[k][1] || 'The carrier charges were charged to the merchant.')}</small></div><span class="lf-n">${cnt(+po[k].n)}</span><span class="lf-v ${PASSON_TONE[k]}">${money(+po[k].v, true)}</span></div>`).join('')}</div></div>` : '';
+    const brk = `<div class="card brk ${sp.comp === 'M|return_label_unused-' ? 'pend' : c}"><div class="eyebrow">What's breaking</div><p class="big">${esc(cause || 'No single pattern stands out on these shipments.')}</p><p class="fx"><b>Fix</b>${esc(fix)}</p>${billed ? `<p class="fx"><b>Billed</b>${esc(billed)}</p>` : ''}${visual}${fam === 'size' && f.fn < f.n ? `<div class="sub mt">Patterns from the ${cnt(f.fn)} largest of ${cnt(f.n)} shipments.</div>` : ''}</div>`;
     const k3 = fam === 'label'
       ? `${kpi('Not charged to merchant', c, money(lv, true), `${cnt(n)} orders`)}${kpi(`${C === 'The carrier' ? 'Carrier' : C} has billed us`, '', money(+f.cb || 0), `${cnt(+f.used || 0)} of ${cnt(n)} labels used so far`)}${kpi('Real loss so far', '', sp.comp === 'M|return_label_unused-' ? '$0' : money(lv, true), sp.comp === 'M|return_label_unused-' ? 'Nothing billed until a label is used' : 'Billed to us, never charged to the merchant')}`
       : sp.comp[0] === 'S'
@@ -1697,7 +1751,7 @@ function renderLineDrawer(keepScroll) {
       tbl = `<table class="t ln"><thead><tr><th>Product</th><th class="n">Shipments</th>${fam === 'size' ? '<th>Weight: label → carrier billed</th><th>Box: declared → measured</th>' : ''}<th class="n">Amount</th></tr></thead><tbody>${skus.map(row).join('')}</tbody></table>`;
     }
     const tsub = dw.ltab === 'ships' ? `Largest ${cnt(ships.length)} by amount.` : `Top ${cnt(skus.length)} products or product combinations by amount. Click one for the merchant.`;
-    body = `${brk}<div class="grid k3">${k3}</div>
+    body = `${brk}${poCard}<div class="grid k3">${k3}</div>
       ${showCharges ? `<div class="card"><h2>Charges on the carrier invoice</h2><div class="sub" style="margin-bottom:8px">As the carrier wrote them.</div>${drows(chItems, { oneSided: true, attr: () => '' })}</div>` : ''}
       <div class="card"><div class="card-h"><div><h2>${dw.ltab === 'ships' ? 'Shipments' : 'By product'}</h2><div class="sub">${tsub}${fam === 'size' ? ' Orange means the carrier found more than the label said.' : ''}</div></div>
         <div class="hdr-r">${seg('ltab', dw.ltab, [['sku', 'By product'], ['ships', 'Shipments']])}<button class="btn ghost" data-export="line">Export CSV</button></div></div><div class="scroll" style="max-height:560px">${tbl}</div></div>`;
@@ -1712,6 +1766,125 @@ function exportLine() {
   else download(`${slug}-by-product.csv`, [['merchant', 'sku', 'product', 'shipments', 'label_weight_oz', 'billed_weight_oz', 'item_weight_oz', 'box_declared', 'box_measured', 'amount', 'passed_on'], ...r.skus.map((x) => [merchantName(x.m), x.sku, x.t, x.n, x.qw, x.bw, x.iw, x.qb, x.bb, x.lv, x.rb])]);
 }
 
+/* ----- Export shipments (PLD): one row per shipment with an issue, for sharing with other teams ----- */
+const PLD_PART = 8000, PLD_MAX = 300000;
+/* Pass-through status of the carrier charges added after purchase: [passed on?, why not]. */
+const PLD_STATUS = {
+  full: ['Yes, in full', ''],
+  part: ['Partly', 'Only part of the carrier charges were charged to the merchant.'],
+  fxunrec: ['No', "The FedEx bill has a charge name Redo's surcharge billing does not recognize (such as Weight and Dimension Discrepancy), so the whole surcharge is held and nothing is charged."],
+  uspsbase: ['No', 'USPS billed a higher base rate than the label price. Surcharge billing only passes on USPS weight and size adjustments, not base rate differences.'],
+  dup: ['No, correctly', 'The carrier billed the same label twice. Dispute it with the carrier instead.'],
+  void: ['No', 'Charge on a cancelled label. Surcharge billing does not cover it.'],
+  rts: ['No', 'Return to sender charge. Surcharge billing does not cover it.'],
+  recent: ['Not yet', 'The carrier charge arrived in the last 7 days and may still be billed.'],
+  base: ['No', 'Base rate above the label price was not charged to the merchant.'],
+  late: ['No', 'A late carrier bill was not charged to the merchant.'],
+  none: ['No', 'No reason found in the data.'],
+  nocharge: ['Not a carrier charge', 'No carrier charge after the label was bought. The gap is in what the merchant was charged.'],
+  merch: ['Not a carrier charge', 'Merchant billing issue, not a carrier charge.'],
+  pend: ['Not a carrier charge', 'Prepaid return label not used yet. Not a loss until a customer uses it.'],
+};
+const PASSON_ORDER = ['full', 'part', 'fxunrec', 'uspsbase', 'base', 'late', 'void', 'rts', 'dup', 'recent', 'none', 'nocharge'];
+const PASSON_NAME = { full: 'Passed on in full', part: 'Passed on in part', fxunrec: 'Held: FedEx charge name not recognized', uspsbase: 'Not covered: USPS base rate above the label price', base: 'Base rate above the label price, not charged', late: 'Late carrier bill, not charged', void: 'Not covered: cancelled label', rts: 'Not covered: return to sender', dup: 'Carrier billed twice, dispute instead', recent: 'Arrived in the last 7 days', none: 'Not passed on, no reason found', nocharge: 'No carrier charge after purchase' };
+const PASSON_TONE = { full: 'o', part: 'o', dup: 'pend', recent: 'pend', nocharge: 'pend' };
+for (const k of PASSON_ORDER) PASSON_TONE[k] = PASSON_TONE[k] || 'u';
+function pldRange(p) {
+  const t = todayIdx(), d = dayDate(t), y = d.getUTCFullYear(), m = d.getUTCMonth();
+  if (p.period === '7d') return [t - 6, t];
+  if (p.period === '30d') return [t - 29, t];
+  if (p.period === 'month') return [dIdx(y, m - 1, 1), dIdx(y, m, 0)];
+  const parse = (v) => { const [a, b, c] = String(v || '').split('-').map(Number); return a && b && c ? dIdx(a, b - 1, c) : null; };
+  const a = parse(p.from) ?? t - 29, b = parse(p.to) ?? t;
+  return [Math.min(a, b), Math.min(Math.max(a, b), t)];
+}
+function openPld() {
+  closePop(); hideTip();
+  const t = todayIdx();
+  S.drawer = { kind: 'pld', dir: S.view === 'o' ? 'o' : 'u', period: '30d', from: iso(t - 29), to: iso(t), useFilters: anyFilter(), items: false, min: '', running: false, progress: '', done: '', err: '' };
+  $('#drawer').classList.remove('wide');
+  renderDrawer(); showDrawer();
+}
+function renderPldDrawer(keepScroll) {
+  const p = S.drawer, saved = $('#drawer').scrollTop, [a, b] = pldRange(p);
+  const lm = dayDate(dIdx(dayDate(todayIdx()).getUTCFullYear(), dayDate(todayIdx()).getUTCMonth() - 1, 1));
+  const filt = DIMS.flatMap((dm) => [...S.f[dm.key]].map((k) => `${dm.label} ${dimName(dm.key, k)}`));
+  const row = (label, body) => `<div class="pf"><div class="pl">${label}</div><div>${body}</div></div>`;
+  const dis = p.running ? ' disabled' : '';
+  $('#drawer').innerHTML = `<div class="dw-h"><div class="eyebrow">Export</div><h1>Export shipments</h1><div class="owners"><span>One row per shipment, ready to send to other teams</span></div><button class="icon-btn x" data-close aria-label="Close">✕</button></div>
+  <div class="dw-b"><div class="card pld">
+    ${row('Shipments', seg('pld-dir', p.dir, [['u', 'Under-billed'], ['o', 'Over-billed'], ['b', 'Both']]))}
+    ${row('Period', `${seg('pld-per', p.period, [['7d', 'Last 7 days'], ['30d', 'Last 30 days'], ['month', `${MONTHS_FULL[lm.getUTCMonth()]} ${lm.getUTCFullYear()}`], ['custom', 'Custom']])}
+      ${p.period === 'custom' ? `<div class="pdates"><input type="date" data-pldf="from" value="${esc(p.from)}" max="${iso(todayIdx())}"><span>to</span><input type="date" data-pldf="to" value="${esc(p.to)}" max="${iso(todayIdx())}"></div>` : ''}
+      <div class="sub mt">${esc(fullDate(iso(a)))} to ${esc(fullDate(iso(b)))}, by the date the issue was found.</div>`)}
+    ${row('Filters', filt.length ? `<label class="chk"><input type="checkbox" data-pldc="useFilters"${p.useFilters ? ' checked' : ''}> Only ${esc(filt.join(', '))}</label>` : '<div class="sub">Every merchant and carrier. Set filters in the bar to narrow it.</div>')}
+    ${row('Options', `<label class="chk"><input type="checkbox" data-pldc="items"${p.items ? ' checked' : ''}> Include products and SKUs <small>Slower, about 10 seconds more per 8,000 shipments</small></label>
+      <label class="chk">Only shipments off by at least $<input type="number" min="0" step="1" data-pldf="min" value="${esc(p.min)}" placeholder="0"></label>`)}
+    <div class="pgo"><button class="btn"${dis} data-pld-run>${p.running ? 'Exporting…' : 'Export CSV'}</button><span class="pmsg${p.err ? ' err' : ''}">${esc(p.err || p.progress || p.done)}</span></div>
+  </div>
+  <div class="card"><h2>What's in the file</h2><div class="sub" style="margin:6px 0 10px">Each row is one shipment with a billing issue.</div><ul class="plist">
+    <li><b>Who and what:</b> merchant, product analyst, sales engineer, fix status, shipment and tracking numbers, carrier, service, origin and destination, zone.</li>
+    <li><b>Package:</b> label weight, the weight the carrier priced and billed, the carrier's scale weight, declared and measured box, and whether the carrier corrected the size or weight.</li>
+    <li><b>Money:</b> expected and actual merchant charge, expected and actual carrier cost, expected and actual margin, and the amount off plan.</li>
+    <li><b>Why:</b> the main issue in plain words, carrier charges added after purchase, how much was passed on to the merchant, and why the rest was not.</li>
+  </ul></div></div>`;
+  if (keepScroll) $('#drawer').scrollTop = saved;
+}
+/* Snowflake writes missing array values as undefined, which JSON does not allow. */
+const parsePld = (v) => (Array.isArray(v) ? v : JSON.parse(String(v || '[]').replace(/([[,])undefined(?=[,\]])/g, '$1null')));
+async function runPld() {
+  const p = S.drawer; if (!p || p.kind !== 'pld' || p.running) return;
+  const [from, to] = pldRange(p), min = Math.max(0, +p.min || 0);
+  const sc = p.useFilters && anyFilter() ? scopeSql(false, [from, to]) : { from, to, where: ` and issue_date between '${iso(from)}' and '${iso(to)}'`, mids: null, carRaw: null, orgs: null, dsts: null, types: null };
+  const dirs = p.dir === 'b' ? ['u', 'o'] : [p.dir], label = { u: 'Under-billed', o: 'Over-billed' };
+  const set = (k, v) => { if (S.drawer !== p) return; p[k] = v; renderPldDrawer(true); };
+  Object.assign(p, { running: true, err: '', done: '', progress: 'Counting shipments…' }); renderPldDrawer(true);
+  try {
+    const counts = {};
+    for (const dir of dirs) counts[dir] = +(await sf(sqlPldCount(sc, dir, min)))[0]?.n || 0;
+    const total = dirs.reduce((t, d) => t + counts[d], 0);
+    if (!total) throw new Error('No shipments with issues in that period.');
+    if (total > PLD_MAX) throw new Error(`That is ${cnt(total)} shipments, more than ${cnt(PLD_MAX)}. Pick a shorter period, add filters, or set a minimum amount.`);
+    const out = [];
+    let got = 0;
+    for (const dir of dirs) {
+      if (!counts[dir]) continue;
+      const parts = Math.ceil(counts[dir] / PLD_PART), queue = [...Array(parts).keys()];
+      const work = async () => {
+        while (queue.length) {
+          const k = queue.shift();
+          const r = (await sf(sqlPld(sc, dir, { items: p.items, part: k, parts, min }), 3))[0] || {};
+          for (const a of parsePld(r.pld)) out.push([dir, ...a]);
+          got += +r.n || 0;
+          set('progress', `Fetched ${cnt(got)} of ${cnt(total)} shipments…`);
+        }
+      };
+      await Promise.all([...Array(Math.min(4, parts))].map(work));
+    }
+    out.sort((x, y) => (x[0] < y[0] ? 1 : x[0] > y[0] ? -1 : 0) || String(x[1]).localeCompare(String(y[1])) || String(x[2]).localeCompare(String(y[2])));
+    download(`shipments-${p.dir === 'b' ? 'under-and-over-billed' : p.dir === 'u' ? 'under-billed' : 'over-billed'}-${iso(from)}-to-${iso(to)}.csv`, pldRows(out, p.items));
+    Object.assign(p, { running: false, progress: '', done: `Downloaded ${cnt(out.length)} shipments.` });
+  } catch (e) {
+    Object.assign(p, { running: false, progress: '', err: msg(e) });
+  }
+  if (S.drawer === p) renderPldDrawer(true);
+}
+function pldRows(out, items) {
+  const D = S.data, n2 = (x) => (x == null || x === '' ? '' : (+x).toFixed(2)), n1 = (x) => (x == null || x === '' ? '' : +(+x).toFixed(1));
+  const head = ['Billing issue', 'Issue date', 'Merchant', 'Merchant ID', 'Product analyst', 'Sales engineer', 'Fix status', 'Order shipment ID', 'Shipment ID', 'Tracking number', 'Labels in shipment', 'Carrier', 'Service', 'Label provider', 'Label bought', 'Origin country', 'Destination country', 'Zone',
+    'Label weight (oz)', 'Label weight as priced (oz)', 'Carrier billed weight (oz)', 'Carrier scale weight (oz)', 'Declared box (in)', 'Measured box (in)', 'Carrier corrected size or weight',
+    'Expected merchant charge ($)', 'Charged to merchant, net ($)', 'Expected carrier cost ($)', 'Carrier billed ($)', 'Expected margin ($)', 'Actual margin ($)', 'Amount off plan ($)',
+    'Main issue', 'Main issue amount ($)', 'Carrier charges added after purchase ($)', 'Passed on to merchant ($)', 'Passed on to merchant?', 'Why not passed on', 'Charges on the carrier bill', ...(items ? ['Product SKU', 'Product name'] : [])];
+  const rows = out.map(([dir, day, m, fg, car, v, comp, dr, dds, lc, org, dst, es, cs, nb, ia, emc, ecc, cu, passed, ps, trk, sid, lp, pa, svc, zone, qw, rq, bw, aw, qb, bb, rm, descs, sku, title]) => {
+    const mi = D.M.idx.get(m), st = PLD_STATUS[ps] || ['', ''];
+    return [dir === 'u' ? 'Under-billed' : 'Over-billed', day, merchantName(m), m, mi != null ? D.pa[D.M.pa[mi]] : '', mi != null ? D.se[D.M.se[mi]] : '', STATUS[S.actions.get(m)?.status || 'open'], fg, sid, trk, lc, CARRIERS[car] || car, svc, lp, pa, org, dst, +zone > 0 ? zone : '',
+      n1(qw), n1(rq), n1(bw), n1(aw), qb ? qb.replace(/x/g, ' x ') : '', bb ? bb.replace(/x/g, ' x ') : '', +rm ? 'Yes' : '',
+      n2(emc), n2(nb), n2(ecc), n2(ia), n2(es), n2(cs), n2(v),
+      capFirst(chargeType({ comp, ds: dds || '' }, dir)), n2(dr), n2(cu), n2(passed), dir === 'u' ? st[0] : '', dir === 'u' ? st[1] : '', descs || '', ...(items ? [sku || '', title || ''] : [])];
+  });
+  return [head, ...rows];
+}
+
 /* ----- Summary: last 60 days ----- */
 const isDefaultScope = () => !anyFilter();
 const TOP_CACHE = 'cache/top-v3.json';
@@ -1724,7 +1897,7 @@ const MONTHS_FULL = ['January', 'February', 'March', 'April', 'May', 'June', 'Ju
 const ymd = (s) => String(s || '').split('-').map(Number);
 const fullDate = (s) => { const [y, m, d] = ymd(s); return m ? `${MONTHS_FULL[m - 1]} ${d}, ${y}` : 'an unknown date'; };
 const dollars = (v) => { const a = Math.abs(+v || 0); return '$' + (a >= 1000 ? Math.round(a / 100) * 100 : Math.round(a)).toLocaleString('en-US'); };
-const plainW = (oz) => (+oz >= 16 ? `${+(+oz / 16).toFixed(1)} pounds` : `${Math.max(1, Math.round(+oz))} ounces`);
+const plainW = (oz) => { const lb = +(+oz / 16).toFixed(1), o = Math.max(1, Math.round(+oz)); return +oz >= 16 ? `${lb} pound${lb === 1 ? '' : 's'}` : `${o} ounce${o === 1 ? '' : 's'}`; };
 /* The same, used before a noun: "a 17 by 13 by 1 inch box", "a 2.3 pound label". */
 const plainWAdj = (oz) => plainW(oz).replace(/pounds$/, 'pound').replace(/ounces$/, 'ounce');
 const plainBoxAdj = (b) => plainBox(b).replace(/inches$/, 'inch');
@@ -2080,6 +2253,7 @@ async function loadDrawerData() {
 function renderDrawer(keepScroll) {
   const dw = S.drawer; if (!dw || !S.data) return;
   if (dw.kind === 'line') return renderLineDrawer(keepScroll);
+  if (dw.kind === 'pld') return renderPldDrawer(keepScroll);
   for (const k of [...SLOTS.keys()]) if (k[0] === 'd') SLOTS.delete(k);
   const D = S.data, m = dw.m, M = D.M, id = M.id[m];
   const saved = $('#drawer').scrollTop;
@@ -2163,7 +2337,7 @@ function download(name, rows) {
 /* ---------------- events ---------------- */
 function applyChange() { savePrefs(); renderBar(); renderView(); if (S.pop) renderPopOpts(); }
 document.addEventListener('click', (e) => {
-  const el = e.target.closest('[data-tab],[data-preset],[data-grain],[data-dd],[data-opt],[data-popclear],[data-popdone],[data-clear],[data-rm],[data-drill],[data-act],[data-legend],[data-okind],[data-close],[data-status],[data-save],[data-export],[data-retry],[data-dx-cell],[data-dx-type],[data-dx-car],[data-dx-dir],[data-dx-rep],[data-dx-kind],[data-dx-reset],[data-dx-clear],[data-dx-mall],[data-dx-all],[data-dx-t],[data-v1],[data-v2],[data-wdim],[data-wall],[data-view],[data-top],[data-line],[data-ltab],#refresh,#scrim');
+  const el = e.target.closest('[data-tab],[data-preset],[data-grain],[data-dd],[data-opt],[data-popclear],[data-popdone],[data-clear],[data-rm],[data-drill],[data-act],[data-legend],[data-okind],[data-close],[data-status],[data-save],[data-export],[data-retry],[data-dx-cell],[data-dx-type],[data-dx-car],[data-dx-dir],[data-dx-rep],[data-dx-kind],[data-dx-reset],[data-dx-clear],[data-dx-mall],[data-dx-all],[data-dx-t],[data-v1],[data-v2],[data-wdim],[data-wall],[data-view],[data-top],[data-line],[data-ltab],[data-pld],[data-pld-dir],[data-pld-per],[data-pld-run],#refresh,#scrim');
   if (S.pop && !e.target.closest('#pop') && !e.target.closest('[data-dd]')) closePop();
   if (!el) return;
   const ds = el.dataset;
@@ -2212,6 +2386,10 @@ document.addEventListener('click', (e) => {
   else if (ds.line) { const D = S.data; openLine({ comp: ds.line, name: ds.lname || compName(ds.line), group: COMP_GROUP[ds.line[0]] || 'Line item', dir: dx.dir, sc: scopeSql(), carrier: dx.carrier != null ? D.carriers[dx.carrier] : null, type: dx.type != null ? TYPE_BY[dx.type]?.name : null }); }
   else if (ds.ltab && S.drawer?.kind === 'line') { S.drawer.ltab = ds.ltab; renderDrawer(true); }
   else if (ds.export === 'line') exportLine();
+  else if ('pld' in ds) openPld();
+  else if (ds.pldDir && S.drawer?.kind === 'pld' && !S.drawer.running) { S.drawer.dir = ds.pldDir; renderPldDrawer(true); }
+  else if (ds.pldPer && S.drawer?.kind === 'pld' && !S.drawer.running) { S.drawer.period = ds.pldPer; renderPldDrawer(true); }
+  else if ('pldRun' in ds) runPld();
   else if (ds.okind) { S.ownerKind = ds.okind; renderView(); }
   else if ('close' in ds || el.id === 'scrim') closeDrawer();
   else if (ds.status && S.drawer) { S.drawer.form.status = ds.status; document.querySelectorAll('[data-status]').forEach((b) => b.classList.toggle('on', b.dataset.status === ds.status)); }
@@ -2228,7 +2406,9 @@ document.addEventListener('click', (e) => {
 document.addEventListener('input', (e) => {
   if (e.target.matches('[data-popq]') && S.pop) { S.pop.q = e.target.value.trim().toLowerCase(); renderPopOpts(); }
   else if (e.target.dataset.form && S.drawer?.form) S.drawer.form[e.target.dataset.form] = e.target.value;
+  else if (e.target.dataset.pldf && S.drawer?.kind === 'pld') { S.drawer[e.target.dataset.pldf] = e.target.value; if (e.target.type === 'date') renderPldDrawer(true); }
 });
+document.addEventListener('change', (e) => { if (e.target.dataset.pldc && S.drawer?.kind === 'pld') { S.drawer[e.target.dataset.pldc] = e.target.checked; renderPldDrawer(true); } });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { if (S.pop) closePop(); else if (S.drawer) closeDrawer(); } });
 const tip = $('#tip');
 function hideTip() { tip.classList.remove('on'); }

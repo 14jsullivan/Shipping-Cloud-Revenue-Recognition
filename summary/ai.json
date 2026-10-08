@@ -7,9 +7,10 @@
  "briefing": {
   "u": [
    "About $7,500 is prepaid return labels on 926 orders that customers have not used. The carrier only bills a return label when it is used, so this is not a loss yet and is left out of the list.",
-   "When customers do use a prepaid return label, the charge to the merchant failed on 214 labels at 64 merchants. The carrier has billed us about $2,100 for them.",
+   "FedEx extra charges reached the merchant on only 33 of 968 under-billed FedEx shipments. The rest, about $11,000, are held because the bills carry lines like Weight and Dimension Discrepancy that Redo's surcharge billing does not recognize.",
+   "USPS billed more than the label price on about 13,000 shipments, about $12,000. Surcharge billing only passes on USPS weight and size adjustments, so these base rate gaps are never charged.",
    "Labels at ZERO FOXTROT and Ballerina Farm declare boxes far smaller than what ships, so FedEx and USPS re-measured them and billed about $3,800 more since mid September.",
-   "Late FedEx import tax bills at District Vision, LA Clippers Team Store and Stoggles were not passed on, about $3,900."
+   "When customers use a prepaid return label, the charge to the merchant failed on 214 labels at 64 merchants. The carrier has billed us about $2,100 for them."
   ],
   "o": [
    "DHL eCommerce charges less than our label price at Freckled Poppy, FB County and Worth Collective, about $9,500. Confirm these prices are intended.",
@@ -19,8 +20,8 @@
  "notes": {
   "u|68c32f42c7e339bbfde5cc2d|FedEx|C|base_invoice_above_purchase_quote": {
    "type": "size corrections on boxes bigger than the label",
-   "cause": "Every label declares the same 17 by 13 by 1 inch mailer, but FedEx measured real boxes, typically 16 by 14 by 4 inches and up to 25 by 21 by 19, and added a size correction to 128 of 133 bills. FedEx's base price matched our quote.",
-   "fix": "Set up the merchant's real box sizes so labels match what ships, then bill the {amount}."
+   "cause": "Every label declares the same 17 by 13 by 1 inch mailer, but FedEx measured real boxes, typically 16 by 14 by 4 inches, and added size corrections to 128 of 133 bills. None of it reached the merchant: surcharge billing does not recognize FedEx's Weight and Dimension Discrepancy line, so it holds the whole charge.",
+   "fix": "Add FedEx's discrepancy charges to surcharge billing, set up the merchant's real box sizes, and bill the {amount}."
   },
   "u|689a67d5f8907cd382f0497e|FedEx|C|prior_invoice_upward_revision": {
    "cause": "FedEx billed import tax and VAT on international orders after delivery, and none of it was passed on.",

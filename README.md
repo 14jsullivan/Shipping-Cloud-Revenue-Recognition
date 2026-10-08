@@ -69,6 +69,23 @@ Each line is a group of revenue events from the adjustments table for the select
 
 For each group, the share of issue dollars is set against the share of all labels bought in the same period (at least the last 28 days; carrier and merchant filters apply). "2×" means the group has twice the issue dollars its volume would predict. Each shipment with an issue counts once, using its heaviest label. Over long periods the label count comes from a hash sample of shipments (about 40 days' worth), so shares are estimates. Surcharge type has no fair-share figure because label volume isn't split by surcharge.
 
+### Export shipments (PLD)
+
+**Export shipments** in the filter bar downloads a CSV with one row per shipment that has a billing issue: under-billed, over-billed or both, for the last 7 days, the last 30 days, the last full month or a custom range (by the date the issue was found). It can use the current filters, include products and SKUs (slower, it scans the store line items), and skip shipments under a minimum amount.
+
+Columns: merchant, product analyst, sales engineer, fix status, shipment and tracking numbers, carrier, service, label provider, origin and destination, zone; label weight, the weight as the carrier priced it, the carrier's billed and scale weight, declared and measured box, and whether the carrier corrected size or weight; expected and actual merchant charge, carrier cost and margin, and the amount off plan; the main issue in plain words, carrier charges added after purchase, how much was passed on to the merchant, and **why the rest was not**.
+
+Large exports run in parts of 8,000 shipments (by a hash of the shipment id, four at a time), each returning its rows as one JSON array; the cap is 300,000 shipments per export.
+
+### Passed on to the merchant?
+
+For under-billed shipments the export and the drill-down show whether carrier charges added after purchase were charged to the merchant (`merchant_surcharge_recovery` events, which are the `LABEL_SURCHARGE` balance transactions) and, if not, the first reason that applies:
+
+- **Held: FedEx charge name not recognized.** Redo's surcharge job (`redo/fulfillment/service/src/surcharges`) checks every charge line on a FedEx bill against a list; one unknown name (such as `Weight and Dimension Discrepancy`, `Dimension Discrepancy`, their `Credit -` versions, or `Unitemized Adjustment`) sends the whole shipment to the retry queue and nothing is charged. The names are listed in `FEDEX_UNRECOGNIZED`.
+- **Not covered: USPS base rate above the label price.** USPS surcharge billing only passes on USPS weight and size adjustments.
+- **Carrier billed twice** (dispute it), **cancelled label**, **return to sender**: not covered by surcharge billing.
+- **Arrived in the last 7 days**: may still be billed.
+
 ### Summary and the AI notes
 
 The Summary always covers the last 60 days (Denver time), so the period buttons are hidden on that tab; carrier, merchant and other filters still apply. Each issue is assigned to its biggest line in the direction of its variance (the same lines as step 3), then grouped by merchant, carrier and line. Prepaid return labels customers have not used are left out of the ten and shown as one total underneath, since the carrier has not billed them. The ten largest groups are ranked in a few seconds; their weights, boxes and top SKU load next. With no filters, results are cached in the store for 4 hours.

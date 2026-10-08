@@ -140,6 +140,16 @@ function topFacts(sql) {
     return { GK: gk, FACTS: JSON.stringify(facts), TOPSKU: sku, TOPTITLE: title, TOPN: String(Math.round(n * 0.4)), RB: (i % 2 ? -120.5 : 35.2).toFixed(2) };
   });
 }
+// Shipment export: one part of the PLD, as Snowflake returns it (missing values written as undefined).
+function pld(sql) {
+  const under = sql.includes('diagnostic_variance_usd < 0'), parts = +(sql.match(/mod\(abs\(hash\(fulfillment_group_id\)\), (\d+)\) = (\d+)/) || [0, 1, 0])[1];
+  const n = Math.round((under ? 9500 : 1200) / parts), codes = ['fxunrec', 'uspsbase', 'part', 'full', 'merch', 'pend', 'dup', 'recent'];
+  const rows = Array.from({ length: n }, (_, i) => {
+    const m = merchants[i % merchants.length].id, v = (under ? -1 : 1) * (2 + (i % 40));
+    return `["2026-09-${String(1 + (i % 28)).padStart(2, '0')}","${m}","fg${i}","${['USPS', 'FedEx', 'UPS'][i % 3]}",${v},"${under ? ['C|base_invoice_above_purchase_quote', 'S|Weight or size correction', 'M|return_label_uncharged-'][i % 3] : 'C|base_invoice_below_purchase_quote'}",${v},"Transportation Charge, Weight",1,"US","${i % 9 ? 'US' : 'CA'}",1.2,${(1.2 + v).toFixed(2)},9.5,8.3,9.5,8.3,${under ? -v : 0},${under ? (i % 4 ? 0 : 1.5) : 0},"${under ? codes[i % codes.length] : ''}","9400${100000 + i}","shp_${i}","USPS","2026-08-30","GroundAdvantage",${i % 8},15.1,16,${i % 5 ? 32 : 16},undefined,"12x9x1","${i % 3 ? '13x10x4' : '12x9x1'}",${i % 2},"Fuel Surcharge | Transportation Charge",undefined,undefined]`;
+  });
+  return [{ N: String(n), PLD: `[${rows.join(',')}]` }];
+}
 function line(sql) {
   const under = sql.includes('diagnostic_variance_usd < 0'), sign = under ? -1 : 1;
   const stats = { n: 15650, remeasured: 4410, withinv: 4900, heavier: 3639, withw: 5295, scale: 3100, withaw: 5100, bigger: 2133, withd: 5976, itemsheavier: 815, withi: 4694, withsku: 15387, qw: 15.1, rq: 16, bw: 32, aw: 32, iw: 12.2, qb: '12x9x1', bb: '13x10x4', lv: sign * 49917.36, rb: -242.59, net: sign * 41020.11 };
@@ -152,7 +162,7 @@ function line(sql) {
   const life = { unused: { n: 413, v: -3228.7, cb: 0 }, used: { n: 118, v: -745.63, cb: 1242.87 }, ship: { n: 3, v: -15.57, cb: 0 }, late: { n: 9, v: 64.29, cb: 0 } };
   if (label) ships.forEach((x, i) => Object.assign(x, { mtrk: '920209040453350' + String(426700 + i), mrk: i % 5 ? 'used' : 'unused', mcb: i % 5 ? 8.4 : 0 }));
   const st = label ? { n: 118, lv: -745.63, rb: 0, net: -1186.9, cb: 1242.87, used: 118 } : { n: stats.n, lv: stats.lv, rb: stats.rb, net: stats.net };
-  return [{ STATS: JSON.stringify(st), FACTS: JSON.stringify(facts), CHARGES: JSON.stringify(label ? [{ d: '(no description)', n: 118, v: -745.63 }] : charges), LIFE: JSON.stringify(life), SKUS: JSON.stringify(skus), SHIPS: JSON.stringify(ships) }];
+  return [{ STATS: JSON.stringify(st), FACTS: JSON.stringify(facts), CHARGES: JSON.stringify(label ? [{ d: '(no description)', n: 118, v: -745.63 }] : charges), LIFE: JSON.stringify(life), PASSON: JSON.stringify(label || !under ? {} : { fxunrec: { n: 3120, v: -30120.5 }, full: { n: 840, v: -4100 }, part: { n: 310, v: -2450 }, uspsbase: { n: 600, v: -1900 }, recent: { n: 130, v: -610 } }), SKUS: JSON.stringify(skus), SHIPS: JSON.stringify(ships) }];
 }
 
 async function query(sql, opts = {}) {
@@ -160,6 +170,8 @@ async function query(sql, opts = {}) {
   if (opts.timeoutMs > 60000) throw new Error('{"error":[{"origin":"number","code":"too_big","maximum":60000,"inclusive":true,"path":["timeoutMs"],"message":"Invalid input"}]}');
   if (opts.limit > 500) throw new Error('limit too big');
   await wait(250 + rnd() * 700);
+  if (sql.startsWith('select count(*) n from')) return { rows: [{ N: sql.includes('diagnostic_variance_usd < 0') ? '9500' : '1200' }] };
+  if (sql.includes(')) pld from x')) return { rows: pld(sql) };
   if (sql.includes('dict_m')) return { rows: cubeChunk(+sql.match(/\),\s*(\d+)\)\s*=\s*(\d+)\)/)[2]), rowCount: 1, hasMore: false };
   if (sql.includes('to_json(array_agg(array_construct')) return { rows: owners() };
   if (sql.includes("monetization_type = 'OMS Label Spread'")) return { rows: recDaily() };
